@@ -30,7 +30,7 @@ export default function Home() {
             placeholder="Thêm từ vựng cần tìm ..."
             className="rounded-full pl-12 pr-16 py-6 shadow-lg"
           />
-          <Button className="absolute right-1 top-1 rounded-full bg-secondary hover:bg-secondary/90 p-3">
+          <Button className="absolute top-1/2 right-5 -translate-y-1/2 rounded-full bg-secondary hover:bg-secondary/90 p-3">
             <ArrowRight className="h-4 w-4 max-w-full text-white" />
           </Button>
         </div>

@@ -11,10 +11,14 @@ export function Header() {
       </Link>
       <div className="space-x-4">
         <Button variant="outline" className="rounded-full px-10 py-3 border border-black hover:border-secondary">
-          Đăng ký
+          <Link to="/sign-up">
+            Đăng ký
+          </Link>
         </Button>
         <Button className="rounded-full px-10 py-3 bg-secondary text-black hover:bg-secondary/80">
-          Đăng nhập
+          <Link to="/sign-in">
+            Đăng nhập
+          </Link>
         </Button>
       </div>
     </header>

@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { RootLayout } from "./layouts/root-layout";
+import { AuthProvider } from "@/contexts/auth-context";
+import { Toaster } from "sonner";
 import Home from "./pages/home";
 import SignIn from "./pages/sign-in";
 import SignUp from "./pages/sign-up";
@@ -9,17 +11,20 @@ import ChatboxPage from "./pages/chatbox";
 
 export default function App() {
   return (
-    <Router>
-      <RootLayout>
+    <AuthProvider>
+      <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route element={<RootLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/my-list-workspace" element={<MyListWorkspace />} />
+            <Route path="/my-vocabulary" element={<MyVocabulary />} />
+            <Route path="/chatbox" element={<ChatboxPage />} />
+          </Route>
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/my-list-workspace" element={<MyListWorkspace />} />
-          <Route path="/my-vocabulary" element={<MyVocabulary />} />
-          <Route path="/chatbox" element={<ChatboxPage />} />
         </Routes>
-      </RootLayout>
-    </Router>
+        <Toaster position="top-center" />
+      </Router>
+    </AuthProvider>
   );
 }
