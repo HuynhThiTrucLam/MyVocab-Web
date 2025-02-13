@@ -1,35 +1,25 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { RootLayout } from "./layouts/root-layout";
+import Home from "./pages/home";
+import SignIn from "./pages/sign-in";
+import SignUp from "./pages/sign-up";
+import MyListWorkspace from "./pages/my-list-workspace";
+import MyVocabulary from "./pages/my-vocabulary";
+import ChatboxPage from "./pages/chatbox";
 
-function App() {
-  const [count, setCount] = useState(0);
-
+export default function App() {
   return (
-    <>
-      <div className="flex flex-row">
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Router>
+      <RootLayout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/my-list-workspace" element={<MyListWorkspace />} />
+          <Route path="/my-vocabulary" element={<MyVocabulary />} />
+          <Route path="/chatbox" element={<ChatboxPage />} />
+        </Routes>
+      </RootLayout>
+    </Router>
   );
 }
-
-export default App;
