@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import Logo from "@/assets/icons/logo.svg?react";
-
 
 export function Header() {
   return (
@@ -10,16 +8,18 @@ export function Header() {
         <Logo />
       </Link>
       <div className="space-x-4">
-        <Button variant="outline" className="rounded-full px-10 py-3 border border-black hover:border-secondary">
-          <Link to="/sign-up">
-            Đăng ký
-          </Link>
-        </Button>
-        <Button className="rounded-full px-10 py-3 bg-secondary text-black hover:bg-secondary/80">
-          <Link to="/sign-in">
-            Đăng nhập
-          </Link>
-        </Button>
+        <Link
+          to="/sign-up"
+          className="rounded-full px-10 py-3 border border-black hover:border-secondary text-black font-bold hover:text-secondary transition-all duration-300"
+        >
+          Đăng ký
+        </Link>
+        <Link
+          to="/sign-in"
+          className="rounded-full px-10 py-3 bg-secondary text-white hover:bg-secondary/20 font-bold hover:text-secondary transition-all duration-300"
+        >
+          Đăng nhập
+        </Link>
       </div>
     </header>
   );

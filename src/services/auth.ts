@@ -1,8 +1,18 @@
+import { googleProvider, auth as firebaseAuth } from "@/lib/firebase";
+import { signInWithPopup } from "firebase/auth";
 import { User } from "@/lib/types";
+import axios from "axios";
 
 interface AuthResponse {
   user: User;
   token: string;
+}
+
+interface GoogleUserInfo {
+  sub: string;
+  email: string;
+  name: string;
+  picture: string;
 }
 
 export class AuthError extends Error {
@@ -12,53 +22,100 @@ export class AuthError extends Error {
   }
 }
 
+const handleAuthError = (error: unknown): never => {
+  if (axios.isAxiosError(error)) {
+    throw new AuthError(
+      error.response?.data?.message || "Authentication failed"
+    );
+  }
+  throw new AuthError("An unexpected error occurred");
+};
+
 export const auth = {
-  signIn: async (email: string, password: string): Promise<AuthResponse> => {
+  signIn: async (email: string, password: string) => {
     try {
-      // const response = await fetch(`${process.env.VITE_API_URL}/auth/login`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({ email, password }),
-      // });
-      const response = Response.json({
+      // For development/testing
+      return {
         user: { id: "1", email: "user@example.com" },
         token: "1234567890",
-      });
+      };
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new AuthError(error.message || "Failed to sign in");
-      }
-
-      const data = await response.json();
-
-      // Store the token
-      localStorage.setItem("token", data.token);
-
-      return data;
+      // For production
+      // const { data } = await axios.post<AuthResponse>(`${import.meta.env.VITE_API_URL}/auth/login`, {
+      //   email,
+      //   password,
+      // });
+      // localStorage.setItem("token", data.token);
+      // return data;
     } catch (error) {
-      if (error instanceof AuthError) {
-        throw error;
-      }
-      throw new AuthError("An unexpected error occurred");
+      handleAuthError(error);
+    }
+  },
+
+  signInWithGoogle: async () => {
+    try {
+      const result = await signInWithPopup(firebaseAuth, googleProvider);
+      const user = result.user;
+      // const { data } = await axios.post<AuthResponse>(
+      //   `${import.meta.env.VITE_API_URL}/auth/login`,
+      //   {
+      //     email: user.email,
+      //     password: user.uid,
+      //   }
+      // );
+      // localStorage.setItem("token", data.token);
+      // return data;
+
+      // TODO: Implement this
+      return {
+        user: { id: "1", email: "user@example.com" },
+        token: "1234567890",
+      };
+    } catch (error) {
+      handleAuthError(error);
     }
   },
 
   signUp: async (email: string, password: string) => {
-    // Implement sign up logic
+    try {
+      const { data } = await axios.post<AuthResponse>(
+        `${import.meta.env.VITE_API_URL}/auth/register`,
+        { email, password }
+      );
+      localStorage.setItem("token", data.token);
+      return data;
+    } catch (error) {
+      handleAuthError(error);
+    }
   },
 
-  signOut: async () => {
-    localStorage.removeItem("token");
+  signOut: async (): Promise<void> => {
+    try {
+      // You might want to call your backend to invalidate the token
+      // await axios.post(`${import.meta.env.VITE_API_URL}/auth/logout`);
+      localStorage.removeItem("token");
+    } catch (error) {
+      handleAuthError(error);
+    }
   },
 
-  getToken: () => {
+  getToken: (): string | null => {
     return localStorage.getItem("token");
   },
 
-  isAuthenticated: () => {
+  isAuthenticated: (): boolean => {
     return !!localStorage.getItem("token");
+  },
+
+  refreshToken: async () => {
+    try {
+      const { data } = await axios.post<AuthResponse>(
+        `${import.meta.env.VITE_API_URL}/auth/refresh`
+      );
+      localStorage.setItem("token", data.token);
+      return data;
+    } catch (error) {
+      handleAuthError(error);
+    }
   },
 };

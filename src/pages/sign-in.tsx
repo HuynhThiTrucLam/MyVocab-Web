@@ -10,6 +10,9 @@ import BG from "@/assets/icons/bg.svg?react";
 import TABLET_BG from "@/assets/icons/tablet_login.svg?react";
 import SUCCESS_ICON from "@/assets/icons/success.svg?react";
 import { useAuth } from "@/contexts/auth-context";
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from "@/lib/firebase";
+
 import { useToast } from "@/hooks/use-toast";
 
 interface SignInFormData {
@@ -25,9 +28,35 @@ export default function SignInPage() {
     email: "",
     password: "",
   });
+  const [errors, setErrors] = useState<Partial<SignInFormData>>({});
+
+  const validateForm = (): boolean => {
+    const newErrors: Partial<SignInFormData> = {};
+
+    // Email validation
+    if (!formData.email) {
+      newErrors.email = "Email không được để trống";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Email không hợp lệ";
+    }
+
+    // Password validation
+    if (!formData.password) {
+      newErrors.password = "Mật khẩu không được để trống";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
 
     try {
       await signIn(formData.email, formData.password);
@@ -45,6 +74,28 @@ export default function SignInPage() {
         description: "Đăng nhập thất bại!",
         variant: "destructive",
         color: "error",
+      });
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithPopup(auth, googleProvider);
+      // Show success message
+      toast({
+        title: "Success!",
+        description: "Successfully signed in with Google",
+        variant: "default",
+      });
+
+      // Redirect to home page or dashboard
+      navigate("/");
+    } catch (error) {
+      console.error("Error signing in with Google:", error);
+      toast({
+        title: "Error",
+        description: "Failed to sign in with Google. Please try again.",
+        variant: "destructive",
       });
     }
   };
@@ -68,17 +119,34 @@ export default function SignInPage() {
             <div className="max-w-full mx-auto w-full space-y-8 pr-24">
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-4">
-                  <Input
-                    type="text"
-                    placeholder="Tên đăng nhập hoặc email"
-                    value={formData.email}
-                    onChange={(e) => updateFormData("email")(e.target.value)}
-                    className="rounded-full px-6 py-[18px]"
-                  />
-                  <PasswordInput
-                    value={formData.password}
-                    onChange={updateFormData("password")}
-                  />
+                  <div>
+                    <Input
+                      type="text"
+                      placeholder="Tên đăng nhập hoặc email"
+                      value={formData.email}
+                      onChange={(e) => updateFormData("email")(e.target.value)}
+                      className={`rounded-full px-6 py-[18px] ${
+                        errors.email ? "border-red-500" : ""
+                      }`}
+                    />
+                    {errors.email && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.email}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <PasswordInput
+                      value={formData.password}
+                      onChange={updateFormData("password")}
+                      className={errors.password ? "border-red-500" : ""}
+                    />
+                    {errors.password && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.password}
+                      </p>
+                    )}
+                  </div>
                 </div>
 
                 <div className="text-right">
@@ -92,7 +160,7 @@ export default function SignInPage() {
 
                 <Button
                   type="submit"
-                  className="w-full rounded-full bg-secondary hover:bg-secondary-hover text-white font-bold text-base px-6 py-[18px] h-auto"
+                  className="w-full rounded-full bg-secondary hover:bg-white hover:text-secondary font-bold text-base px-6 py-[18px] h-auto border-transparent hover:border-secondary"
                   disabled={isLoading}
                 >
                   {isLoading ? "Đang đăng nhập..." : "Đăng nhập"}
@@ -106,9 +174,8 @@ export default function SignInPage() {
                     <span className="bg-white px-2 text-gray-500">hoặc</span>
                   </div>
                 </div>
-
-                <SocialLoginButtons />
               </form>
+              <SocialLoginButtons onGoogleSignIn={handleGoogleSignIn} />
             </div>
 
             {/* Illustration */}

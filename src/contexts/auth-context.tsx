@@ -7,6 +7,8 @@ interface AuthContextType {
   isLoading: boolean;
   error: string | null;
   signIn: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string) => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -32,7 +34,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(true);
       setError(null);
       const response = await auth.signIn(email, password);
-      setUser(response.user);
+      if (response) {
+        setUser(response.user);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
       throw err;
@@ -50,8 +54,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const signUp = async (email: string, password: string) => {
+    try {
+      await auth.signUp(email, password);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to sign up");
+    }
+  };
+
+  const signInWithGoogle = async () => {
+    try {
+      await auth.signInWithGoogle();
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Failed to sign in with Google"
+      );
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, isLoading, error, signIn, signOut }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isLoading,
+        error,
+        signIn,
+        signOut,
+        signUp,
+        signInWithGoogle,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
