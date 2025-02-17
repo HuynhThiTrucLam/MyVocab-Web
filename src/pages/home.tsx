@@ -8,7 +8,7 @@ import BOOKMARK from "@/assets/icons/bookmark.svg?react";
 import CHATBOX from "@/assets/icons/chatbox.svg?react";
 import SEARCH from "@/assets/icons/search.svg?react";
 import { useState } from "react";
-
+import { Link } from "react-router-dom";
 export default function Home() {
   const [search, setSearch] = useState("");
   return (
@@ -44,24 +44,24 @@ export default function Home() {
         <p className="text-xl mb-16 text-center">
           <span className="font-bold">"Nothing</span> is impossible"
         </p>
-
       </div>
 
       {/* Feature Cards */}
       <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-        <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer">
-          <CardContent className="flex flex-col items-center space-y-4 pt-6">
-            <div className="p-4 rounded-full bg-secondary/10">
-              <BOOKMARK className="h-8 w-8 text-secondary" />
-            </div>
-            <h2 className="text-xl font-bold">Từ vựng của tôi</h2>
-            <p className="text-gray-600 text-sm  text-center">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry.
-            </p>
-          </CardContent>
-        </Card>
-
+        <Link to="/my-vocab">
+          <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer">
+            <CardContent className="flex flex-col items-center space-y-4 pt-6">
+              <div className="p-4 rounded-full bg-secondary/10">
+                <BOOKMARK className="h-8 w-8 text-secondary" />
+              </div>
+              <h2 className="text-xl font-bold">Từ vựng của tôi</h2>
+              <p className="text-gray-600 text-sm  text-center">
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry.
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
         <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer">
           <CardContent className="flex flex-col items-center space-y-4 pt-6">
             <div className="p-4 rounded-full bg-secondary/10">
