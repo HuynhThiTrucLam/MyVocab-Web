@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
+import styles from "./styles.module.scss";
 
 interface PasswordInputProps {
   value: string;
@@ -18,23 +19,23 @@ export function PasswordInput({
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="relative">
+    <div className={styles.container}>
       <Input
         type={showPassword ? "text" : "password"}
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className={`rounded-full px-6 py-[18px] pr-12 ${className}`}
+        className={`${styles.input} ${className}`}
       />
       <button
         type="button"
         onClick={() => setShowPassword(!showPassword)}
-        className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 border-none outline-none active:outline-none focus:outline-none"
+        className={styles.toggleButton}
       >
         {showPassword ? (
-          <EyeOffIcon className="h-5 w-5" />
+          <EyeOffIcon className={styles.icon} />
         ) : (
-          <EyeIcon className="h-5 w-5" />
+          <EyeIcon className={styles.icon} />
         )}
       </button>
     </div>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import styles from "./styles.module.scss";
 
 export function SignInForm() {
   const [email, setEmail] = useState("");
@@ -13,15 +14,13 @@ export function SignInForm() {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto mt-8">
+    <Card className={styles.card}>
       <CardHeader>
-        <CardTitle className="text-2xl font-bold text-center">
-          Sign In
-        </CardTitle>
+        <CardTitle className={styles.title}>Sign In</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.inputGroup}>
             <Input
               type="email"
               placeholder="Email"
@@ -30,7 +29,7 @@ export function SignInForm() {
               required
             />
           </div>
-          <div className="space-y-2">
+          <div className={styles.inputGroup}>
             <Input
               type="password"
               placeholder="Password"
@@ -39,7 +38,7 @@ export function SignInForm() {
               required
             />
           </div>
-          <Button type="submit" className="w-full">
+          <Button type="submit" className={styles.submitButton}>
             Sign In
           </Button>
         </form>

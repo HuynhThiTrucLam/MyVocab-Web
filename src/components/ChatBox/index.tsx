@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import styles from "./styles.module.scss";
 
 interface Message {
   id: string;
@@ -28,30 +29,28 @@ export function Chatbox() {
   };
 
   return (
-    <Card className="h-[600px] flex flex-col">
+    <Card className={styles.card}>
       <CardHeader>
         <CardTitle>AI Assistant</CardTitle>
       </CardHeader>
-      <CardContent className="flex-1 overflow-y-auto space-y-4">
+      <CardContent className={styles.messageList}>
         {messages.map((message) => (
           <div
             key={message.id}
-            className={`p-3 rounded-lg ${
-              message.sender === "user"
-                ? "bg-blue-500 text-white ml-auto"
-                : "bg-gray-200 mr-auto"
+            className={`${styles.message} ${
+              message.sender === "user" ? styles.user : styles.ai
             }`}
           >
             {message.text}
           </div>
         ))}
       </CardContent>
-      <div className="p-4 border-t flex gap-2">
+      <div className={styles.inputContainer}>
         <Input
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type your message..."
-          onKeyPress={(e) => e.key === "Enter" && handleSend()}
+          onKeyUp={(e) => e.key === "Enter" && handleSend()}
         />
         <Button onClick={handleSend}>Send</Button>
       </div>

@@ -1,12 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { RootLayout } from "./layouts/root-layout";
+import { RootLayout } from "./layouts/RootLayout";
 import { AuthProvider } from "@/contexts/auth-context";
-import Home from "./pages/home";
-import SignIn from "./pages/sign-in";
-import SignUp from "./pages/sign-up";
-import MyListWorkspace from "./pages/my-workspace";
-import ChatboxPage from "./pages/chatbox";
-import WorkspaceDetails from "./pages/workspace-details";
+import Home from "./pages/Home";
+import SignIn from "./pages/SignInPage";
+import SignUp from "./pages/SignUpPage";
+import MyListWorkspace from "./pages/MyListWorkspace";
+import ChatboxPage from "./pages/Chatbox";
+import WorkspaceDetails from "./pages/WorkspaceDetails";
 
 export default function App() {
   return (

@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import Logo from "@/assets/icons/logo.svg?react";
+import styles from "./styles.module.scss";
+
 interface AuthHeaderProps {
   linkText: string;
   linkHref: string;
@@ -12,16 +14,13 @@ export function AuthHeader({
   description,
 }: AuthHeaderProps) {
   return (
-    <header className="container mx-auto px-4 py-6 flex justify-between items-center">
-      <Link to="/" className="text-xl font-bold">
+    <header className={styles.header}>
+      <Link to="/" className={styles.logo}>
         <Logo />
       </Link>
-      <div className="flex items-center gap-2">
-        <span className="text-gray-600">{description}</span>
-        <Link
-          to={linkHref}
-          className="text-black font-medium hover:text-primary"
-        >
+      <div className={styles.rightSection}>
+        <span className={styles.description}>{description}</span>
+        <Link to={linkHref} className={styles.link}>
           {linkText} <span aria-hidden="true">→</span>
         </Link>
       </div>

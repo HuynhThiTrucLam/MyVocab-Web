@@ -4,19 +4,21 @@ import { useAuth } from "@/contexts/auth-context";
 import { useLocation } from "react-router-dom";
 import HeaderLink from "@/components/headerlink";
 import NullAbleComponent from "@/components/ui/NullAbleComponent";
+import styles from "./styles.module.scss";
+
 export function Header() {
   const { user } = useAuth();
   const location = useLocation();
   const currentPath = location.pathname;
 
   return (
-    <header className=" mx-auto px-4 py-6 flex justify-between items-center">
-      <div className="flex items-center gap-4">
-        <Link to="/" className="text-xl font-bold">
+    <header className={styles.header}>
+      <div className={styles.leftSection}>
+        <Link to="/" className={styles.logo}>
           <Logo />
         </Link>
         <NullAbleComponent isNull={!user}>
-          <div className="space-x-4">
+          <div className={styles.navLinks}>
             <HeaderLink
               to="/my-vocab"
               text="My Vocab"
@@ -31,17 +33,11 @@ export function Header() {
         </NullAbleComponent>
       </div>
       <NullAbleComponent isNull={!!user}>
-        <div className="space-x-4">
-          <Link
-            to="/sign-up"
-            className="rounded-full px-10 py-3 border border-black hover:border-secondary text-black font-bold hover:text-secondary transition-all duration-300"
-          >
+        <div className={styles.authButtons}>
+          <Link to="/sign-up" className={styles.signUpButton}>
             Đăng ký
           </Link>
-          <Link
-            to="/sign-in"
-            className="rounded-full px-10 py-3 bg-secondary text-white hover:bg-secondary/20 font-bold hover:text-secondary transition-all duration-300"
-          >
+          <Link to="/sign-in" className={styles.signInButton}>
             Đăng nhập
           </Link>
         </div>

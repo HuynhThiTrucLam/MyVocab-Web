@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { PasswordInput } from "@/components/auth/password-input";
-import { SocialLoginButtons } from "@/components/auth/social-login-buttons";
+import { PasswordInput } from "@/components/auth/PasswordInput";
 import { useAuth } from "@/contexts/auth-context";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import styles from "./styles.module.scss";
 
 interface SignUpFormData {
   username: string;
@@ -17,7 +17,7 @@ interface SignUpFormData {
 
 export function SignUpForm() {
   const navigate = useNavigate();
-  const { signUp, signInWithGoogle, isLoading } = useAuth();
+  const { signUp, isLoading } = useAuth();
   const { toast } = useToast();
   const [formData, setFormData] = useState<SignUpFormData>({
     username: "",
@@ -91,7 +91,6 @@ export function SignUpForm() {
     }
   };
 
-
   const updateFormData = (field: keyof SignUpFormData) => (value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
@@ -101,74 +100,72 @@ export function SignUpForm() {
   };
 
   return (
-    <div className="w-full max-w-full space-y-6">
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="space-y-2">
+    <div className={styles.container}>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <div className={styles.inputGroup}>
           <Input
             type="text"
             placeholder="Tên đăng nhập"
             value={formData.username}
             onChange={(e) => updateFormData("username")(e.target.value)}
-            className="rounded-full px-6 py-[18px]"
+            className={styles.input}
           />
           {errors.username && (
-            <p className="text-sm text-red-500 px-6">{errors.username}</p>
+            <p className={styles.errorMessage}>{errors.username}</p>
           )}
         </div>
 
-        <div className="space-y-2">
+        <div className={styles.inputGroup}>
           <Input
             type="email"
             placeholder="Địa chỉ Email"
             value={formData.email}
             onChange={(e) => updateFormData("email")(e.target.value)}
-            className="rounded-full px-6 py-[18px]"
+            className={styles.input}
           />
           {errors.email && (
-            <p className="text-sm text-red-500 px-6">{errors.email}</p>
+            <p className={styles.errorMessage}>{errors.email}</p>
           )}
         </div>
 
-        <div className="space-y-2">
+        <div className={styles.inputGroup}>
           <Input
             type="tel"
             placeholder="Số điện thoại"
             value={formData.phone}
             onChange={(e) => updateFormData("phone")(e.target.value)}
-            className="rounded-full px-6 py-[18px]"
+            className={styles.input}
           />
           {errors.phone && (
-            <p className="text-sm text-red-500 px-6">{errors.phone}</p>
+            <p className={styles.errorMessage}>{errors.phone}</p>
           )}
         </div>
 
-        <div className="space-y-2">
+        <div className={styles.inputGroup}>
           <PasswordInput
             value={formData.password}
             onChange={updateFormData("password")}
             placeholder="Mật khẩu"
           />
           {errors.password && (
-            <p className="text-sm text-red-500 px-6">{errors.password}</p>
+            <p className={styles.errorMessage}>{errors.password}</p>
           )}
         </div>
 
-        <div className="space-y-2">
+        <div className={styles.inputGroup}>
           <PasswordInput
             value={formData.confirmPassword}
             onChange={updateFormData("confirmPassword")}
             placeholder="Nhập lại mật khẩu"
           />
           {errors.confirmPassword && (
-            <p className="text-sm text-red-500 px-6">
-              {errors.confirmPassword}
-            </p>
+            <p className={styles.errorMessage}>{errors.confirmPassword}</p>
           )}
         </div>
 
         <Button
           type="submit"
-          className="w-full rounded-full py-[18px] h-auto bg-secondary text-white hover:bg-white hover:text-secondary font-bold border-transparent hover:border-secondary"
+          className={styles.submitButton}
           disabled={isLoading}
         >
           {isLoading ? "Đang đăng ký..." : "Đăng ký ngay"}
