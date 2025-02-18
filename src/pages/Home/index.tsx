@@ -1,18 +1,23 @@
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { ArrowRight } from "lucide-react";
-import MAN_BG from "@/assets/icons/man_bg.svg?react";
 import BOOKMARK from "@/assets/icons/bookmark.svg?react";
 import CHATBOX from "@/assets/icons/chatbox.svg?react";
-import SEARCH from "@/assets/icons/search.svg?react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import MAN_BG from "@/assets/icons/man_bg.svg?react";
+import SearchBar from "@/components/SearchBar";
+import { Card, CardContent } from "@/components/ui/card";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./styles.module.scss";
 
 export default function Home() {
-  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (search: string) => {
+    if (search) {
+      navigate(`/dictionary?word=${search}`, {
+        state: {
+          previousPath: window.location.pathname,
+        },
+      });
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -20,21 +25,7 @@ export default function Home() {
         <h1 className={styles.title}>Tra cứu từ vựng</h1>
 
         {/* Search Bar */}
-        <div className={styles.searchContainer}>
-          <div className={styles.searchIcon}>
-            <SEARCH />
-          </div>
-          <Input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Thêm từ vựng cần tìm ..."
-            className={styles.searchInput}
-          />
-          <Button className={styles.searchButton}>
-            <ArrowRight />
-          </Button>
-        </div>
+        <SearchBar onSearch={handleSearch} />
 
         {/* Illustration */}
         <div className={styles.illustration}>

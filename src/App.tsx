@@ -7,6 +7,7 @@ import MyListWorkspace from "./pages/MyListWorkspace";
 import WorkspaceDetails from "./pages/WorkspaceDetails";
 import Home from "./pages/home";
 import { Chatbox } from "./pages/ChatBox/Chatbox";
+import Dictionary from "./pages/Dictionary";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
             <Route path="/my-vocab" element={<MyListWorkspace />} />
             <Route path="/my-vocab/:title" element={<WorkspaceDetails />} />
             <Route path="/chatbox" element={<Chatbox />} />
+            <Route path="/dictionary" element={<Dictionary />} />
           </Route>
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
