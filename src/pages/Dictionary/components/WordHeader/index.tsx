@@ -19,6 +19,10 @@ export function WordHeader({ word, phonetic, audioUrl }: WordHeaderProps) {
       const audio = new Audio(audioUrl);
       try {
         await audio.play();
+
+        await new Promise((resolve) => {
+          audio.onended = resolve;
+        });
       } catch (err) {
         console.error("Failed to play audio:", err);
       } finally {
@@ -37,7 +41,7 @@ export function WordHeader({ word, phonetic, audioUrl }: WordHeaderProps) {
         <HeartIcon className={`${styles.actionIcon} ${styles.heart}`} />
         <LoundSpeakIcon
           className={`${styles.actionIcon} ${styles.speaker} ${
-            !audioUrl ? styles.disabled : ""
+            !audioUrl || isPlaying ? styles.disabled : ""
           } ${isPlaying ? styles.playing : ""}`}
           onClick={handlePlayAudio}
         />
