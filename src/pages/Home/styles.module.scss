@@ -1,12 +1,12 @@
 .container {
-  max-width: 80%; // container
   width: 100%;
   margin: 0 auto; // mx-auto
-  padding: 2rem 1rem; // px-4 py-8
+  padding-top: 0.875rem;
 }
 
 .title {
-  font-size: 3rem; // text-5xl
+  font-size: 1.875rem;
+  line-height: 2.25rem;
   font-weight: 800; // font-extrabold
   margin-bottom: 3rem; // mb-12
   text-align: center;

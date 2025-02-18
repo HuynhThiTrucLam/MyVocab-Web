@@ -144,7 +144,7 @@ export default function WorkspaceDetails() {
                 <TableCell
                   className={styles.detailsLink}
                   onClick={() => {
-                    navigate(`/dictionary/${item.word}`);
+                    navigate(`/dictionary?word=${item.word}`);
                   }}
                 >
                   Xem chi tiết
