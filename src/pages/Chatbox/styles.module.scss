@@ -1,12 +1,19 @@
-.container {
-  max-width: 80%; // container
-  width: 100%;
-  margin: 0 auto; // mx-auto
-  padding: 2rem 1rem; // px-4 py-8
+.Chatbox {
+  display: grid;
+  grid-template-columns: 3fr 9fr;
+  gap: 16px;
+  height: 600px;
 }
-
-.title {
-  font-size: 1.875rem; // text-3xl
-  font-weight: 700; // font-bold
-  margin-bottom: 1.5rem; // mb-6
+.ChatboxHeader {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+.ChatboxTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ChatboxLeftContent {
 }

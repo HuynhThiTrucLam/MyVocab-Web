@@ -1,0 +1,13 @@
+.ChatList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+}
+.ChatItem {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  padding: 12px;
+  border-radius: 8px;
+}
