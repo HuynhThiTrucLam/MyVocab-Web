@@ -1,17 +1,24 @@
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import ArrowLeft from "@/assets/icons/arrow-left.svg?react";
 import SearchBar from "@/components/SearchBar";
 import { WordHeader } from "./components/WordHeader";
 import { WordMeaningSection } from "./components/WordMeaningSection";
 import { Meaning, Phonetic, WordData } from "./types";
 import styles from "./styles.module.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import axios from "axios";
 import { Spinner } from "@/components/Spinner";
 
 export default function Dictionary() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const previousPath = location?.state?.previousPath || "/";
   const word = searchParams.get("word") || "";
   const [wordData, setWordData] = useState<WordData | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -64,7 +71,15 @@ export default function Dictionary() {
             phonetics: mergedPhonetics,
           });
         } catch (err) {
-          setError("Word not found");
+          if (axios.isAxiosError(err)) {
+            setError(
+              err.response?.status === 404
+                ? "Word not found"
+                : "An error occurred while fetching the word"
+            );
+          } else {
+            setError("An unexpected error occurred");
+          }
           setWordData(null);
         } finally {
           setIsLoading(false);
@@ -75,21 +90,30 @@ export default function Dictionary() {
     }
   }, [word, navigate]);
 
-  const handleSearch = (search: string) => {
-    if (search) {
-      navigate(`/dictionary?word=${search}`);
-    }
-  };
+  const handleSearch = useCallback(
+    (search: string) => {
+      if (search) {
+        navigate(`/dictionary?word=${search}`);
+      }
+    },
+    [navigate]
+  );
 
-  const getAudioUrl = () => {
+  const getAudioUrl = useMemo(() => {
     if (!wordData?.phonetics) return undefined;
     const phoneticWithAudio = wordData.phonetics.find((p) => p.audio);
     return phoneticWithAudio?.audio;
-  };
+  }, [wordData?.phonetics]);
 
   return (
     <div className={styles.container}>
-      <Link to="/" className={styles.backLink}>
+      <Link
+        to={previousPath}
+        className={styles.backLink}
+        state={{
+          ...location.state,
+        }}
+      >
         <ArrowLeft />
         <span>Trở lại</span>
       </Link>
@@ -109,7 +133,7 @@ export default function Dictionary() {
             <WordHeader
               word={wordData.word}
               phonetic={wordData.phonetic}
-              audioUrl={getAudioUrl()}
+              audioUrl={getAudioUrl}
             />
 
             {wordData.meanings.map((meaning, index) => (

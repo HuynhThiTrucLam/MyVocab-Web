@@ -11,6 +11,20 @@ interface SearchBarProps {
 const SearchBar = ({ onSearch }: SearchBarProps) => {
   const [search, setSearch] = useState("");
 
+  const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
+  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      onSearch(search);
+    }
+  };
+
+  const handleSearchClick = () => {
+    onSearch(search);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.iconWrapper}>
@@ -19,12 +33,12 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
       <Input
         type="text"
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        onKeyUp={(e) => e.key === "Enter" && onSearch(search)}
+        onChange={handleValueChange}
+        onKeyUp={handleSearch}
         placeholder="Thêm từ vựng cần tìm ..."
         className={styles.input}
       />
-      <Button className={styles.searchButton} onClick={() => onSearch(search)}>
+      <Button className={styles.searchButton} onClick={handleSearchClick}>
         <ArrowRight />
       </Button>
     </div>

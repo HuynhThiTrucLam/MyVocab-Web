@@ -2,6 +2,7 @@ import HeartIcon from "@/assets/icons/heart.svg?react";
 import LoundSpeakIcon from "@/assets/icons/loundspeaker.svg?react";
 import ShareIcon from "@/assets/icons/share.svg?react";
 import styles from "./styles.module.scss";
+import { useState } from "react";
 
 interface WordHeaderProps {
   word: string;
@@ -10,10 +11,19 @@ interface WordHeaderProps {
 }
 
 export function WordHeader({ word, phonetic, audioUrl }: WordHeaderProps) {
-  const handlePlayAudio = () => {
-    if (audioUrl) {
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const handlePlayAudio = async () => {
+    if (audioUrl && !isPlaying) {
+      setIsPlaying(true);
       const audio = new Audio(audioUrl);
-      audio.play();
+      try {
+        await audio.play();
+      } catch (err) {
+        console.error("Failed to play audio:", err);
+      } finally {
+        setIsPlaying(false);
+      }
     }
   };
 
@@ -28,7 +38,7 @@ export function WordHeader({ word, phonetic, audioUrl }: WordHeaderProps) {
         <LoundSpeakIcon
           className={`${styles.actionIcon} ${styles.speaker} ${
             !audioUrl ? styles.disabled : ""
-          }`}
+          } ${isPlaying ? styles.playing : ""}`}
           onClick={handlePlayAudio}
         />
         <ShareIcon className={`${styles.actionIcon} ${styles.share}`} />

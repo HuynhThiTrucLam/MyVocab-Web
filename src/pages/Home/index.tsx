@@ -11,7 +11,11 @@ export default function Home() {
 
   const handleSearch = (search: string) => {
     if (search) {
-      navigate(`/dictionary?word=${search}`);
+      navigate(`/dictionary?word=${search}`, {
+        state: {
+          previousPath: window.location.pathname,
+        },
+      });
     }
   };
 
