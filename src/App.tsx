@@ -5,9 +5,9 @@ import SignIn from "./pages/SignInPage";
 import SignUp from "./pages/SignUpPage";
 import MyListWorkspace from "./pages/MyListWorkspace";
 import WorkspaceDetails from "./pages/WorkspaceDetails";
-import Home from "./pages/home";
 import { Chatbox } from "./pages/ChatBox/Chatbox";
 import Dictionary from "./pages/Dictionary";
+import Home from "./pages/Home";
 
 export default function App() {
   return (

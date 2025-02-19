@@ -11,3 +11,15 @@ export function Spinner() {
     </div>
   );
 }
+
+export function SpinnerAnswering() {
+  return (
+    <div className="col-3">
+      <div className="snippet" data-title="dot-falling">
+        <div className="stage">
+          <div className={styles.dotFalling}></div>
+        </div>
+      </div>
+    </div>
+  );
+}

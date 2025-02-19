@@ -1,46 +1,37 @@
-import React from "react";
-import ChatItem from "./chatitem";
+import React, { useEffect } from "react";
 import styles from "./styles.module.scss";
+import ChatItem from "./ChatItem";
+import { Card } from "../ui/card";
+import { Chat } from "@/pages/ChatBox/Chatbox";
 
-export interface Chat {
-  id: string;
-  tittle: string;
-  date: string;
+interface listChatsProps {
+  listChats: Chat[];
+  selectedChat?: Chat;
+  // setSelectedChat: (chat: Chat) => void;
+  handleSelectChat: (chatId: string) => void;
 }
 
-export const mockChats: Chat[] = [
-  {
-    id: "1",
-    tittle: "Cuộc trò chuyện 1",
-    date: "2025-02-18T08:30:00Z",
-  },
-  {
-    id: "2",
-    tittle: "Cuộc trò chuyện 2",
-    date: "2025-02-17T14:15:00Z",
-  },
-  {
-    id: "3",
-    tittle: "Công việc",
-    date: "2025-02-16T09:45:00Z",
-  },
-  {
-    id: "4",
-    tittle: "Học tập",
-    date: "2025-02-15T18:00:00Z",
-  },
-  {
-    id: "5",
-    tittle: "Du lịch",
-    date: "2025-02-14T11:25:00Z",
-  },
-];
-
-const ChatList = () => {
+const ChatList = ({
+  listChats,
+  selectedChat,
+  handleSelectChat,
+}: listChatsProps) => {
   return (
     <div className={styles.ChatList}>
-      {mockChats.map((chat) => (
-        <ChatItem key={chat.id} chat={chat}></ChatItem>
+      {listChats.map((chat, index) => (
+        <Card
+          key={chat.id}
+          className={`${styles.ChatItem} ${
+            selectedChat
+              ? selectedChat.id === chat.id
+                ? styles.active
+                : ""
+              : ""
+          }`}
+          onClick={() => handleSelectChat(chat.id)}
+        >
+          <ChatItem chat={chat}></ChatItem>
+        </Card>
       ))}
     </div>
   );
