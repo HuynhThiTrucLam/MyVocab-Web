@@ -243,7 +243,7 @@ export function Chatbox() {
                 placeholder={
                   processing ? "Đang gửi..." : "Nhập nội dung chat tại đây..."
                 }
-                className="flex-1 resize-none overflow-hidden"
+                className="flex-1 resize-none overflow-scroll"
                 rows={1} // Start small
                 style={{ minHeight: "30px", maxHeight: "150px" }} // Auto-expand but keep limits
               />
