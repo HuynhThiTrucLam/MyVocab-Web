@@ -10,7 +10,7 @@ interface ChatItemProps {
 
 const ChatItem = ({ chat }: ChatItemProps) => {
   return (
-    <div className="flex flex-col gap-2 justify-between">
+    <div className="flex flex-col gap-2 justify-between cursor-pointer">
       <h3 className="text-black text-[14px] font-bold !mt-[0px]">
         {chat.tittle}
       </h3>
