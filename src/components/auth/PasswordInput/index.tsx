@@ -8,6 +8,8 @@ interface PasswordInputProps {
   onChange: (value: string) => void;
   placeholder?: string;
   className?: string;
+  disabled?: boolean;
+  tabIndex?: number;
 }
 
 export function PasswordInput({
@@ -15,6 +17,8 @@ export function PasswordInput({
   onChange,
   placeholder = "Mật khẩu",
   className,
+  disabled,
+  tabIndex,
 }: PasswordInputProps) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -26,11 +30,14 @@ export function PasswordInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className={`${styles.input} ${className}`}
+        disabled={disabled}
+        tabIndex={tabIndex}
       />
       <button
         type="button"
         onClick={() => setShowPassword(!showPassword)}
         className={styles.toggleButton}
+        disabled={disabled}
       >
         {showPassword ? (
           <EyeOffIcon className={styles.icon} />

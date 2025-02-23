@@ -7,8 +7,7 @@ import SendIcon from "@/assets/icons/sendIcon.svg?react";
 import styles from "./styles.module.scss";
 import { useEffect, useRef, useState } from "react";
 import ChatList from "@/components/chat/ChatList";
-import { Input } from "@/components/ui/input";
-import { Spinner, SpinnerAnswering } from "@/components/Spinner";
+import { SpinnerAnswering } from "@/components/Spinner";
 
 interface Message {
   id: string;

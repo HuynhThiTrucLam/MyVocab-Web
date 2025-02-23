@@ -1,9 +1,7 @@
-import React, { useEffect } from "react";
 import styles from "./styles.module.scss";
 import ChatItem from "./ChatItem";
 import { Card } from "../ui/card";
-import { Chat } from "@/pages/ChatBox/Chatbox";
-
+import { Chat } from "@/pages/Chatbox/Chatbox";
 interface listChatsProps {
   listChats: Chat[];
   selectedChat?: Chat;
@@ -18,7 +16,7 @@ const ChatList = ({
 }: listChatsProps) => {
   return (
     <div className={styles.ChatList}>
-      {listChats.map((chat, index) => (
+      {listChats.map((chat) => (
         <Card
           key={chat.id}
           className={`${styles.ChatItem} ${

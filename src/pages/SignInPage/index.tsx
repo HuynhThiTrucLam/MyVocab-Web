@@ -59,21 +59,29 @@ export default function SignInPage() {
     }
 
     try {
-      await signIn(formData.email, formData.password);
-      toast({
-        title: "Đăng nhập thành công!",
-        description: "Đăng nhập thành công!",
-        variant: "default",
-        color: "success",
-        action: <SUCCESS_ICON className={styles.successIcon} />,
-      });
-      navigate("/"); // Redirect to home page after successful login
+      const user = await signIn(formData.email, formData.password);
+      if (user) {
+        toast({
+          title: "Đăng nhập thành công!",
+          description: "Đăng nhập thành công!",
+          variant: "default",
+          color: "success",
+          action: <SUCCESS_ICON className={styles.successIcon} />,
+        });
+        navigate("/"); // Redirect to home page after successful login
+      } else {
+        toast({
+          title: "Đăng nhập thất bại!",
+          description: "Đăng nhập thất bại!",
+          variant: "destructive",
+          color: "error",
+        });
+      }
     } catch (error) {
       toast({
         title: "Đăng nhập thất bại!",
         description: "Đăng nhập thất bại!",
         variant: "destructive",
-        color: "error",
       });
     }
   };
@@ -84,16 +92,24 @@ export default function SignInPage() {
       const user = response.user;
       const userUid = user.uid!!;
       const userEmail = user.email!!;
-      await signIn(userEmail, userUid);
-      // Show success message
-      toast({
-        title: "Success!",
-        description: "Successfully signed in with Google",
-        variant: "default",
-      });
+      const userResponse = await signIn(userEmail, userUid);
+      if (userResponse) {
+        // Show success message
+        toast({
+          title: "Success!",
+          description: "Successfully signed in with Google",
+          variant: "default",
+        });
 
-      // Redirect to home page or dashboard
-      navigate("/");
+        // Redirect to home page or dashboard
+        navigate("/");
+      } else {
+        toast({
+          title: "Đăng nhập thất bại!",
+          description: "Đăng nhập thất bại!",
+          variant: "destructive",
+        });
+      }
     } catch (error) {
       console.error("Error signing in with Google:", error);
       toast({

@@ -1,8 +1,5 @@
-import React from "react";
-import { Card } from "../ui/card";
+import { Chat } from "@/pages/Chatbox/Chatbox";
 import dayjs from "dayjs";
-import styles from "./styles.module.scss";
-import { Chat } from "@/pages/ChatBox/Chatbox";
 
 interface ChatItemProps {
   chat: Chat;

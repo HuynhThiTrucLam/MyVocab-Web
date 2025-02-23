@@ -6,8 +6,13 @@ interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   error: string | null;
-  signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
+  signIn: (email: string, password: string) => Promise<User | null>;
+  signUp: (
+    email: string,
+    password: string,
+    phone: string,
+    username: string
+  ) => Promise<User | null>;
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -25,7 +30,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (token) {
       // Implement token validation and user data fetching
       // This is just a placeholder
-      setUser({ id: "1", email: "user@example.com" });
+      setUser({
+        id: "1",
+        email: "user@example.com",
+        username: "user",
+        phone: "0909090909",
+        token: "1234567890",
+      });
     }
   }, []);
 
@@ -33,10 +44,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       setIsLoading(true);
       setError(null);
+      console.log("email", email);
       const response = await auth.signIn(email, password);
+      console.log("response", response);
       if (response) {
         setUser(response.user);
+        localStorage.setItem("user", JSON.stringify(response.user));
+        const user: User = {
+          id: response?.user.id,
+          email: response?.user.email,
+          username: response?.user.username,
+          phone: response?.user.phone,
+          token: response?.user.token,
+        };
+        return user;
       }
+      return null;
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
       throw err;
@@ -54,11 +77,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (
+    email: string,
+    password: string,
+    phone: string,
+    username: string
+  ) => {
     try {
-      await auth.signUp(email, password);
+      const response = await auth.signUp(email, password, phone, username);
+      if (response) {
+        setUser(response.user);
+        localStorage.setItem("user", JSON.stringify(response.user));
+        const user: User = {
+          id: response?.user.id,
+          email: response?.user.email,
+          username: response?.user.username,
+          phone: response?.user.phone,
+          token: response?.user.token,
+        };
+        return user;
+      }
+      return null;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to sign up");
+      return null;
     }
   };
 
@@ -89,10 +131,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function useAuth() {
+export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
-}
+};

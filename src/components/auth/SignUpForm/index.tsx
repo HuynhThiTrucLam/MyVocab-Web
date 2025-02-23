@@ -6,7 +6,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import styles from "./styles.module.scss";
-
+import { Spinner } from "@/components/Spinner";
 interface SignUpFormData {
   username: string;
   email: string;
@@ -47,6 +47,7 @@ export function SignUpForm() {
     if (!formData.phone) {
       newErrors.phone = "Số điện thoại không được để trống";
     } else if (!/^\d{10}$/.test(formData.phone)) {
+      // Ex valid: 0909090909
       newErrors.phone = "Số điện thoại không hợp lệ";
     }
 
@@ -74,13 +75,26 @@ export function SignUpForm() {
     }
 
     try {
-      await signUp(formData.email, formData.password);
-      toast({
-        title: "Đăng ký thành công!",
-        description: "Vui lòng đăng nhập để tiếp tục.",
-        variant: "default",
-      });
-      navigate("/sign-in");
+      const user = await signUp(
+        formData.email,
+        formData.password,
+        formData.phone,
+        formData.username
+      );
+      if (user) {
+        toast({
+          title: "Đăng ký thành công!",
+          description: "Vui lòng đăng nhập để tiếp tục.",
+          variant: "default",
+        });
+        navigate("/");
+      } else {
+        toast({
+          title: "Đăng ký thất bại!",
+          description: "Đã có lỗi xảy ra, vui lòng thử lại!",
+          variant: "destructive",
+        });
+      }
     } catch (error) {
       toast({
         title: "Đăng ký thất bại!",
@@ -109,6 +123,8 @@ export function SignUpForm() {
             value={formData.username}
             onChange={(e) => updateFormData("username")(e.target.value)}
             className={styles.input}
+            disabled={isLoading}
+            tabIndex={1}
           />
           {errors.username && (
             <p className={styles.errorMessage}>{errors.username}</p>
@@ -122,6 +138,8 @@ export function SignUpForm() {
             value={formData.email}
             onChange={(e) => updateFormData("email")(e.target.value)}
             className={styles.input}
+            disabled={isLoading}
+            tabIndex={2}
           />
           {errors.email && (
             <p className={styles.errorMessage}>{errors.email}</p>
@@ -135,6 +153,8 @@ export function SignUpForm() {
             value={formData.phone}
             onChange={(e) => updateFormData("phone")(e.target.value)}
             className={styles.input}
+            disabled={isLoading}
+            tabIndex={3}
           />
           {errors.phone && (
             <p className={styles.errorMessage}>{errors.phone}</p>
@@ -146,6 +166,8 @@ export function SignUpForm() {
             value={formData.password}
             onChange={updateFormData("password")}
             placeholder="Mật khẩu"
+            disabled={isLoading}
+            tabIndex={4}
           />
           {errors.password && (
             <p className={styles.errorMessage}>{errors.password}</p>
@@ -157,6 +179,8 @@ export function SignUpForm() {
             value={formData.confirmPassword}
             onChange={updateFormData("confirmPassword")}
             placeholder="Nhập lại mật khẩu"
+            disabled={isLoading}
+            tabIndex={5}
           />
           {errors.confirmPassword && (
             <p className={styles.errorMessage}>{errors.confirmPassword}</p>
@@ -167,8 +191,9 @@ export function SignUpForm() {
           type="submit"
           className={styles.submitButton}
           disabled={isLoading}
+          tabIndex={6}
         >
-          {isLoading ? "Đang đăng ký..." : "Đăng ký ngay"}
+          {isLoading ? <Spinner /> : "Đăng ký ngay"}
         </Button>
       </form>
     </div>

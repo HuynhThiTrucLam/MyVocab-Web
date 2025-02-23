@@ -18,7 +18,6 @@ export function RootLayout() {
           <div className={styles.backgroundWrapper}>
             <BG className={styles.background} />
           </div>
-          <Toaster />
         </main>
       </div>
       <Footer />

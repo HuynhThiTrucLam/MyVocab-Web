@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import { Footer } from "./footer";
-import { Header } from "./header";
+import { Footer } from "./Footer";
+import { Header } from "./Header";
 import BG from "@/assets/icons/bg.svg?react";
 import { Toaster } from "sonner";
 

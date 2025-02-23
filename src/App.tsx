@@ -9,6 +9,7 @@ import Dictionary from "./pages/Dictionary";
 import Home from "./pages/Home";
 import { ScrollToTopProvider } from "./providers/ScrollToTopProvider";
 import { Chatbox } from "./pages/Chatbox/Chatbox";
+import { Toaster } from "sonner";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
           </Routes>
+          <Toaster />
         </ScrollToTopProvider>
       </BrowserRouter>
     </AuthProvider>

@@ -1,19 +1,20 @@
-import { googleProvider, auth as firebaseAuth } from "@/lib/firebase";
-import { signInWithPopup } from "firebase/auth";
+// import { googleProvider, auth as firebaseAuth } from "@/lib/firebase";
+// import { signInWithPopup } from "firebase/auth";
 import { User } from "@/lib/types";
+import { api } from "@/services/api";
 import axios from "axios";
-
+import { v4 as uuidv4 } from "uuid";
 interface AuthResponse {
   user: User;
   token: string;
 }
 
-interface GoogleUserInfo {
-  sub: string;
-  email: string;
-  name: string;
-  picture: string;
-}
+// interface GoogleUserInfo {
+//   sub: string;
+//   email: string;
+//   name: string;
+//   picture: string;
+// }
 
 export class AuthError extends Error {
   constructor(message: string) {
@@ -34,19 +35,21 @@ const handleAuthError = (error: unknown): never => {
 export const auth = {
   signIn: async (email: string, password: string) => {
     try {
-      // For development/testing
+      console.log("email", email);
+      const data = await api.post("/api/Account/login", {
+        email,
+        password,
+      });
+      console.log("data", data);
       return {
-        user: { id: "1", email: "user@example.com" },
-        token: "1234567890",
+        user: {
+          id: data.account.id,
+          email: data.account.email,
+          username: data.account.userName,
+          phone: data.account.numberPhone,
+          token: uuidv4(),
+        },
       };
-
-      // For production
-      // const { data } = await axios.post<AuthResponse>(`${import.meta.env.VITE_API_URL}/auth/login`, {
-      //   email,
-      //   password,
-      // });
-      // localStorage.setItem("token", data.token);
-      // return data;
     } catch (error) {
       handleAuthError(error);
     }
@@ -54,8 +57,8 @@ export const auth = {
 
   signInWithGoogle: async () => {
     try {
-      const result = await signInWithPopup(firebaseAuth, googleProvider);
-      const user = result.user;
+      // const result = await signInWithPopup(firebaseAuth, googleProvider);
+      // const user = result.user;
       // const { data } = await axios.post<AuthResponse>(
       //   `${import.meta.env.VITE_API_URL}/auth/login`,
       //   {
@@ -76,14 +79,28 @@ export const auth = {
     }
   },
 
-  signUp: async (email: string, password: string) => {
+  signUp: async (
+    email: string,
+    password: string,
+    phone: string,
+    username: string
+  ) => {
     try {
-      const { data } = await axios.post<AuthResponse>(
-        `${import.meta.env.VITE_API_URL}/auth/register`,
-        { email, password }
-      );
-      localStorage.setItem("token", data.token);
-      return data;
+      const data = await api.post("api/Account", {
+        email,
+        password,
+        username,
+        phoneNumber: phone,
+      });
+      return {
+        user: {
+          id: data.id,
+          email: data.email,
+          username: data.userName,
+          phone: data.numberPhone,
+          token: data.token,
+        },
+      };
     } catch (error) {
       handleAuthError(error);
     }
