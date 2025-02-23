@@ -82,11 +82,11 @@ const mockChatMessages: Message[] = [
 export function Chatbox() {
   const [listChats, setListChats] = useState<Chat[]>([]);
   const [selectedChat, setSelectedChat] = useState<Chat | undefined>(undefined);
-
   const [messages, setMessages] = useState<Message[]>([]);
   const [typing, setTyping] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [processing, setProcessing] = useState<boolean>(false);
+  const [isOpenNewChat, setIsOpenNewChat] = useState<boolean>(false);
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const lastMessageRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
@@ -139,6 +139,15 @@ export function Chatbox() {
     console.log("Stop");
   };
 
+  const handleAddChat = () => {
+    if (isOpenNewChat) {
+      return;
+    }
+    setIsOpenNewChat(true);
+    setSelectedChat(undefined);
+    console.log("Add chat");
+  };
+
   const handleSelectChat = (chatId: string) => {
     console.log("selected: ", chatId);
     setSelectedChat(listChats.find((chat) => chat.id === chatId));
@@ -164,9 +173,22 @@ export function Chatbox() {
             <ChatIcon className="w-4 h-4" />
             <p className="text-black font-bold !mt-[0px]">MyVocab Chat</p>
           </div>
-          <AddIcon className="w-4 h-4 !mt-[0px]" />
+          <AddIcon
+            className="w-4 h-4 !mt-[0px] cursor-pointer"
+            onClick={handleAddChat}
+          />
         </CardHeader>
         <CardContent className={styles.ChatboxLeftContent}>
+          {isOpenNewChat ? (
+            <Card className="flex flex-row  p-3 cursor-pointer mb-4 border border-black">
+              <div className="flex flex-col gap-2 justify-between cursor-pointer">
+                <h3 className="text-black text-[14px] font-bold !mt-[0px]">
+                  Đoạn chat mới
+                </h3>
+                <p className="text-medium text-[12px]">...</p>
+              </div>
+            </Card>
+          ) : null}
           <ChatList
             listChats={listChats}
             selectedChat={selectedChat}
