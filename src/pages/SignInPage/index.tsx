@@ -80,7 +80,11 @@ export default function SignInPage() {
 
   const handleGoogleSignIn = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      const response = await signInWithPopup(auth, googleProvider);
+      const user = response.user;
+      const userUid = user.uid!!;
+      const userEmail = user.email!!;
+      await signIn(userEmail, userUid);
       // Show success message
       toast({
         title: "Success!",

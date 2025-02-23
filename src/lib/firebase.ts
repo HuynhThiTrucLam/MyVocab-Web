@@ -1,14 +1,15 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { firebaseKeys } from "./utils";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAzyMZj0wPOg-fQZR8014wB8gbE8Cspiok",
-  authDomain: "dotnet-api-4424a.firebaseapp.com",
-  projectId: "dotnet-api-4424a",
-  storageBucket: "dotnet-api-4424a.firebasestorage.app",
-  messagingSenderId: "710960886507",
-  appId: "1:710960886507:web:dcb6723c941179b83a04ae",
-  measurementId: "G-F2T0YGTPLW",
+  apiKey: firebaseKeys.apiKey,
+  authDomain: firebaseKeys.authDomain,
+  projectId: firebaseKeys.projectId,
+  storageBucket: firebaseKeys.storageBucket,
+  messagingSenderId: firebaseKeys.messagingSenderId,
+  appId: firebaseKeys.appId,
+  measurementId: firebaseKeys.measurementId,
 };
 
 const app = initializeApp(firebaseConfig);
