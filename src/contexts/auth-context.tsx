@@ -26,17 +26,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Check if user is already authenticated
-    const token = auth.getToken();
-    if (token) {
+    const user = auth.getToken();
+    if (user) {
       // Implement token validation and user data fetching
       // This is just a placeholder
-      setUser({
-        id: "1",
-        email: "user@example.com",
-        username: "user",
-        phone: "0909090909",
-        token: "1234567890",
-      });
+      setUser(JSON.parse(user));
     }
   }, []);
 

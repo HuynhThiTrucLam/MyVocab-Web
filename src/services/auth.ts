@@ -117,7 +117,7 @@ export const auth = {
   },
 
   getToken: (): string | null => {
-    return localStorage.getItem("token");
+    return localStorage.getItem("user");
   },
 
   isAuthenticated: (): boolean => {
