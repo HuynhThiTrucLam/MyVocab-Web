@@ -6,12 +6,14 @@ interface listChatsProps {
   listChats: Chat[];
   selectedChat?: string;
   handleSelectChat: (chatId: string) => void;
+  handleDeleteChat: (chatId: string) => void;
 }
 
 const ChatList = ({
   listChats,
   selectedChat,
   handleSelectChat,
+  handleDeleteChat,
 }: listChatsProps) => {
   return (
     <div className={styles.ChatList}>
@@ -23,7 +25,7 @@ const ChatList = ({
           }`}
           onClick={() => handleSelectChat(chat.id)}
         >
-          <ChatItem chat={chat}></ChatItem>
+          <ChatItem chat={chat} handleDeleteChat={handleDeleteChat}></ChatItem>
         </Card>
       ))}
     </div>

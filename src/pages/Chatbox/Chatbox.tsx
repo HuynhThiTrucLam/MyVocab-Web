@@ -50,6 +50,23 @@ export function Chatbox() {
     }
   }, [user]);
 
+  const fetchChatsData = async () => {
+    if (!user?.id) return;
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BE_API_URL}api/v1/Chat/${user?.id}`
+      );
+      const listChat: Chat[] = response.data.map((item: any) => ({
+        id: item.id,
+        tittle: item.title,
+        date: item.createdAt,
+      }));
+      setListChats(listChat);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     // Only update if the last character isn't a newline
@@ -57,6 +74,17 @@ export function Chatbox() {
       setTyping(value);
       e.target.style.height = "auto";
       e.target.style.height = `${e.target.scrollHeight}px`;
+    }
+  };
+
+  const handleDeleteChat = async (chatId: string) => {
+    try {
+      await axios.delete(
+        `${import.meta.env.VITE_BE_API_URL}api/v1/Chat/${chatId}`
+      );
+      await fetchChatsData();
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
   };
 
@@ -81,6 +109,7 @@ export function Chatbox() {
 
   const handleSelectChat = async (chatId: string) => {
     setSelectedChat(chatId);
+    setIsOpenNewChat(false);
 
     // Gọi api lấy detailChatByChatId
     await getDetailChatByChatId(chatId);
@@ -98,10 +127,6 @@ export function Chatbox() {
       );
       console.log("response", response);
 
-      // setDetailChat((preDetailChat) => [
-      //   ...preDetailChat,
-      //   response.data.content,
-      // ]);
       await fetchChatsData();
       handleSelectChat(response.data.chatId);
     } catch (error) {
@@ -130,7 +155,6 @@ export function Chatbox() {
 
     //Thêm newRequest vào DetailChat và reset trạng thái của input
     setDetailChat((preDetailChat) => [...preDetailChat, newRequest]);
-    // setDetailChat((preDetailChat) => [...preDetailChat, newRequest]);
     setTyping("");
     if (inputRef.current) {
       inputRef.current.style.height = "30px";
@@ -138,23 +162,6 @@ export function Chatbox() {
 
     // TODO: Add AI response logic here
     handleSendAPIChat(newRequest);
-  };
-
-  const fetchChatsData = async () => {
-    if (!user?.id) return;
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_BE_API_URL}api/v1/Chat/${user?.id}`
-      );
-      const listChat: Chat[] = response.data.map((item: any) => ({
-        id: item.id,
-        tittle: item.title,
-        date: item.createdAt,
-      }));
-      setListChats(listChat);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
   };
 
   return (
@@ -188,6 +195,7 @@ export function Chatbox() {
                   listChats={listChats}
                   selectedChat={selectedChat}
                   handleSelectChat={handleSelectChat}
+                  handleDeleteChat={handleDeleteChat}
                 ></ChatList>
               </CardContent>
             </Card>
