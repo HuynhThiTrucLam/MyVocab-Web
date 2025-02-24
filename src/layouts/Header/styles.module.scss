@@ -58,3 +58,23 @@
     color: hsl(var(--secondary));
   }
 }
+.HeaderSignout {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+.HeaderAccount {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.35rem 0.5rem;
+  // border: 1px solid #000;
+  // border-radius: 100rem;
+  p {
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+}
