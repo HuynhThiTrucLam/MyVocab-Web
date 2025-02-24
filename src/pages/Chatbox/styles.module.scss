@@ -103,3 +103,18 @@
   padding: 16px;
   border-radius: 10px;
 }
+.ChatboxLeft {
+  height: 100%;
+}
+.ChatboxLeftContent {
+  height: 85%;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 0.1em;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--secondary));
+    border-radius: 100rem;
+  }
+}

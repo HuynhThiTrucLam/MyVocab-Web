@@ -3,33 +3,24 @@ import ChatIcon from "@/assets/icons/chatbox.svg?react";
 import AddIcon from "@/assets/icons/add.svg?react";
 import StopIcon from "@/assets/icons/stopChat.svg?react";
 import SendIcon from "@/assets/icons/sendIcon.svg?react";
-
+import ReactMarkdown from "react-markdown";
 import styles from "./styles.module.scss";
 import { useEffect, useRef, useState } from "react";
 import ChatList from "@/components/chat/ChatList";
-import { SpinnerAnswering } from "@/components/Spinner";
+import { Input } from "@/components/ui/input";
+import { Spinner, SpinnerAnswering } from "@/components/Spinner";
+import { useAuth } from "@/contexts/auth-context";
+import NonSupportedFeature from "../NonSupportedFeature";
+import axios from "axios";
 
-interface Message {
-  id: string;
+interface DetailChat {
+  id?: string;
   content: string;
+  createdAt?: string;
+  chatId?: string;
+  userId?: string;
   role: "user" | "ai";
 }
-
-interface Answer {
-  id: string;
-  content: string;
-  createdAt: string;
-  chatId: string;
-  role: "user" | "ai";
-}
-
-export const mockAnswers: Answer = {
-  id: "550e8400-e29b-41d4-a716-446655440000",
-  content: "Hả",
-  createdAt: "2024-02-18T08:00:00Z",
-  chatId: "550e8400-e29b-41d4-a716-446655440001",
-  role: "ai",
-};
 
 export interface Chat {
   id: string;
@@ -37,256 +28,276 @@ export interface Chat {
   date: string;
 }
 
-export const mockChatsByUserID: Chat[] = [
-  {
-    id: "1",
-    tittle: "Cuộc trò chuyện 1",
-    date: "2025-02-18T08:30:00Z",
-  },
-  {
-    id: "2",
-    tittle: "Cuộc trò chuyện 2",
-    date: "2025-02-17T14:15:00Z",
-  },
-  {
-    id: "3",
-    tittle: "Công việc",
-    date: "2025-02-16T09:45:00Z",
-  },
-  {
-    id: "4",
-    tittle: "Học tập",
-    date: "2025-02-15T18:00:00Z",
-  },
-  {
-    id: "5",
-    tittle: "Du lịch",
-    date: "2025-02-14T11:25:00Z",
-  },
-];
-
-const mockChatMessages: Message[] = [
-  {
-    id: "550e8400-e29b-41d4-a716-446655440001",
-    content: "Chào bạn",
-    role: "user",
-  },
-  {
-    id: "550e8400-e29b-41d4-a716-446655440002",
-    content: "Hả?",
-    role: "ai",
-  },
-];
-
 export function Chatbox() {
+  const { user } = useAuth();
+
   const [listChats, setListChats] = useState<Chat[]>([]);
-  const [selectedChat, setSelectedChat] = useState<Chat | undefined>(undefined);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [selectedChat, setSelectedChat] = useState<string | undefined>();
+  const [detailChat, setDetailChat] = useState<DetailChat[]>([]);
+
   const [typing, setTyping] = useState<string>("");
+  const [isOpenNewChat, setIsOpenNewChat] = useState<boolean>(false);
+
   const [loading, setLoading] = useState<boolean>(false);
   const [processing, setProcessing] = useState<boolean>(false);
-  const [isOpenNewChat, setIsOpenNewChat] = useState<boolean>(false);
-  const chatContainerRef = useRef<HTMLDivElement | null>(null);
-  const lastMessageRef = useRef<HTMLDivElement | null>(null);
+
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
+  useEffect(() => {
+    fetchChatsData();
+    if (!listChats) {
+      setIsOpenNewChat(true);
+    }
+  }, [user]);
+
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setTyping(e.target.value);
-    e.target.style.height = "auto"; // Reset height
-    e.target.style.height = `${e.target.scrollHeight}px`; // Set new height
+    const value = e.target.value;
+    // Only update if the last character isn't a newline
+    if (!value.endsWith("\n")) {
+      setTyping(value);
+      e.target.style.height = "auto";
+      e.target.style.height = `${e.target.scrollHeight}px`;
+    }
   };
 
-  const handleGetAnswer = async () => {
+  const handleAddChat = async () => {
+    if (!isOpenNewChat) {
+      setDetailChat([]);
+      setIsOpenNewChat(true);
+      setSelectedChat("");
+    }
+  };
+
+  const getDetailChatByChatId = async (chatId: string) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BE_API_URL}detail/${chatId}`
+      );
+      setDetailChat((prev) => response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const handleSelectChat = async (chatId: string) => {
+    setSelectedChat(chatId);
+
+    // Gọi api lấy detailChatByChatId
+    await getDetailChatByChatId(chatId);
+  };
+
+  const handleSendAPIChat = async (request: any) => {
     setProcessing(true);
     setLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setMessages((prev) => [...prev, mockAnswers]);
+
+    try {
+      console.log(request);
+      const response = await axios.post(
+        `${import.meta.env.VITE_BE_API_URL}request`,
+        request
+      );
+      console.log("response", response);
+
+      // setDetailChat((preDetailChat) => [
+      //   ...preDetailChat,
+      //   response.data.content,
+      // ]);
+      await fetchChatsData();
+      handleSelectChat(response.data.chatId);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+    console.log("Finish generate");
     setLoading(false);
     setProcessing(false);
   };
 
-  const handleEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter") {
-      handleSend();
-    }
-  };
-
   const handleSend = async () => {
     if (!typing.trim()) return;
-    console.log("generate new message");
+    setIsOpenNewChat(false);
 
-    //Tao mot cau hoi moi
-    const newMessage: Message = {
-      id: Date.now().toString(),
-      content: typing,
+    // Tao mot cau hoi moi
+    const newRequest: DetailChat = {
       role: "user",
+      content: typing,
+      userId: user?.id,
     };
+    if (selectedChat) {
+      newRequest.chatId = selectedChat;
+    }
 
-    //Them cau hoi moi vao danh sach messages
+    console.log("newRequest", newRequest);
 
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
+    //Thêm newRequest vào DetailChat và reset trạng thái của input
+    setDetailChat((preDetailChat) => [...preDetailChat, newRequest]);
+    // setDetailChat((preDetailChat) => [...preDetailChat, newRequest]);
     setTyping("");
     if (inputRef.current) {
-      inputRef.current.style.height = "30px"; // Reset to initial height
+      inputRef.current.style.height = "30px";
     }
+
     // TODO: Add AI response logic here
-    await handleGetAnswer();
+    handleSendAPIChat(newRequest);
   };
 
-  const handleStop = () => {
-    setProcessing(false);
-    console.log("Stop");
-  };
-
-  const handleAddChat = () => {
-    if (isOpenNewChat) {
-      return;
+  const fetchChatsData = async () => {
+    if (!user?.id) return;
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BE_API_URL}api/v1/Chat/${user?.id}`
+      );
+      const listChat: Chat[] = response.data.map((item: any) => ({
+        id: item.id,
+        tittle: item.title,
+        date: item.createdAt,
+      }));
+      setListChats(listChat);
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
-    setIsOpenNewChat(true);
-    setSelectedChat(undefined);
-    console.log("Add chat");
   };
-
-  const handleSelectChat = (chatId: string) => {
-    console.log("selected: ", chatId);
-    setSelectedChat(listChats.find((chat) => chat.id === chatId));
-    // load messages
-    setMessages(mockChatMessages);
-  };
-
-  useEffect(() => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = 0; // Cuộn về đầu container
-    }
-  }, [messages]);
-
-  useEffect(() => {
-    setListChats(mockChatsByUserID);
-  }, []);
 
   return (
-    <div className={styles.Chatbox}>
-      <Card className={styles.ChatboxLeft}>
-        <CardHeader className={styles.ChatboxHeader}>
-          <div className={styles.ChatboxTitle}>
-            <ChatIcon className="w-4 h-4" />
-            <p className="text-black font-bold !mt-[0px]">MyVocab Chat</p>
+    <>
+      {user ? (
+        <div className={styles.Chatbox}>
+          <div className="h-full max-h-[82dvh]">
+            <Card className={styles.ChatboxLeft}>
+              <CardHeader className={styles.ChatboxHeader}>
+                <div className={styles.ChatboxTitle}>
+                  <ChatIcon className="w-4 h-4" />
+                  <p className="text-black font-bold !mt-[0px]">MyVocab Chat</p>
+                </div>
+                <AddIcon
+                  className="w-4 h-4 !mt-[0px] cursor-pointer"
+                  onClick={handleAddChat}
+                />
+              </CardHeader>
+              <CardContent className={styles.ChatboxLeftContent}>
+                {isOpenNewChat ? (
+                  <Card className="flex flex-row  p-3 cursor-pointer mb-4 border border-black">
+                    <div className="flex flex-col gap-2 justify-between cursor-pointer">
+                      <h3 className="text-black text-[14px] font-bold !mt-[0px]">
+                        Đoạn chat mới
+                      </h3>
+                      <p className="text-medium text-[12px]">...</p>
+                    </div>
+                  </Card>
+                ) : null}
+                <ChatList
+                  listChats={listChats}
+                  selectedChat={selectedChat}
+                  handleSelectChat={handleSelectChat}
+                ></ChatList>
+              </CardContent>
+            </Card>
           </div>
-          <AddIcon
-            className="w-4 h-4 !mt-[0px] cursor-pointer"
-            onClick={handleAddChat}
-          />
-        </CardHeader>
-        <CardContent className={styles.ChatboxLeftContent}>
-          {isOpenNewChat ? (
-            <Card className="flex flex-row  p-3 cursor-pointer mb-4 border border-black">
-              <div className="flex flex-col gap-2 justify-between cursor-pointer">
-                <h3 className="text-black text-[14px] font-bold !mt-[0px]">
-                  Đoạn chat mới
-                </h3>
-                <p className="text-medium text-[12px]">...</p>
+          <div className="h-full max-h-[82dvh]">
+            <Card className={styles.ChatboxFrame}>
+              <div className={styles.ChatboxChat}>
+                {detailChat.length === 0 ? (
+                  <div className="justify-center items-center flex h-full">
+                    <div className={styles.ChatboxEmpty}>
+                      <h2 className="text-[30px] font-extrabold text-black">
+                        MyVocab Chat
+                      </h2>
+                      <p className="text-[14px] text-[#37474F]">
+                        Bắt đầu trò chuyện với MyVocab Chat.
+                      </p>
+                      <p className="text-[14px] text-[#37474F]">
+                        Hãy thử bắt đầu cuộc trò chuyện... Bạn muốn học gì hôm
+                        nay?
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-4 flex-1">
+                    {detailChat.map((detail, index) => (
+                      <div
+                        key={detail.id}
+                        className={`flex ${
+                          detail.role === "user"
+                            ? "justify-end"
+                            : "justify-start"
+                        }`}
+                      >
+                        <div
+                          className={`max-w-fit p-3 rounded-lg leading-[2] text-sm font-normal ${
+                            detail.role === "user"
+                              ? "bg-secondary/50 text-black "
+                              : "bg-gray-100"
+                          }`}
+                        >
+                          <ReactMarkdown
+                            components={{
+                              pre: ({ children }) => (
+                                <pre className="bg-gray-900 text-white p-4 rounded-lg mb-6 overflow-x-auto">
+                                  {children}
+                                </pre>
+                              ),
+                              ol: ({ children }) => (
+                                <ol className="list-decimal list-outside">
+                                  {children}
+                                </ol>
+                              ),
+                              li: ({ children }) => (
+                                <li className="ml-4">{children}</li>
+                              ),
+                            }}
+                          >
+                            {detail.content}
+                          </ReactMarkdown>
+                        </div>
+                      </div>
+                    ))}
+                    {loading ? (
+                      <div className={`flex ${"justify-start"}`}>
+                        <div className={`max-w-[70%] pl-5 rounded-lg`}>
+                          <SpinnerAnswering />
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
+                )}
+              </div>
+              <div className={styles.ChatboxSend}>
+                <div className={styles.ChatboxBar}>
+                  <textarea
+                    ref={inputRef}
+                    value={typing}
+                    onChange={handleChange}
+                    // onKeyDown={handleKeyDown}
+                    disabled={processing}
+                    placeholder={
+                      processing
+                        ? "Đang gửi..."
+                        : "Nhập nội dung chat tại đây..."
+                    }
+                    className="flex-1 resize-none overflow-scroll"
+                    rows={1} // Start small
+                    style={{ minHeight: "30px", maxHeight: "150px" }} // Auto-expand but keep limits
+                  />
+                </div>
+                <div className={styles.ChatboxSendIcon}>
+                  <p className="text-[12px] text-[#37474F]">
+                    {" "}
+                    {typing.length}/1000 từ
+                  </p>
+                  {processing ? (
+                    <StopIcon></StopIcon>
+                  ) : (
+                    <div onClick={handleSend}>
+                      <SendIcon></SendIcon>
+                    </div>
+                  )}
+                </div>
               </div>
             </Card>
-          ) : null}
-          <ChatList
-            listChats={listChats}
-            selectedChat={selectedChat}
-            handleSelectChat={handleSelectChat}
-          ></ChatList>
-        </CardContent>
-      </Card>
-      <div className="h-full max-h-[82dvh]">
-        <Card className={styles.ChatboxFrame}>
-          <div className={styles.ChatboxChat} ref={chatContainerRef}>
-            {messages.length === 0 ? (
-              <div className="justify-center items-center flex h-full">
-                <div className={styles.ChatboxEmpty}>
-                  <h2 className="text-[30px] font-extrabold text-black">
-                    MyVocab Chat
-                  </h2>
-                  <p className="text-[14px] text-[#37474F]">
-                    Bắt đầu trò chuyện với MyVocab Chat.
-                  </p>
-                  <p className="text-[14px] text-[#37474F]">
-                    Hãy thử bắt đầu cuộc trò chuyện... Bạn muốn học gì hôm nay?
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-4 flex-1">
-                {messages.map((message, index) => (
-                  <div
-                    key={message.id}
-                    className={`flex ${
-                      message.role === "user" ? "justify-end" : "justify-start"
-                    }`}
-                    ref={index === messages.length - 1 ? lastMessageRef : null} // Gán ref cho tin nhắn cuối
-                  >
-                    <div
-                      className={`max-w-[70%] p-3 rounded-lg leading-[1.5] ${
-                        message.role === "user"
-                          ? "bg-secondary/50 text-black "
-                          : "bg-gray-100"
-                      }`}
-                    >
-                      {message.content}
-                    </div>
-                  </div>
-                ))}
-                {loading ? (
-                  <div className={`flex ${"justify-start"}`}>
-                    <div className={`max-w-[70%] pl-5 rounded-lg`}>
-                      <SpinnerAnswering />
-                    </div>
-                  </div>
-                ) : null}
-              </div>
-            )}
           </div>
-          <div className={styles.ChatboxSend}>
-            <div className={styles.ChatboxBar}>
-              {/* <Input
-                value={typing}
-                onChange={handleChange}
-                onKeyDown={handleEnter}
-                disabled={processing}
-                placeholder={
-                  processing ? "Đang gửi..." : "Nhập nội dung chat tại đây..."
-                }
-                className="flex-1"
-              /> */}
-              <textarea
-                ref={inputRef}
-                value={typing}
-                onChange={handleChange}
-                onKeyDown={handleEnter}
-                disabled={processing}
-                placeholder={
-                  processing ? "Đang gửi..." : "Nhập nội dung chat tại đây..."
-                }
-                className="flex-1 resize-none overflow-scroll"
-                rows={1} // Start small
-                style={{ minHeight: "30px", maxHeight: "150px" }} // Auto-expand but keep limits
-              />
-            </div>
-            <div className={styles.ChatboxSendIcon}>
-              <p className="text-[12px] text-[#37474F]">
-                {" "}
-                {typing.length}/1000 từ
-              </p>
-              {processing ? (
-                <div onClick={handleStop}>
-                  <StopIcon></StopIcon>
-                </div>
-              ) : (
-                <div onClick={handleSend}>
-                  <SendIcon></SendIcon>
-                </div>
-              )}
-            </div>
-          </div>
-        </Card>
-      </div>
-    </div>
+        </div>
+      ) : (
+        <NonSupportedFeature />
+      )}
+    </>
   );
 }

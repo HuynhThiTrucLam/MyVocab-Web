@@ -4,8 +4,7 @@ import { Card } from "../ui/card";
 import { Chat } from "@/pages/Chatbox/Chatbox";
 interface listChatsProps {
   listChats: Chat[];
-  selectedChat?: Chat;
-  // setSelectedChat: (chat: Chat) => void;
+  selectedChat?: string;
   handleSelectChat: (chatId: string) => void;
 }
 
@@ -20,11 +19,7 @@ const ChatList = ({
         <Card
           key={chat.id}
           className={`${styles.ChatItem} ${
-            selectedChat
-              ? selectedChat.id === chat.id
-                ? styles.active
-                : ""
-              : ""
+            selectedChat ? (selectedChat === chat.id ? styles.active : "") : ""
           }`}
           onClick={() => handleSelectChat(chat.id)}
         >

@@ -8,8 +8,8 @@ import WorkspaceDetails from "./pages/WorkspaceDetails";
 import Dictionary from "./pages/Dictionary";
 import Home from "./pages/Home";
 import { ScrollToTopProvider } from "./providers/ScrollToTopProvider";
-import { Chatbox } from "./pages/Chatbox/Chatbox";
 import { Toaster } from "sonner";
+import { Chatbox } from "./pages/Chatbox/Chatbox";
 
 export default function App() {
   return (

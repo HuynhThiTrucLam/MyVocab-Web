@@ -8,7 +8,7 @@ const NonSupportedFeature = () => {
     <div className={styles.authContent}>
       <Link to="/" className={styles.backLink}>
         <ArrowLeft />
-        <span>My Vocab</span>
+        <span>Home</span>
       </Link>
       <div className={styles.messageContainer}>
         <div className={styles.illustration}>
