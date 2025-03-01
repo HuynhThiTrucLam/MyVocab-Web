@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import EditIcon from "@/assets/icons/edit.svg?react";
 import {
@@ -8,65 +9,49 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useState } from "react";
 import styles from "./styles.module.scss";
 
-const DUMMY_WORKSPACES = [
-  {
-    id: "1",
-    title: "English Vocabulary",
-    vocabularyItems: [
-      {
-        id: "1",
-        word: "Example",
-        type: "Noun",
-        pronunciation: "/ˈekˈsplæn/",
-        meaning:
-          "A representative form or pattern lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
-        example: "This is an example of how to use the word.",
-      },
-      {
-        id: "3",
-        word: "Example2",
-        type: "Noun",
-        pronunciation: "/ˈekˈsplæn/",
-        meaning: "A representative form or pattern",
-        example: "This is an example of how to use the word.",
-      },
-      {
-        id: "2",
-        word: "Ambiguous",
-        type: "Adjective",
-        pronunciation: "/æmˈbɪɡjuəs/",
-        meaning: "Open to more than one interpretation",
-        example: "The message was ambiguous and unclear.",
-      },
-    ],
-  },
-  {
-    id: "2",
-    title: "Business Terms",
-    vocabularyItems: [
-      {
-        id: "1",
-        word: "Revenue",
-        type: "Noun",
-        pronunciation: "/ˈrevənjuː/",
-        meaning: "Income from business activities",
-        example: "The company's revenue grew by 50% last year.",
-      },
-    ],
-  },
-];
+interface VocabularyItem {
+  id: string;
+  word: string;
+  type: string;
+  pronunciation: string;
+  meaning: string;
+  example: string;
+}
 
 export default function WorkspaceDetails() {
   const location = useLocation();
+  const { workspaceId } = location.state || {};
   const { title } = useParams();
   const navigate = useNavigate();
-  const { workspaceId } = location.state;
-  const workspace = DUMMY_WORKSPACES.find((w) => w.id === workspaceId);
-  const vocabularyItems = workspace?.vocabularyItems || [];
+  const [vocabularyItems, setVocabularyItems] = useState<VocabularyItem[]>([]);
   const [selectedVocabulary, setSelectedVocabulary] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!workspaceId) {
+      console.error("Không tìm thấy workspaceId.");
+      return;
+    }
+
+    fetch(`https://localhost:7063/api/v1/Dictionary/${workspaceId}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Lỗi HTTP: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setVocabularyItems(data);
+        } else {
+          console.error("API trả về dữ liệu không hợp lệ:", data);
+        }
+      })
+      .catch((error) => {
+        console.error("Lỗi khi tải danh sách từ vựng:", error);
+      });
+  }, [workspaceId]);
 
   return (
     <div className={styles.container}>
@@ -80,77 +65,50 @@ export default function WorkspaceDetails() {
               <TableHead className={styles.checkboxCell}>
                 <div
                   className={`${styles.checkbox} ${
-                    selectedVocabulary?.length === vocabularyItems.length
+                    selectedVocabulary.length === vocabularyItems.length
                       ? styles.checked
                       : ""
                   }`}
                   onClick={() => {
-                    if (selectedVocabulary?.length === vocabularyItems.length) {
-                      setSelectedVocabulary([]);
-                    } else {
-                      setSelectedVocabulary(
-                        vocabularyItems.map((item) => item.id)
-                      );
-                    }
+                    setSelectedVocabulary(
+                      selectedVocabulary.length === vocabularyItems.length
+                        ? []
+                        : vocabularyItems.map((item) => item.id)
+                    );
                   }}
                 ></div>
               </TableHead>
-              <TableHead
-                className={`${styles.columnWidth} ${styles.vocabulary}`}
-              >
-                Vocabulary
-              </TableHead>
-              <TableHead className={`${styles.columnWidth} ${styles.type}`}>
-                Loại từ
-              </TableHead>
-              <TableHead
-                className={`${styles.columnWidth} ${styles.pronunciation}`}
-              >
-                Phiên âm
-              </TableHead>
-              <TableHead className={`${styles.columnWidth} ${styles.meaning}`}>
-                Nghĩa
-              </TableHead>
+              <TableHead className={styles.vocabulary}>Từ vựng</TableHead>
+              <TableHead className={styles.type}>Loại từ</TableHead>
+              <TableHead className={styles.pronunciation}>Phiên âm</TableHead>
+              <TableHead className={styles.meaning}>Nghĩa</TableHead>
               <TableHead></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {vocabularyItems.map((item) => (
-              <TableRow key={item.id} className={styles.alternateRow}>
+              <TableRow key={item.id}>
                 <TableCell className={styles.checkboxCell}>
                   <div
                     className={`${styles.checkbox} ${
-                      selectedVocabulary?.includes(item.id)
-                        ? styles.checked
-                        : ""
+                      selectedVocabulary.includes(item.id) ? styles.checked : ""
                     }`}
                     onClick={() => {
-                      if (selectedVocabulary?.includes(item.id)) {
-                        setSelectedVocabulary(
-                          selectedVocabulary.filter((id) => id !== item.id)
-                        );
-                      } else {
-                        setSelectedVocabulary([...selectedVocabulary, item.id]);
-                      }
+                      setSelectedVocabulary((prev) =>
+                        prev.includes(item.id)
+                          ? prev.filter((id) => id !== item.id)
+                          : [...prev, item.id]
+                      );
                     }}
                   ></div>
                 </TableCell>
-                <TableCell className={styles.wordCell}>{item.word}</TableCell>
+                <TableCell>{item.word}</TableCell>
                 <TableCell>{item.type}</TableCell>
                 <TableCell>{item.pronunciation}</TableCell>
-                <TableCell className={styles.meaningCell}>
-                  <div className={styles.meaningText}>{item.meaning}</div>
-                </TableCell>
+                <TableCell>{item.meaning}</TableCell>
                 <TableCell
                   className={styles.detailsLink}
-                  onClick={() => {
-                    navigate(`/dictionary?word=${item.word}`, {
-                      state: {
-                        previousPath: location.pathname,
-                        workspaceId: workspaceId,
-                      },
-                    });
-                  }}
+                  onClick={() => navigate(`/dictionary?word=${item.word}`)}
                 >
                   Xem chi tiết
                 </TableCell>

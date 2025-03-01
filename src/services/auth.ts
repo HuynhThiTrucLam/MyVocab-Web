@@ -9,7 +9,7 @@ interface AuthResponse {
   token: string;
 }
 
-// interface GoogleUserInfo {
+// interface GoogleUserInfo  {
 //   sub: string;
 //   email: string;
 //   name: string;
