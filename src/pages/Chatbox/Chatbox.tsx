@@ -137,6 +137,15 @@ export function Chatbox() {
     setProcessing(false);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      if (!processing && typing.trim()) {
+        handleSend();
+      }
+    }
+  };
+
   const handleSend = async () => {
     if (!typing.trim()) return;
     setIsOpenNewChat(false);
@@ -274,7 +283,7 @@ export function Chatbox() {
                     ref={inputRef}
                     value={typing}
                     onChange={handleChange}
-                    // onKeyDown={handleKeyDown}
+                    onKeyDown={handleKeyDown}
                     disabled={processing}
                     placeholder={
                       processing
@@ -289,7 +298,7 @@ export function Chatbox() {
                 <div className={styles.ChatboxSendIcon}>
                   <p className="text-[12px] text-[#37474F]">
                     {" "}
-                    {typing.length}/1000 từ
+                    {typing.length}/2500 từ
                   </p>
                   {processing ? (
                     <StopIcon></StopIcon>
