@@ -201,7 +201,6 @@ export default function WorkspaceDetails() {
         ) : (
           <VocabularyTable
             vocabularyItems={vocabularyItems}
-            selectedVocabulary={selectedVocabulary}
             isAllSelected={isAllSelected}
             toggleAllSelection={toggleAllSelection}
             toggleItemSelection={toggleItemSelection}

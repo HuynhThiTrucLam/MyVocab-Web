@@ -2,7 +2,6 @@ import { Outlet } from "react-router-dom";
 import { Footer } from "../Footer";
 import { Header } from "../Header";
 import BG from "@/assets/icons/bg.svg?react";
-import { Toaster } from "sonner";
 import styles from "./styles.module.scss";
 
 export function RootLayout() {

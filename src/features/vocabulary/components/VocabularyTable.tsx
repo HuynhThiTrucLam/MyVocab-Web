@@ -13,7 +13,6 @@ import { VocabularyItem } from "../types";
 
 interface VocabularyTableProps {
   vocabularyItems: VocabularyItem[];
-  selectedVocabulary: string[];
   isAllSelected: boolean;
   toggleAllSelection: () => void;
   toggleItemSelection: (id: string) => void;
@@ -26,7 +25,6 @@ interface VocabularyTableProps {
 
 const VocabularyTable = memo(function VocabularyTable({
   vocabularyItems,
-  selectedVocabulary,
   isAllSelected,
   toggleAllSelection,
   toggleItemSelection,
