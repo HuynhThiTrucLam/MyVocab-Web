@@ -134,6 +134,9 @@ export default function Dictionary() {
               word={wordData.word}
               phonetic={wordData.phonetic}
               audioUrl={getAudioUrl}
+              definition={wordData.meanings[0].definitions[0].definition}
+              type={wordData.meanings[0].partOfSpeech}
+              meaning={wordData.meanings[0].definitions[0].definition}
             />
 
             {wordData.meanings.map((meaning, index) => (

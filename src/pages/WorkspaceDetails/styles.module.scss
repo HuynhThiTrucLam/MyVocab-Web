@@ -13,6 +13,112 @@
   }
 }
 
+.headerContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.titleText {
+  margin-right: 0.5rem;
+}
+
+.titleEditContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.titleInput {
+  font-size: 1.5rem;
+  font-weight: 700;
+  width: 100%;
+  max-width: 400px;
+}
+
+.titleActions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.titleSpinner {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-left: 0.5rem;
+  
+  // Override the spinner container styles
+  :global(.spinnerContainer) {
+    margin: 0;
+    scale: 0.6;
+  }
+}
+
+.editTitleIcon {
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.deleteTitleIcon {
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  color: #ef4444;
+  
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.deleteButton {
+  background-color: #ef4444 !important;
+  
+  &:hover {
+    background-color: #dc2626 !important;
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.buttonSpinner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  
+  :global(.spinnerContainer) {
+    margin: 0;
+    scale: 0.5;
+  }
+}
+
+.actionsBar {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.actionButton {
+  font-size: 0.875rem;
+}
+
+.actionIcon {
+  cursor: pointer;
+  width: 1.25rem; // w-5
+  height: 1.25rem; // h-5
+  
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
 .content {
   display: flex;
   flex-direction: column;
@@ -53,6 +159,7 @@
 .meaningText {
   display: -webkit-box;
   -webkit-line-clamp: 1;
+  line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
   height: 100%;
@@ -61,7 +168,33 @@
 .detailsLink {
   text-align: right;
   cursor: pointer;
-  padding-right: 1.5rem !important; // pl-6
+}
+
+.actionsCell {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  padding-right: 1.5rem;
+}
+
+.cellActions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+}
+
+.deleteItemIcon {
+  width: 1rem;
+  height: 1rem;
+  color: #ef4444;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  
+  &:hover {
+    opacity: 1;
+  }
 }
 
 .alternateRow {
@@ -85,5 +218,20 @@
 
   &.meaning {
     width: 360px; // w-[360px]
+  }
+}
+
+.pronunciationCell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; // gap-2
+}
+
+.speaker {
+  &.disabled {
+    opacity: 0.5;
+  }
+  &.playing {
+    opacity: 1;
   }
 }

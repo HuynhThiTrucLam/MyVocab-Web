@@ -21,4 +21,4 @@ export const firebaseKeys = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
-export const apiKeys = import.meta.env.VITE_BE_API_URL;
+export const apiKeys = import.meta.env.VITE_BE_API_URL + "api/v1";

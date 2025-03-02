@@ -8,7 +8,7 @@ import WorkspaceDetails from "./pages/WorkspaceDetails";
 import Dictionary from "./pages/Dictionary";
 import Home from "./pages/Home";
 import { ScrollToTopProvider } from "./providers/ScrollToTopProvider";
-import { Toaster } from "sonner";
+import { Toaster } from "@/components/ui/toaster"
 import { Chatbox } from "./pages/Chatbox/Chatbox";
 
 export default function App() {

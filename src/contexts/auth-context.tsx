@@ -38,9 +38,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       setIsLoading(true);
       setError(null);
-      console.log("email", email);
       const response = await auth.signIn(email, password);
-      console.log("response", response);
       if (response) {
         setUser(response.user);
         localStorage.setItem("user", JSON.stringify(response.user));

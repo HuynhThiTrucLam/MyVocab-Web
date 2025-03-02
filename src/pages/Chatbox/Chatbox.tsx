@@ -7,12 +7,10 @@ import ReactMarkdown from "react-markdown";
 import styles from "./styles.module.scss";
 import { useEffect, useRef, useState } from "react";
 import ChatList from "@/components/chat/ChatList";
-import { Input } from "@/components/ui/input";
-import { Spinner, SpinnerAnswering } from "@/components/Spinner";
+import { SpinnerAnswering } from "@/components/Spinner";
 import { useAuth } from "@/contexts/auth-context";
 import NonSupportedFeature from "../NonSupportedFeature";
-import axios from "axios";
-
+import { api } from "@/services/api-client";
 interface DetailChat {
   id?: string;
   content: string;
@@ -53,10 +51,8 @@ export function Chatbox() {
   const fetchChatsData = async () => {
     if (!user?.id) return;
     try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_BE_API_URL}api/v1/Chat/${user?.id}`
-      );
-      const listChat: Chat[] = response.data.map((item: any) => ({
+      const response: any[] = await api.get(`/Chat/${user?.id}`);
+      const listChat: Chat[] = response?.map((item: any) => ({
         id: item.id,
         tittle: item.title,
         date: item.createdAt,
@@ -79,9 +75,7 @@ export function Chatbox() {
 
   const handleDeleteChat = async (chatId: string) => {
     try {
-      await axios.delete(
-        `${import.meta.env.VITE_BE_API_URL}api/v1/Chat/${chatId}`
-      );
+      await api.delete(`/Chat/${chatId}`);
       await fetchChatsData();
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -98,10 +92,8 @@ export function Chatbox() {
 
   const getDetailChatByChatId = async (chatId: string) => {
     try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_BE_API_URL}detail/${chatId}`
-      );
-      setDetailChat((prev) => response.data);
+      const response: any[] = await api.get(`/Chat/detail/${chatId}`);
+      setDetailChat((_: any[]) => response);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -120,19 +112,13 @@ export function Chatbox() {
     setLoading(true);
 
     try {
-      console.log(request);
-      const response = await axios.post(
-        `${import.meta.env.VITE_BE_API_URL}request`,
-        request
-      );
-      console.log("response", response);
+      const response: any = await api.post("/Chat/request", request);
 
       await fetchChatsData();
-      handleSelectChat(response.data.chatId);
+      handleSelectChat(response.chatId);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-    console.log("Finish generate");
     setLoading(false);
     setProcessing(false);
   };
@@ -159,8 +145,6 @@ export function Chatbox() {
     if (selectedChat) {
       newRequest.chatId = selectedChat;
     }
-
-    console.log("newRequest", newRequest);
 
     //Thêm newRequest vào DetailChat và reset trạng thái của input
     setDetailChat((preDetailChat) => [...preDetailChat, newRequest]);
@@ -229,7 +213,7 @@ export function Chatbox() {
                   </div>
                 ) : (
                   <div className="space-y-4 flex-1">
-                    {detailChat.map((detail, index) => (
+                    {detailChat.map((detail) => (
                       <div
                         key={detail.id}
                         className={`flex ${

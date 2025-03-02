@@ -14,6 +14,8 @@ import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "@/lib/firebase";
 import { useToast } from "@/hooks/use-toast";
 import styles from "./styles.module.scss";
+import { AuthError } from "@/services/auth";
+import { DEFAULT_PHONE_NUMBER } from "@/store";
 
 interface SignInFormData {
   email: string;
@@ -22,7 +24,7 @@ interface SignInFormData {
 
 export default function SignInPage() {
   const navigate = useNavigate();
-  const { signIn, isLoading } = useAuth();
+  const { signIn, signUp, isLoading } = useAuth();
   const { toast } = useToast();
   const [formData, setFormData] = useState<SignInFormData>({
     email: "",
@@ -92,29 +94,52 @@ export default function SignInPage() {
       const user = response.user;
       const userUid = user.uid!!;
       const userEmail = user.email!!;
-      const userResponse = await signIn(userEmail, userUid);
-      if (userResponse) {
-        // Show success message
-        toast({
-          title: "Success!",
-          description: "Successfully signed in with Google",
-          variant: "default",
-        });
+      try {
+        const userResponse = await signIn(userEmail, userUid);
+        if (userResponse) {
+          // Show success message
+          toast({
+            title: "Success!",
+            description: "Đăng nhập thành công với Google!",
+            variant: "default",
+          });
 
-        // Redirect to home page or dashboard
-        navigate("/");
-      } else {
-        toast({
-          title: "Đăng nhập thất bại!",
-          description: "Đăng nhập thất bại!",
-          variant: "destructive",
-        });
+          // Redirect to home page or dashboard
+          navigate("/");
+        } else {
+          toast({
+            title: "Error!",
+            description: "Đăng nhập thất bại!",
+            variant: "destructive",
+          });
+        }
+      } catch (error) {
+        console.error("Error signing in with Google:", error);
+        if (
+          error instanceof AuthError &&
+          error.message === "Tên tài khoản không tồn tại!"
+        ) {
+          const userResponse = await signUp(
+            userEmail,
+            userUid,
+            user.phoneNumber || DEFAULT_PHONE_NUMBER,
+            user.displayName?.split(" ").join("") || ""
+          );
+          if (userResponse) {
+            navigate("/");
+            toast({
+              title: "Success!",
+              description: "Đăng nhập thành công với Google!",
+              variant: "default",
+            });
+          }
+        }
       }
     } catch (error) {
       console.error("Error signing in with Google:", error);
       toast({
         title: "Error",
-        description: "Failed to sign in with Google. Please try again.",
+        description: "Lỗi đăng nhập với Google. Vui lòng thử lại.",
         variant: "destructive",
       });
     }
