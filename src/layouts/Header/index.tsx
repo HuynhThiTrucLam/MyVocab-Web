@@ -40,6 +40,11 @@ export function Header() {
               text="Chatbox"
               currentPath={currentPath}
             />
+            <HeaderLink
+              to="/exams"
+              text="Bộ đề thi tổng hợp"
+              currentPath={currentPath}
+            />
           </div>
         </NullAbleComponent>
       </div>

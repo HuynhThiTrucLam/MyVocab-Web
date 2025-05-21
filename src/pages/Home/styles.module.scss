@@ -112,7 +112,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem; // space-y-4
+  gap: 8px; // space-y-4
   padding-top: 1.5rem; // pt-6
 }
 
@@ -141,4 +141,5 @@
   color: #4b5563; // text-gray-600
   font-size: 0.875rem; // text-sm
   text-align: center;
+  line-height: 1.5;
 }
