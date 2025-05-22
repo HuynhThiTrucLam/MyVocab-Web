@@ -25,7 +25,7 @@ const Answer = ({
           isSelected ? "border-2 border-[#31E3A5] " : ""
         }`}
       >
-        <p className="text-[16px] text-left">{description}</p>
+        <p className="text-[14px] text-left">{description}</p>
       </div>
     </div>
   );

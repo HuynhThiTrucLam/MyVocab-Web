@@ -14,6 +14,7 @@ import { Button } from "../ui/button";
 import Checklist from "./Checklist/Checklist";
 import styles from "./style.module.scss";
 import Timer from "./Timer/Timer";
+import { useNavigate } from "react-router-dom";
 
 interface TimeAndAnwersProps {
   hour: number;
@@ -38,6 +39,7 @@ const TimeAndAnwers = ({
   currentIndex,
   setCurrentIndex,
 }: TimeAndAnwersProps) => {
+  const navigate = useNavigate();
   const [isRunning, setIsRunning] = useState(true);
   const [isOpenDialog, setIsOpenDialog] = useState(false);
 
@@ -51,7 +53,11 @@ const TimeAndAnwers = ({
   };
 
   const handleSubmit = () => {
-    console.log("submit", ListOfAnswers);
+    // Giả sử sau khi post ListAnwser lên API sẽ trả về id của kết quả bài thi - resultId
+    const resultId = "123"; // mock
+
+    console.log("resultId", resultId);
+    navigate(`/result/${resultId}`);
   };
 
   return (

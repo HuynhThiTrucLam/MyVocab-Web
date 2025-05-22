@@ -1,4 +1,4 @@
-.testing {
+.result {
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -14,12 +14,13 @@
       text-decoration: underline;
     }
   }
-  .examCard {
+  .resultCard {
     text-align: center;
     background-color: transparent;
 
-    .examCardContent {
+    .resultCardContent {
       width: 50%;
+
       margin: 0 auto;
       // box-shadow: 0 0 2px 0 rgba(123, 138, 131, 0.4);
 
@@ -34,16 +35,16 @@
         margin: 0 auto;
       }
     }
-    .examInfoContainer {
-      width: 100%;
+    .resultInfoContainer {
+      width: 85%;
       display: flex;
       flex-direction: row;
-      gap: 2rem;
+
       align-items: center;
       justify-content: space-between;
     }
 
-    .examInfo {
+    .resultInfo {
       width: 40%;
       display: flex;
       flex-direction: column;
@@ -58,53 +59,55 @@
         color: #000;
       }
     }
+  }
+  .resultButton {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    font-weight: 700;
+  }
+  .mainButton {
+    width: 50%;
+    background-color: #31e3a5;
+    color: #000;
+    border-radius: 70px;
 
-    .TestButton {
-      margin-bottom: 2rem;
-      width: 100%;
-      border-radius: 9999px;
-      padding: 0.75rem 2.5rem;
-      background-color: hsl(var(--secondary));
-      color: #37474f;
-      font-weight: 700;
-      transition: all 0.3s;
-      border: 1px solid transparent;
+    &:hover {
+      color: #fff;
+    }
+  }
+  .secondaryButton {
+    width: 50%;
+    border: 1px solid #000;
+    color: #000;
+    border-radius: 70px;
 
-      &:hover {
-        background-color: white;
-        border-color: hsl(var(--secondary));
-        color: hsl(var(--secondary));
-      }
+    &:hover {
+      border: 1px solid #31e3a5;
+      background-color: transparent;
+      color: #31e3a5;
     }
   }
 }
 
-.otherExams {
-  margin-top: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.otherExamsList {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-}
-
-.testingContent {
+.resultContent {
   width: 100%;
   display: grid;
   grid-template-columns: 7fr 3fr;
   gap: 1rem;
 }
 
-.testingContentRight {
+.resultContentRight {
+  width: 100%;
   border-left: 1px solid #f2f6f5;
-  padding-block: 2rem;
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-.testingContentLeft {
+.resultContentLeft {
   width: 100%;
   padding: 2rem;
   .chooseAnswerQues {
@@ -153,27 +156,5 @@
     width: 100%; // or a fixed width like 200px
     max-width: 300px; // optional max width
     height: 30px;
-  }
-
-  .markToReview {
-    border: 1px solid #000;
-    margin-top: 1rem;
-    width: max-content;
-    cursor: pointer;
-    color: #37474f;
-    background-color: transparent;
-    border: 0.5px solid #000;
-    border-radius: 100rem;
-    font-size: 14px;
-    font-weight: 700;
-
-    &:hover {
-      background-color: #37474f;
-      color: #fff;
-    }
-  }
-  .marked {
-    background-color: #37474f;
-    color: #fff;
   }
 }

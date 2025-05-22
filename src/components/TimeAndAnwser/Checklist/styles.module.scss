@@ -3,6 +3,10 @@
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   justify-content: space-between;
+  background-color: #fff;
+  box-shadow: 0 0 2px 0 rgba(123, 138, 131, 0.4);
+  padding: 16px;
+  border-radius: 6px;
 }
 
 .checklistItem {

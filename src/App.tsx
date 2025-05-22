@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useParams } from "react-router-dom";
 import { RootLayout } from "./layouts/RootLayout";
 import { AuthProvider } from "@/contexts/auth-context";
 import SignIn from "./pages/SignInPage";
@@ -12,6 +12,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Chatbox } from "./pages/ChatBox/Chatbox";
 import Exams from "./pages/Exams/Exams";
 import TestingIntro from "./features/listening-exam/components/testing/TestingIntro";
+import ResultIntro from "./features/listening-exam/components/result/ResultIntro";
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
               <Route path="/dictionary" element={<Dictionary />} />
               <Route path="/exams" element={<Exams />} />
               <Route path="/testing/:id" element={<TestingIntro />} />
+              <Route path="/result/:id" element={<ResultIntro />} />
             </Route>
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />

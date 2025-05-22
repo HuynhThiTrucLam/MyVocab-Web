@@ -71,7 +71,7 @@ const TestItem = ({ exam, mainColor, secondaryColor }: TestItemProps) => {
               ? "Đề mới"
               : mainColor === "#914BFB"
               ? "Đã hoàn thành"
-              : "Đang làm"}
+              : "Chưa hoàn thành"}
           </span>
         </p>
       </div>
