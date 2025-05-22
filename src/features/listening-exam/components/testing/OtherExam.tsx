@@ -1,6 +1,10 @@
 import TestItem from "@/features/listening-exam/components/testItem/TestItem";
 import { Exam } from "@/features/listening-exam/types/Exams";
-import { UserExam } from "@/features/listening-exam/types/UserExam";
+import {
+  mockUserExamList,
+  UserExam,
+  UserExamList,
+} from "@/features/listening-exam/types/UserExam";
 import { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 
@@ -10,7 +14,7 @@ interface OtherExamListProps {
 
 const OtherExam = ({ otherExams }: OtherExamListProps) => {
   const [otherExamsList, setOtherExamsList] = useState<Exam[]>([]);
-  const [userExam, setUserExam] = useState<UserExam | null>(null);
+  const [userExamList, setUserExamList] = useState<UserExamList>();
 
   useEffect(() => {
     setOtherExamsList(otherExams);
@@ -18,18 +22,45 @@ const OtherExam = ({ otherExams }: OtherExamListProps) => {
 
   useEffect(() => {
     setOtherExamsList(otherExams);
+    setUserExamList(mockUserExamList);
   }, [otherExams]);
 
   return (
     <div className={styles.otherExams}>
       <h3 className="text-lg font-extrabold">Đề thi Listening khác</h3>
       <div className={styles.otherExamsList}>
-        {otherExamsList.map((exam) => (
+        {otherExamsList.map((exam, idx) => (
           <TestItem
-            key={exam.id}
+            key={idx}
             exam={exam}
-            mainColor={""}
-            secondaryColor={""}
+            mainColor={
+              userExamList?.data.some(
+                (userExam) =>
+                  userExam.exam.id === exam.id &&
+                  userExam.status === "completed"
+              )
+                ? "#914BFB"
+                : userExamList?.data.some(
+                    (userExam) =>
+                      userExam.exam.id === exam.id && userExam.status === "new"
+                  )
+                ? "#FFBF47"
+                : "#31e3a5"
+            }
+            secondaryColor={
+              userExamList?.data.some(
+                (userExam) =>
+                  userExam.exam.id === exam.id &&
+                  userExam.status === "completed"
+              )
+                ? "#0E8CAA"
+                : userExamList?.data.some(
+                    (userExam) =>
+                      userExam.exam.id === exam.id && userExam.status === "new"
+                  )
+                ? "#F2FF90"
+                : "#1B7D5B"
+            }
           />
         ))}
       </div>
