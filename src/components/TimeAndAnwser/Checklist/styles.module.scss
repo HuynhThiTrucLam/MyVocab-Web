@@ -1,0 +1,38 @@
+.checklist {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  justify-content: space-between;
+}
+
+.checklistItem {
+  width: 35px;
+  height: 35px;
+  box-shadow: 0 0 2px 0 rgba(123, 138, 131, 0.4);
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.marked {
+  background-color: #37474f;
+  color: #fff;
+}
+
+.answered {
+  background-color: #31e3a5;
+  color: #37474f;
+}
+
+.default {
+  background-color: #fff;
+  color: #37474f;
+}
+
+.active {
+  border: 2px solid #37474f;
+}

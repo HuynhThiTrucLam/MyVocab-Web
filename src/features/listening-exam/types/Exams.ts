@@ -86,6 +86,15 @@ export const mockExams: Exam[] = [
           },
         ],
       },
+      {
+        id: "3",
+        question: "What is the capital of Germany?",
+        audio: "https://example.com/audio/germany.mp3",
+        type: {
+          id: "F",
+          name: "Fill in the blank",
+        },
+      },
     ],
   },
   {
@@ -94,7 +103,7 @@ export const mockExams: Exam[] = [
     title: "Basic Science Quiz",
     description: "Test your basic science knowledge.",
     skill: "Listening",
-    time: 20,
+    time: 1,
     created_at: "2021-02-01",
     updated_at: "2021-02-02",
     questions: [

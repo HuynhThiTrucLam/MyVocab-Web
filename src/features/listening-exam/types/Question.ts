@@ -7,7 +7,7 @@ export interface QuestionListening {
     id: string;
     name: string;
   };
-  options: SelectedOption[];
+  options?: SelectedOption[];
 }
 
 export interface SelectedOption {

@@ -1,4 +1,5 @@
 import React from "react";
+import { Input } from "../ui/input";
 
 interface AnswerProps {
   symbol: string;
@@ -21,7 +22,7 @@ const Answer = ({
       <p>{symbol}</p>
       <div
         className={`w-full border-2 border-gray-300 px-6 py-3 rounded-md ${
-          isSelected ? "border-[#31E3A5]" : ""
+          isSelected ? "border-2 border-[#31E3A5] " : ""
         }`}
       >
         <p className="text-[16px] text-left">{description}</p>

@@ -101,7 +101,9 @@ const TestingIntro = () => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{exam?.title}</BreadcrumbPage>
+              <BreadcrumbPage className="text-[#37474F] font-bold">
+                {exam?.title}
+              </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -120,7 +122,7 @@ const TestingIntro = () => {
         ) : (
           <>
             <CardHeader>
-              <CardTitle className="text-3xl font-bold">
+              <CardTitle className="text-3xl font-bold mt-8">
                 Làm bài kiểm tra: {exam?.title}
               </CardTitle>
             </CardHeader>

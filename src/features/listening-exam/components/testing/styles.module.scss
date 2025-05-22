@@ -4,16 +4,24 @@
   gap: 24px;
 
   .breadcrumb {
+    a {
+      font-weight: 500;
+      color: #000;
+      text-decoration: inherit;
+    }
+    a:hover {
+      color: #000;
+      text-decoration: underline;
+    }
   }
-
   .examCard {
-    padding: 2rem 0;
     text-align: center;
     background-color: transparent;
 
     .examCardContent {
       width: 50%;
       margin: 0 auto;
+      // box-shadow: 0 0 2px 0 rgba(123, 138, 131, 0.4);
 
       display: flex;
       flex-direction: column;
@@ -52,6 +60,7 @@
     }
 
     .TestButton {
+      margin-bottom: 2rem;
       width: 100%;
       border-radius: 9999px;
       padding: 0.75rem 2.5rem;
@@ -91,21 +100,25 @@
 }
 
 .testingContentRight {
-  border-left: 1px solid #000;
+  border-left: 1px solid #f2f6f5;
+  padding-block: 2rem;
 }
 
 .testingContentLeft {
   width: 100%;
-  padding: 0 2rem;
+  padding: 2rem;
   .chooseAnswerQues {
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 4rem;
+
     //   4argin-top: 5rem;
     h3 {
       font-size: 14px;
       font-weight: 700;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #f2f6f5;
     }
   }
 
@@ -143,24 +156,24 @@
   }
 
   .markToReview {
-    overflow: auto;
+    border: 1px solid #000;
     margin-top: 1rem;
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    justify-content: flex-end;
-    button {
-      background-color: transparent;
-      border: 0.5px solid #000;
-      border-radius: 100rem;
-      font-size: 14px;
-      font-weight: 700;
-      color: #000;
-      &:active {
-        border: 0.5px solid #000;
-        background-color: #000;
-        color: #fff;
-      }
+    width: max-content;
+    cursor: pointer;
+    color: #37474f;
+    background-color: transparent;
+    border: 0.5px solid #000;
+    border-radius: 100rem;
+    font-size: 14px;
+    font-weight: 700;
+
+    &:hover {
+      background-color: #37474f;
+      color: #fff;
     }
+  }
+  .marked {
+    background-color: #37474f;
+    color: #fff;
   }
 }
