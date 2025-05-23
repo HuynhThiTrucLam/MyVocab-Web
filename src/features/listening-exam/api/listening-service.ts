@@ -14,10 +14,12 @@ export const listeningService = {
   },
 
   getUserExam: (userId: string) => {
+    console.log("userId", userId);
     return mockUserExamList;
   },
 
   getResult: (resultId: string) => {
+    console.log("resultId", resultId);
     return mockResult;
   },
 

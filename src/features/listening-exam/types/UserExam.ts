@@ -38,20 +38,20 @@ export const mockUserExamList: UserExamList = {
               id: "C",
               name: "Choose the correct answer",
             },
-            selected_option: [
+            options: [
               {
                 id: "1",
-                selected_option: "A",
+                symbol: "A",
                 description: "Paris",
               },
               {
                 id: "2",
-                selected_option: "B",
+                symbol: "B",
                 description: "London",
               },
               {
                 id: "3",
-                selected_option: "C",
+                symbol: "C",
                 description: "Berlin",
               },
             ],
@@ -64,20 +64,20 @@ export const mockUserExamList: UserExamList = {
               id: "C",
               name: "Choose the correct answer",
             },
-            selected_option: [
+            options: [
               {
                 id: "4",
-                selected_option: "A",
+                symbol: "A",
                 description: "Seoul",
               },
               {
                 id: "5",
-                selected_option: "B",
+                symbol: "B",
                 description: "Tokyo",
               },
               {
                 id: "6",
-                selected_option: "C",
+                symbol: "C",
                 description: "Bangkok",
               },
             ],
@@ -112,20 +112,20 @@ export const mockUserExamList: UserExamList = {
               name: "Choose the correct answer",
             },
 
-            selected_option: [
+            options: [
               {
                 id: "7",
-                selected_option: "A",
+                symbol: "A",
                 description: "H2O",
               },
               {
                 id: "8",
-                selected_option: "B",
+                symbol: "B",
                 description: "CO2",
               },
               {
                 id: "9",
-                selected_option: "C",
+                symbol: "C",
                 description: "O2",
               },
             ],
@@ -138,20 +138,20 @@ export const mockUserExamList: UserExamList = {
               id: "C",
               name: "Choose the correct answer",
             },
-            selected_option: [
+            options: [
               {
                 id: "10",
-                selected_option: "A",
+                symbol: "A",
                 description: "Mars",
               },
               {
                 id: "11",
-                selected_option: "B",
+                symbol: "B",
                 description: "Venus",
               },
               {
                 id: "12",
-                selected_option: "C",
+                symbol: "C",
                 description: "Jupiter",
               },
             ],
@@ -181,20 +181,20 @@ export const mockUserExamList: UserExamList = {
               id: "F",
               name: "Fill in the blank",
             },
-            selected_option: [
+            options: [
               {
                 id: "13",
-                selected_option: "A",
+                symbol: "A",
                 description: "3",
               },
               {
                 id: "14",
-                selected_option: "B",
+                symbol: "B",
                 description: "4",
               },
               {
                 id: "15",
-                selected_option: "C",
+                symbol: "C",
                 description: "5",
               },
             ],
@@ -207,20 +207,20 @@ export const mockUserExamList: UserExamList = {
               id: "F",
               name: "Fill in the blank",
             },
-            selected_option: [
+            options: [
               {
                 id: "16",
-                selected_option: "A",
+                symbol: "A",
                 description: "4",
               },
               {
                 id: "17",
-                selected_option: "B",
+                symbol: "B",
                 description: "5",
               },
               {
                 id: "18",
-                selected_option: "C",
+                symbol: "C",
                 description: "6",
               },
             ],

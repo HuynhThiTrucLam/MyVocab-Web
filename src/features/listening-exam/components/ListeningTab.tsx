@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import BandSidebar from "./sidebar/BandSidebar";
 import styles from "./style.module.scss";
 import { Card } from "@/components/ui/card";

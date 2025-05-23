@@ -1,9 +1,8 @@
-import React from "react";
 import styles from "../style.module.scss";
 import QuestionIcon from "@/assets/icons/question.svg";
 import CircleIcon from "@/assets/icons/circle.svg";
 import { Exam } from "../../types/Exams";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface TestItemProps {
   mainColor: string;

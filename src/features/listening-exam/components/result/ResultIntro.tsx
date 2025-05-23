@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useEffect, useState } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { listeningService } from "../../api/listening-service";
 import { Exam } from "../../types/Exams";
 import { Result } from "../../types/Result";

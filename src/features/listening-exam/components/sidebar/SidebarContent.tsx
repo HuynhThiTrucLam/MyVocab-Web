@@ -38,7 +38,7 @@ const mockTopic: Topic[] = [
 const SidebarContent = ({ activeBand, testsMock }: SidebarContentProps) => {
   const [examList, setExamList] = useState<Exam[]>([]); // List all exams of data
   const [userExamList, setUserExamList] = useState<UserExamList>(); // List exams of user
-  const [selectedTopic, setSelectedTopic] = useState<Topic>(mockTopic[0]);
+  const [_, setSelectedTopic] = useState<Topic>(mockTopic[0]);
 
   useEffect(() => {
     setExamList(testsMock);

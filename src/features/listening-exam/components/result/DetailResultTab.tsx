@@ -14,10 +14,10 @@ import { Button } from "@/components/ui/button";
 interface DetailResultTabProps {
   title: string;
   icon: React.ReactNode;
-  content: any;
+  content?: any;
 }
 
-const DetailResultTab = ({ title, icon, content }: DetailResultTabProps) => {
+const DetailResultTab = ({ title, icon }: DetailResultTabProps) => {
   return (
     <div className="cursor-pointer ml-[2px] mr-[2px] w-[99%] overflow-auto shadow-[0_0_2px_0_rgba(123,138,131,0.4)]">
       <Drawer>

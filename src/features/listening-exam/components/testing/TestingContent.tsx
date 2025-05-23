@@ -50,7 +50,7 @@ const TestingContent = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [ListOfAnswers, setListOfAnswers] = useState<Answers[]>([]);
   const [emblaApi, setEmblaApi] = useState<CarouselApi | null>(null);
-  const [isTimeUp, setIsTimeUp] = useState(false);
+  const [_, setIsTimeUp] = useState(false);
   const [isOpenDialog, setIsOpenDialog] = useState(false);
 
   // Ensure question is in ListOfAnswers

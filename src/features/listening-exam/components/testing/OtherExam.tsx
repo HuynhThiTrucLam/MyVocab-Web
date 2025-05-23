@@ -1,10 +1,6 @@
 import TestItem from "@/features/listening-exam/components/testItem/TestItem";
 import { Exam } from "@/features/listening-exam/types/Exams";
-import {
-  mockUserExamList,
-  UserExam,
-  UserExamList,
-} from "@/features/listening-exam/types/UserExam";
+import { mockUserExamList, UserExamList } from "@/features/listening-exam/types/UserExam";
 import { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 
