@@ -10,7 +10,7 @@ import ChatList from "@/components/chat/ChatList";
 import { SpinnerAnswering } from "@/components/Spinner";
 import { useAuth } from "@/contexts/auth-context";
 import NonSupportedFeature from "../NonSupportedFeature";
-import { api } from "@/services/api-client";
+import { api, api_version } from "@/services/api-client";
 interface DetailChat {
   id?: string;
   content: string;
@@ -51,7 +51,7 @@ export function Chatbox() {
   const fetchChatsData = async () => {
     if (!user?.id) return;
     try {
-      const response: any[] = await api.get(`/dotnet/Chat/${user?.id}`);
+      const response: any[] = await api.get(`/dotnet/${api_version}/Chat/${user?.id}`);
       const listChat: Chat[] = response?.map((item: any) => ({
         id: item.id,
         tittle: item.title,
@@ -75,7 +75,7 @@ export function Chatbox() {
 
   const handleDeleteChat = async (chatId: string) => {
     try {
-      await api.delete(`/dotnet/Chat/${chatId}`);
+      await api.delete(`/dotnet/${api_version}/Chat/${chatId}`);
       await fetchChatsData();
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -92,7 +92,7 @@ export function Chatbox() {
 
   const getDetailChatByChatId = async (chatId: string) => {
     try {
-      const response: any[] = await api.get(`/Chat/detail/${chatId}`);
+      const response: any[] = await api.get(`/dotnet/${api_version}/Chat/detail/${chatId}`);
       setDetailChat((_: any[]) => response);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -112,7 +112,7 @@ export function Chatbox() {
     setLoading(true);
 
     try {
-      const response: any = await api.post("/Chat/request", request);
+      const response: any = await api.post(`/dotnet/${api_version}/Chat/request`, request);
 
       await fetchChatsData();
       handleSelectChat(response.chatId);

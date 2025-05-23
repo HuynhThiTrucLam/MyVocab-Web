@@ -2,11 +2,11 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
 // Create a baseURL using environment variables with a fallback
 const baseURL = import.meta.env.VITE_BE_API_URL || "/api";
-const api_version = "api/v1";
+export const api_version = "api/v1";
 
 // Create the axios instance with default configuration
 export const apiClient = axios.create({
-  baseURL: `${baseURL}${api_version}`,
+  baseURL: `${baseURL}`,
   headers: {
     "Content-Type": "application/json",
   },

@@ -22,6 +22,7 @@ import { api } from "@/services/api";
 import { isAxiosError } from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { Spinner } from "../Spinner";
+import { api_version } from "@/services/api-client";
 
 interface WorkspaceItem {
   id?: string;
@@ -42,7 +43,7 @@ function useWorkspaces() {
 
     setIsLoading(true);
     try {
-      const data = await api.get(`/dotnet/Workspace/${user.id}`);
+      const data = await api.get(`/dotnet/${api_version}/Workspace/${user.id}`);
       if (Array.isArray(data)) {
         setWorkspaces(data);
       } else {
@@ -82,7 +83,7 @@ function useWorkspaces() {
 
       setIsLoading(true);
       try {
-        const data = await api.post("/dotnet/Workspace", {
+        const data = await api.post(`/dotnet/${api_version}/Workspace`, {
           userId: user.id,
           name: name.trim(),
           description,
@@ -133,7 +134,9 @@ function useWorkspaces() {
 
       setIsLoading(true);
       try {
-        const response = await api.delete(`/dotnet/Workspace/${workspaceId}`);
+        const response = await api.delete(
+          `/dotnet/${api_version}/Workspace/${workspaceId}`
+        );
         if (response) {
           // Update the workspace list by filtering out the deleted workspace
           setWorkspaces((prev) => prev.filter((w) => w.id !== workspaceId));

@@ -1,7 +1,7 @@
 // import { googleProvider, auth as firebaseAuth } from "@/lib/firebase";
 // import { signInWithPopup } from "firebase/auth";
 import { User } from "@/lib/types";
-import { api } from "@/services/api";
+import { api, api_version } from "@/services/api-client";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 interface AuthResponse {
@@ -35,7 +35,7 @@ const handleAuthError = (error: unknown): never => {
 export const auth = {
   signIn: async (email: string, password: string) => {
     try {
-      const data = await api.post("/dotnet/Account/login", {
+      const data: any = await api.post(`/dotnet/${api_version}/Account/login`, {
         email,
         password,
       });
@@ -84,7 +84,7 @@ export const auth = {
     username: string
   ) => {
     try {
-      const data = await api.post("/dotnet/Account", {
+      const data: any = await api.post(`/dotnet/${api_version}/Account`, {
         email,
         password,
         username,

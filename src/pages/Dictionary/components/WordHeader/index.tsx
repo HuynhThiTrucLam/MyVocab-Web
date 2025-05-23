@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Combobox } from "@/components/ui/combobox";
 import { useState, useEffect } from "react";
-import { api } from "@/services/api";
+import { api, api_version } from "@/services/api-client";
 import { useAuth } from "@/contexts/auth-context";
 import { useToast } from "@/hooks/use-toast";
 
@@ -43,7 +43,7 @@ export function WordHeader({
 
   const fetchListWorkspace = async () => {
     try {
-      const response: any[] = await api.get(`/dotnet/Workspace/${user?.id}`);
+      const response: any[] = await api.get(`/dotnet/${api_version}/Workspace/${user?.id}`);
       setListWorkspace(response);
     } catch (error) {
       console.error("Failed to fetch list workspace:", error);
@@ -83,7 +83,7 @@ export function WordHeader({
           pronunciation: phonetic + "|" + audioUrl || "",
           meaning: meaning || "",
         };
-        const response = await api.post(`/dotnet/Dictionary`, data);
+        const response = await api.post(`/dotnet/${api_version}/Dictionary`, data);
         if (response) {
           const workspaceName = listWorkspace.find(
             (workspace) => workspace.id === selectedWorkspace
