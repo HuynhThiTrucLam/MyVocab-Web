@@ -71,7 +71,7 @@ export default function Home() {
 
 	const retrieveListSupportLanguage = async () => {
 		console.info("GET:: fetching languages");
-		const response = await api.get(`/languages`);
+		const response = await api.get(`/fastapi/languages`);
 		setListSupportLanguage(response);
 		return response;
 	};
@@ -82,7 +82,7 @@ export default function Home() {
 		try {
 			setIsTranslating(true);
 			console.info("POST:: translating");
-			const response = await api.post(`/translate`, {
+			const response = await api.post(`/fastapi/translate`, {
 				source_lang: sourceLanguage,
 				target_lang: targetLanguage,
 				text: debouncedSourceText,

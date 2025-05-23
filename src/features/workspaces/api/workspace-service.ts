@@ -1,7 +1,7 @@
 import { api } from '@/services/api-client';
 import { Workspace, WorkspaceInput } from '../types';
 
-const BASE_URL = '/Workspace';
+const BASE_URL = '/dotnet/Workspace';
 
 /**
  * Service for workspace-related API operations

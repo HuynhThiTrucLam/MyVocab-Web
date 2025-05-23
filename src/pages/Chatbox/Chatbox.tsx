@@ -51,7 +51,7 @@ export function Chatbox() {
   const fetchChatsData = async () => {
     if (!user?.id) return;
     try {
-      const response: any[] = await api.get(`/Chat/${user?.id}`);
+      const response: any[] = await api.get(`/dotnet/Chat/${user?.id}`);
       const listChat: Chat[] = response?.map((item: any) => ({
         id: item.id,
         tittle: item.title,
@@ -75,7 +75,7 @@ export function Chatbox() {
 
   const handleDeleteChat = async (chatId: string) => {
     try {
-      await api.delete(`/Chat/${chatId}`);
+      await api.delete(`/dotnet/Chat/${chatId}`);
       await fetchChatsData();
     } catch (error) {
       console.error("Error fetching data:", error);
