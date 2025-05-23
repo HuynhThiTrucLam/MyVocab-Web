@@ -1,15 +1,10 @@
-import React from "react";
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-import { Button } from "@/components/ui/button";
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import React from "react";
 
 interface DetailResultTabProps {
   title: string;
@@ -17,27 +12,24 @@ interface DetailResultTabProps {
   content?: any;
 }
 
-const DetailResultTab = ({ title, icon }: DetailResultTabProps) => {
+const DetailResultTab = ({ title, icon, content }: DetailResultTabProps) => {
   return (
     <div className="cursor-pointer ml-[2px] mr-[2px] w-[99%] overflow-auto shadow-[0_0_2px_0_rgba(123,138,131,0.4)]">
-      <Drawer>
-        <DrawerTrigger className="flex text-[14px] font-bold flex-row gap-2 items-center">
-          {icon}
-          <p>{title}</p>
-        </DrawerTrigger>
-        <DrawerContent className="w-full">
-          <DrawerHeader>
-            <DrawerTitle>Are you absolutely sure?</DrawerTitle>
-            <DrawerDescription>This action cannot be undone.</DrawerDescription>
-          </DrawerHeader>
-          <DrawerFooter>
-            <Button>Submit</Button>
-            <DrawerClose>
-              <Button variant="outline">Cancel</Button>
-            </DrawerClose>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
+      <Accordion type="single" collapsible>
+        <AccordionItem value="item-1">
+          <AccordionTrigger className="flex text-[14px] font-bold flex-row gap-2 items-center">
+            {icon}
+            <p>{title}</p>
+          </AccordionTrigger>
+          <AccordionContent>
+            {content ? (
+              content
+            ) : (
+              <p className="text-[14px] text-center">Không có nội dung</p>
+            )}
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </div>
   );
 };
