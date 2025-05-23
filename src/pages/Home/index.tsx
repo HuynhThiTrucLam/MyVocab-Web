@@ -2,6 +2,7 @@ import BOOKMARK from "@/assets/icons/bookmark.svg?react";
 import CHATBOX from "@/assets/icons/chatbox.svg?react";
 import MAN_BG from "@/assets/icons/man_bg.svg?react";
 import EXAMS from "@/assets/icons/exams.svg?react";
+import TRANSLATION from "@/assets/icons/translation.svg?react";
 import SearchBar from "@/components/SearchBar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link, useNavigate } from "react-router-dom";
@@ -76,6 +77,20 @@ export default function Home() {
                 <EXAMS />
               </div>
               <h2 className={styles.cardTitle}>Bộ đề thi tổng hợp</h2>
+              <p className={styles.cardDescription}>
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry.
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+        <Link to="/translation">
+          <Card className={styles.featureCard}>
+            <CardContent className={styles.cardContent}>
+              <div className={styles.iconWrapper}>
+                <TRANSLATION />
+              </div>
+              <h2 className={styles.cardTitle}>Dịch thuật</h2>
               <p className={styles.cardDescription}>
                 Lorem Ipsum is simply dummy text of the printing and typesetting
                 industry.

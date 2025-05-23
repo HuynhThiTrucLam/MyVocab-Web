@@ -3,6 +3,7 @@ import { apiKeys } from "@/lib/utils";
 
 export const api = {
   get: async (endpoint: string) => {
+    console.info(`GET:: ${apiKeys}${endpoint}`)
     const response = await axios.get(`${apiKeys}${endpoint}`);
     return response.data;
   },

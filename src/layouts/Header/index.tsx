@@ -45,6 +45,11 @@ export function Header() {
               text="Bộ đề thi tổng hợp"
               currentPath={currentPath}
             />
+            <HeaderLink
+              to="/translation"
+              text="Dịch"
+              currentPath={currentPath}
+            />
           </div>
         </NullAbleComponent>
       </div>

@@ -89,6 +89,7 @@
 
 .featureGrid {
   display: grid;
+  place-content: center;
   gap: 2rem; // gap-8
   max-width: 56rem; // max-w-4xl
   margin: 0 auto;

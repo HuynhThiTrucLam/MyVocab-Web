@@ -7,9 +7,10 @@ import MyListWorkspace from "./pages/MyListWorkspace";
 import WorkspaceDetails from "./pages/WorkspaceDetails";
 import Dictionary from "./pages/Dictionary";
 import Home from "./pages/Home";
+import Translation from "./pages/Translation";
 import { ScrollToTopProvider } from "./providers/ScrollToTopProvider";
 import { Toaster } from "@/components/ui/toaster";
-import { Chatbox } from "./pages/ChatBox/Chatbox";
+import { Chatbox } from "./pages/Chatbox/Chatbox";
 import Exams from "./pages/Exams/Exams";
 import TestingIntro from "./features/listening-exam/components/testing/TestingIntro";
 import ResultIntro from "./features/listening-exam/components/result/ResultIntro";
@@ -29,6 +30,7 @@ export default function App() {
               <Route path="/exams" element={<Exams />} />
               <Route path="/testing/:id" element={<TestingIntro />} />
               <Route path="/result/:id" element={<ResultIntro />} />
+              <Route path="/translation" element={<Translation />} />
             </Route>
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
