@@ -26,6 +26,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Answers } from "../../types/Answer";
 import styles from "./styles.module.scss";
+import { SelectedOption } from "../../types/Question";
 
 interface TestingContentProps {
   exam: Exam;
@@ -52,6 +53,7 @@ const TestingContent = ({
   const [emblaApi, setEmblaApi] = useState<CarouselApi | null>(null);
   const [_, setIsTimeUp] = useState(false);
   const [isOpenDialog, setIsOpenDialog] = useState(false);
+  const [selectedAnswers, setSelectedAnswers] = useState<SelectedOption>();
 
   // Ensure question is in ListOfAnswers
   const ensureQuestionInList = (questionId: string) => {
@@ -178,6 +180,8 @@ const TestingContent = ({
                           symbol={option.symbol}
                           description={option.description}
                           handleClick={() => {
+                            setSelectedAnswers(option);
+                            console.log("selectedAnswer", selectedAnswers);
                             setExam({
                               ...exam,
                               questions: exam.questions.map((_question) => {
