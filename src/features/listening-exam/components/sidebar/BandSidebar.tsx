@@ -4,17 +4,12 @@ import EXAMS from "@/assets/icons/exams.svg?react";
 import { Band, mockBand } from "../../types/Bands";
 
 interface BandSidebarProps {
+  bands: Band[];
   activeBand: Band;
   onSelect: (band: Band) => void;
 }
 
-const BandSidebar = ({ activeBand, onSelect }: BandSidebarProps) => {
-  const [bands, setBands] = useState<Band[]>([]);
-
-  useEffect(() => {
-    setBands(mockBand);
-  }, [activeBand]);
-
+const BandSidebar = ({ bands, activeBand, onSelect }: BandSidebarProps) => {
   return (
     <aside className={styles.bandSidebar}>
       {bands.map((band) => (

@@ -1,13 +1,25 @@
-import { useState } from "react";
-import BandSidebar from "./sidebar/BandSidebar";
-import styles from "./style.module.scss";
 import { Card } from "@/components/ui/card";
-import SidebarContent from "./sidebar/SidebarContent";
-import { Band, mockBand } from "../types/Bands";
+import { useEffect, useState } from "react";
+import { listeningService } from "../api/listening-service";
+import { Band } from "../types/Bands";
 import { mockExams } from "../types/Exams";
+import BandSidebar from "./sidebar/BandSidebar";
+import SidebarContent from "./sidebar/SidebarContent";
+import styles from "./style.module.scss";
 
 const ListeningTab = () => {
-  const [activeBand, setActiveBand] = useState<Band>(mockBand[0]);
+  const [bands, setBands] = useState<Band[]>([]);
+  const [activeBand, setActiveBand] = useState<Band>();
+
+  const fetchProficiencyList = async () => {
+    const proficiencyList = await listeningService.getProficiencyList();
+    setBands(proficiencyList);
+  };
+
+  useEffect(() => {
+    fetchProficiencyList();
+    setActiveBand(bands[0]);
+  }, []);
 
   return (
     <div className="py-3">
@@ -16,11 +28,15 @@ const ListeningTab = () => {
       </h1>
       <Card className={styles.listeningTab}>
         <Card className={styles.bandSidebar}>
-          <BandSidebar activeBand={activeBand} onSelect={setActiveBand} />
+          <BandSidebar
+            bands={bands}
+            activeBand={activeBand || bands[0]}
+            onSelect={setActiveBand}
+          />
         </Card>
         <SidebarContent
-          activeBand={activeBand}
-          description={activeBand.description}
+          activeBand={activeBand || bands[0]}
+          description={activeBand?.description || ""}
           testsMock={mockExams}
         />
       </Card>

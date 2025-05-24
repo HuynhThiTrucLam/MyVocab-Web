@@ -75,7 +75,7 @@ const TestItem = ({ exam, mainColor, secondaryColor }: TestItemProps) => {
         </p>
       </div>
       <button
-        className="text-[13px] font-medium"
+        className="text-[13px] font-medium hover:border-1 hover:border-[#000]"
         onClick={() => {
           handleStartExam(exam);
         }}

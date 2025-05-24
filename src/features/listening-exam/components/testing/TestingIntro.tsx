@@ -33,9 +33,14 @@ const TestingIntro = () => {
     setOpenTesting(true);
   };
 
+  const fetchExam = async () => {
+    const exam = await listeningService.getListeningExamById(id!);
+    console.log("exam", exam);
+    setExam(exam);
+  };
+
   useEffect(() => {
-    const exam = listeningService.getListeningExam(id!);
-    setExam(exam!);
+    fetchExam();
     const otherExams = listeningService.getSimilarExams();
     setOtherExams(otherExams);
   }, [id]);
@@ -133,7 +138,7 @@ const TestingIntro = () => {
               <div className={styles.examInfoContainer}>
                 <div className={styles.examInfo}>
                   <p>
-                    Mức độ: <span>{exam?.skill}</span>
+                    Mức độ: <span>{exam?.description}</span>
                   </p>
                   <p>
                     Thời gian làm bài: <span>{exam?.time.toString()} phút</span>

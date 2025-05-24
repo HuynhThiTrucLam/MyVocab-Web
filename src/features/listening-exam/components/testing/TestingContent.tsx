@@ -163,10 +163,8 @@ const TestingContent = ({
                       <div className={styles.chooseAnswerQuesAudioItem}>
                         <img src={AudioIcon} alt="audio" />
                       </div>
-                      {question.img ? (
-                        <img src={question.img} alt="img" />
-                      ) : null}
                     </div>
+                    {question.img ? <img src={question.img} alt="img" /> : null}
                   </div>
                   <div className={styles.chooseAnswerQuesAnswer}>
                     {question.type.id === "C" ? (

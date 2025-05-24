@@ -177,3 +177,13 @@
     color: #fff;
   }
 }
+
+@media (max-width: 900px) {
+  .testingContent {
+    grid-template-columns: 1fr;
+  }
+  .testingContentLeft,
+  .testingContentRight {
+    padding: 1rem;
+  }
+}
