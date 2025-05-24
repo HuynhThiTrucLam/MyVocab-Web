@@ -1,7 +1,8 @@
 .checklist {
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   justify-content: space-between;
   background-color: #fff;
   box-shadow: 0 0 2px 0 rgba(123, 138, 131, 0.4);

@@ -67,7 +67,7 @@ const TimeAndAnwers = ({
         <Timer hour={hour} minute={minute} second={second} />
       </div>
       <div className="w-full flex flex-col gap-4">
-        <h3 className="text-left">Danh sách câu hỏi</h3>
+        <h3 className="text-left mt-6">Danh sách câu hỏi</h3>
         <Checklist
           listOfQuestions={listOfQuestions}
           ListOfAnswers={ListOfAnswers}

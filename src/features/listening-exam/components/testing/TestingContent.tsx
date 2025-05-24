@@ -137,38 +137,42 @@ const TestingContent = ({
 
   return (
     <div className={styles.testingContent}>
-      <div className="relative">
-        <Carousel className={styles.testingContentLeft} setApi={setEmblaApi}>
-          <CarouselContent>
-            {exam.questions.map((question, index) => (
-              <CarouselItem key={index}>
-                <div className={styles.chooseAnswerQues}>
-                  <h3>Câu {index + 1}</h3>
-                  <div className="flex flex-col gap-6">
-                    <div className={styles.chooseAnswerQuesTitle}>
-                      <p>{question.question}</p>
+      <Carousel className={styles.testingContentLeft} setApi={setEmblaApi}>
+        <CarouselContent>
+          {exam.questions.map((question, index) => (
+            <CarouselItem key={index}>
+              <div className={styles.chooseAnswerQues}>
+                <h3>Câu {index + 1}</h3>
+                <div className="flex flex-col gap-6">
+                  {/* <div className={styles.chooseAnswerQuesTitle}> */}
+                  <span className="text-left text-[14px] font-medium text-gray-500">
+                    {question.question}
+                  </span>
+                  {/* </div> */}
+                  <div className={styles.chooseAnswerQuesAudio}>
+                    <div className={styles.chooseAnswerQuesAudioItem}>
+                      <img src={PlayIcon} alt="play" />
                     </div>
-                    <div className={styles.chooseAnswerQuesAudio}>
-                      <div className={styles.chooseAnswerQuesAudioItem}>
-                        <img src={PlayIcon} alt="play" />
-                      </div>
 
-                      <Slider
-                        defaultValue={[0]}
-                        max={100}
-                        step={1}
-                        style={{ width: "100%" }}
-                      />
+                    <Slider
+                      defaultValue={[0]}
+                      max={100}
+                      step={1}
+                      style={{ width: "100%" }}
+                    />
 
-                      <div className={styles.chooseAnswerQuesAudioItem}>
-                        <img src={AudioIcon} alt="audio" />
-                      </div>
+                    <div className={styles.chooseAnswerQuesAudioItem}>
+                      <img src={AudioIcon} alt="audio" />
                     </div>
-                    {question.img ? <img src={question.img} alt="img" /> : null}
                   </div>
-                  <div className={styles.chooseAnswerQuesAnswer}>
-                    {question.type.id === "C" ? (
-                      question.options?.map((option) => (
+                  {question.img ? <img src={question.img} alt="img" /> : null}
+                </div>
+                <div className={styles.chooseAnswerQuesAnswer}>
+                  {question.type.name === "Choose the correct answer" ? (
+                    question.options
+                      ?.slice()
+                      .sort((a, b) => a.symbol.localeCompare(b.symbol))
+                      .map((option) => (
                         <Answer
                           key={option.id}
                           symbol={option.symbol}
@@ -205,43 +209,42 @@ const TestingContent = ({
                           isSelected={option.isSelected}
                         />
                       ))
-                    ) : (
-                      <div className="flex flex-col gap-4">
-                        <p className="text-left text-[14px] font-medium text-gray-500">
-                          Điền đáp án vào chỗ trống dưới đây:
-                        </p>
-                        <Input
-                          type="text"
-                          className="your-input-class py-7 rounded-md"
-                          placeholder="Nhập đáp án của bạn"
-                          onChange={handleInputChange}
-                        />
-                      </div>
-                    )}
-                  </div>
-                  <Button
-                    className={`${styles.markToReview} ${
-                      ListOfAnswers.find(
-                        (answer) =>
-                          answer.questionId === question.id && answer.isMarked
-                      )
-                        ? styles.marked
-                        : ""
-                    }`}
-                    onClick={() => handleMarkToReview(question.id)}
-                  >
-                    <p>Xem lại</p>
-                  </Button>
+                  ) : (
+                    <div className="flex flex-col gap-4">
+                      <p className="text-left text-[14px] font-medium text-gray-500">
+                        Điền đáp án vào chỗ trống dưới đây:
+                      </p>
+                      <Input
+                        type="text"
+                        className="your-input-class py-7 rounded-md"
+                        placeholder="Nhập đáp án của bạn"
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  )}
                 </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <div className="absolute mt-[2rem] top-2 left-1/2 -translate-x-1/2 w-[82%] flex justify-between z-10">
-            <CarouselPrevious />
-            <CarouselNext />
-          </div>
-        </Carousel>
-      </div>
+                <Button
+                  className={`${styles.markToReview} ${
+                    ListOfAnswers.find(
+                      (answer) =>
+                        answer.questionId === question.id && answer.isMarked
+                    )
+                      ? styles.marked
+                      : ""
+                  }`}
+                  onClick={() => handleMarkToReview(question.id)}
+                >
+                  <p>Xem lại</p>
+                </Button>
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <div className="absolute mt-[2rem] top-2 left-1/2 -translate-x-1/2 w-[82%] flex justify-between z-10">
+          <CarouselPrevious />
+          <CarouselNext />
+        </div>
+      </Carousel>
       <div className={styles.testingContentRight}>
         <TimeAndAnwers
           hour={hour}
