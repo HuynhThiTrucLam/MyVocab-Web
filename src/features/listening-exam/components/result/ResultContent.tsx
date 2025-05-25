@@ -42,19 +42,18 @@ const ResultContent = ({ result }: ResultContentProps) => {
       emblaApi.scrollTo(index);
     }
   };
-
   return (
     <div className={styles.resultContent}>
       <div className="relative">
         <Carousel className={styles.resultContentLeft} setApi={setEmblaApi}>
           <CarouselContent>
-            {result.results.map((result, index) => (
+            {result.results.map((_result, index) => (
               <CarouselItem key={index}>
                 <div className={styles.chooseAnswerQues}>
                   <h3>Câu {index + 1}</h3>
                   <div className="flex flex-col gap-6">
                     <div className={styles.chooseAnswerQuesTitle}>
-                      <p>{result.question}</p>
+                      <p>{_result.question}</p>
                     </div>
                     <div className={styles.chooseAnswerQuesAudio}>
                       <div className={styles.chooseAnswerQuesAudioItem}>
@@ -71,36 +70,36 @@ const ResultContent = ({ result }: ResultContentProps) => {
                       <div className={styles.chooseAnswerQuesAudioItem}>
                         <img src={AudioIcon} alt="audio" />
                       </div>
-                      {result.img ? <img src={result.img} alt="img" /> : null}
+                      {_result.img ? <img src={_result.img} alt="img" /> : null}
                     </div>
                   </div>
                   <div className="flex flex-col gap-2">
                     <DetailResultTab
                       icon={<ScriptIcon className="text-[#000]" />}
                       title="Xem nội dung bài nghe"
-                      content={result.script}
+                      content={_result.script}
                     />
                     <DetailResultTab
                       icon={<RightAnswer className="text-[#000]" />}
                       title="Giải thích đáp án"
-                      content={result.script}
+                      content={_result.script}
                     />
                   </div>
                   <div className={styles.chooseAnswerQuesAnswer}>
-                    {result.type.id === "C" ? (
-                      result.options?.map((option) => {
+                    {_result.type.id === "C" ? (
+                      _result.options?.map((_option) => {
                         let optionClass =
                           "w-full border-2 flex flex-row gap-4 items-center justify-between px-6 py-3 rounded-md ";
-                        if (option.isSelected && option.isCorrect) {
+                        if (_option.isSelected && _option.isCorrect) {
                           optionClass += " border-[#31E3A5] bg-[#e6fff5]"; // green border + light green bg
                         } else if (
-                          option.isSelected &&
-                          option.isCorrect === false
+                          _option.isSelected &&
+                          _option.isCorrect === false
                         ) {
                           optionClass += " border-[#FF7C7C] bg-[#ffeaea]"; // red border + light red bg
-                        } else if (option.isCorrect) {
+                        } else if (_option.isCorrect) {
                           optionClass += " border-[#31E3A5]"; // green border
-                        } else if (option.isSelected) {
+                        } else if (_option.isSelected) {
                           optionClass += " border-[#007bff] bg-[#e6f0ff]"; // blue border + light blue bg
                         } else {
                           optionClass += " border-gray-300";
@@ -108,17 +107,17 @@ const ResultContent = ({ result }: ResultContentProps) => {
                         return (
                           <div
                             className="w-full flex flex-row gap-4 items-center cursor-pointer"
-                            key={option.id}
+                            key={_option.id}
                           >
-                            <p>{option.symbol}</p>
+                            <p>{_option.symbol}</p>
                             <div className={optionClass}>
                               <p className="text-[14px] text-left">
-                                {option.description}
+                                {_option.description}
                               </p>
-                              {option.isCorrect === true ? (
+                              {_option.isCorrect === true ? (
                                 <RightAnswer />
                               ) : null}
-                              {option.isCorrect === false ? (
+                              {_option.isCorrect === false ? (
                                 <WrongAnswer />
                               ) : null}
                             </div>
@@ -133,33 +132,47 @@ const ResultContent = ({ result }: ResultContentProps) => {
                         <div className={`relative w-full`}>
                           <Input
                             type="text"
-                            value={result.type.answerValue}
+                            value={_result.options?.find(
+                              (option) => option.isSelected === true
+                            )?.description}
                             className={`py-7 rounded-md font-bold text-black w-full pr-10
                               ${
-                                result.type.isCorrect === true
+                                _result.options?.find(
+                                  (option) => option.isSelected === true
+                                )?.isCorrect === true
                                   ? "border-2 border-[#31E3A5] bg-[#e6fff5]"
                                   : ""
                               }
                               ${
-                                result.type.isCorrect === false
+                                _result.options?.find(
+                                  (option) => option.isSelected === true
+                                )?.isCorrect === false
                                   ? "border-2 border-[#FF7C7C] bg-[#ffeaea]"
                                   : ""
                               }
                               ${
-                                result.type.isCorrect === null ||
-                                result.type.isCorrect === undefined
+                                _result.options?.find(
+                                  (option) => option.isSelected === true
+                                )?.isCorrect === null ||
+                                _result.options?.find(
+                                  (option) => option.isSelected === true
+                                )?.isCorrect === undefined
                                   ? "border-2 border-gray-300"
                                   : ""
                               }
                             `}
                             disabled
                           />
-                          {result.type.isCorrect === true ? (
+                          {_result.options?.find(
+                            (option) => option.isSelected === true
+                          )?.isCorrect === true ? (
                             <span className="absolute top-1/2 right-6 transform translate-x-[8px] translate-y-[-12px]">
                               <RightAnswer />
                             </span>
                           ) : null}
-                          {result.type.isCorrect === false ? (
+                          {_result.options?.find(
+                            (option) => option.isSelected === true
+                          )?.isCorrect === false ? (
                             <span className="absolute top-1/2 right-6 transform translate-x-[8px] translate-y-[-12px]">
                               <WrongAnswer />
                             </span>

@@ -1,9 +1,8 @@
-import { Topic } from "./../types/Exams";
-import { Exam, mockExams } from "../types/Exams";
 import { api } from "@/services/api-client";
-import { mockResult, Result } from "../types/Result";
-import { mockUserExamList } from "../types/UserExam";
 import { Band } from "../types/Bands";
+import { Exam, mockExams } from "../types/Exams";
+import { Result } from "../types/Result";
+import { mockUserExamList } from "../types/UserExam";
 
 const BASE_URL = import.meta.env.VITE_BE_API_URL;
 
@@ -107,9 +106,16 @@ export const listeningService = {
     return mockUserExamList;
   },
 
-  getResult: (resultId: string) => {
-    console.log("resultId", resultId);
-    return mockResult;
+  getResult: async (resultId: string) => {
+    try {
+      const response: Result = await api.get<any>(
+        `${BASE_URL}api/ListeningResult/${resultId}`
+      );
+      return response;
+    } catch (error) {
+      console.error("Failed to fetch result:", error);
+      throw error;
+    }
   },
 
   countCorrectAnswers: (result: Result | null) => {
@@ -119,7 +125,7 @@ export const listeningService = {
       if (question.options && question.options.length > 0) {
         // For multiple choice questions, count the number of options marked as correct
         correctCount += question.options.filter(
-          (opt) => opt.isCorrect === true
+          (opt) => opt.isCorrect === true && opt.isSelected === true
         ).length;
       } else if (question.type && question.type.isCorrect === true) {
         // For other question types (like fill-in-the-blank), count as 1 if isCorrect is true
@@ -136,7 +142,7 @@ export const listeningService = {
     for (const question of result.results) {
       if (question.options && question.options.length > 0) {
         incorrectCount += question.options.filter(
-          (opt) => opt.isCorrect === false
+          (opt) => opt.isCorrect === false && opt.isSelected === true
         ).length;
       } else if (question.type && question.type.isCorrect === false) {
         incorrectCount += 1;

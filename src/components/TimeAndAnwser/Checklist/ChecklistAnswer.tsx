@@ -11,16 +11,17 @@ const ChecklistAnswer = ({
   setCurrentIndex,
 }: ChecklistAnswerProps) => {
   return (
-    <div className="grid grid-cols-6 p-4 bg-white rounded-[6px] shadow-[0_0_2px_0_rgba(123,138,131,0.4)] justify-between w-full">
+    <div className="grid grid-cols-6 p-4 gap-2 bg-white rounded-[6px] shadow-[0_0_2px_0_rgba(123,138,131,0.4)] justify-between w-full">
       {listOfResult.map((result, index) => {
         return (
           <div
-            className={`w-[35px] h-[35px] flex items-center justify-center cursor-pointer rounded-[5px] ${
-              result.type.isCorrect === true ||
-              result.options?.some((option) => option.isCorrect === true)
+            className={`w-[35px] h-[35px] flex items-center justify-center gap-1 cursor-pointer rounded-[5px] ${
+              result.options?.find((option) => option.isSelected === true)
+                ?.isCorrect === true
                 ? "bg-[#31E3A5] text-white"
-                : result.type.isCorrect === false ||
-                  result.options?.some((option) => option.isCorrect === false)
+                : result.options?.find(
+                    (option) => option.isSelected === true
+                  )?.isCorrect === false
                 ? "bg-[#FF7C7C] text-white"
                 : "bg-gray-200 text-gray-500"
             }`}

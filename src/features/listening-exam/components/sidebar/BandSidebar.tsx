@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
-import styles from "../style.module.scss";
 import EXAMS from "@/assets/icons/exams.svg?react";
-import { Band, mockBand } from "../../types/Bands";
+import { Band } from "../../types/Bands";
+import styles from "../style.module.scss";
 
 interface BandSidebarProps {
   bands: Band[];

@@ -1,11 +1,11 @@
-import * as React from "react";
 import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from "embla-carousel-react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import * as React from "react";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -152,14 +152,14 @@ const CarouselContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
-  const { carouselRef, orientation } = useCarousel();
+  const { carouselRef } = useCarousel();
 
   return (
     <div ref={carouselRef} className="overflow-auto">
       <div
         ref={ref}
         className={cn(
-          "flex",
+          "flex gap-4",
           // orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col",
           className
         )}
@@ -174,7 +174,6 @@ const CarouselItem = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
-  const { orientation } = useCarousel();
 
   return (
     <div
@@ -251,10 +250,8 @@ const CarouselNext = React.forwardRef<
 CarouselNext.displayName = "CarouselNext";
 
 export {
-  type CarouselApi,
   Carousel,
   CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
+  CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi
 };
+
