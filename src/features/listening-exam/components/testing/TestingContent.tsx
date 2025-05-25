@@ -20,11 +20,10 @@ import { useNavigate } from "react-router-dom";
 import { Answers } from "../../types/Answer";
 import styles from "./styles.module.scss";
 import { SelectedOption } from "../../types/Question";
-import { Result, ResultRequest } from "../../types/Result";
-import { getUserIdFromToken } from "@/contexts/jwt-payload";
 import Notification from "./Notification";
 import { useAuth } from "@/contexts/auth-context";
 import { listeningService } from "../../api/listening-service";
+import { ResultRequest } from "../../types/Result";
 
 interface TestingContentProps {
   exam: Exam;
