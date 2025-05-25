@@ -1,5 +1,12 @@
+import { Answers } from "./Answer";
 import { QuestionListening } from "./Question";
 
+export interface ResultRequest {
+  userId: string;
+  examId: string;
+  finishedTime: number;
+  results: Answers[];
+}
 export interface Result {
   id: string;
   title: string;

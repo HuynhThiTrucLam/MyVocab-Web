@@ -17,9 +17,11 @@ import { useParams } from "react-router-dom";
 import OtherExam from "./OtherExam";
 import styles from "./styles.module.scss";
 import TestingContent from "./TestingContent";
+import { Spinner } from "@/components/Spinner";
 
 const TestingIntro = () => {
   const { id } = useParams();
+  const [isLoading, setIsLoading] = useState(false);
   const [exam, setExam] = useState<Exam | null>(null);
   const [otherExams, setOtherExams] = useState<Exam[]>([]);
   const [openTesting, setOpenTesting] = useState(false);
@@ -40,9 +42,11 @@ const TestingIntro = () => {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     fetchExam();
     const otherExams = listeningService.getSimilarExams();
     setOtherExams(otherExams);
+    setIsLoading(false);
   }, [id]);
 
   useEffect(() => {
@@ -113,6 +117,7 @@ const TestingIntro = () => {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
+
       <Card className={styles.examCard}>
         {openTesting ? (
           <TestingContent

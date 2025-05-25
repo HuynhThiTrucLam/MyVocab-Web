@@ -31,7 +31,6 @@ const ResultContent = ({ result }: ResultContentProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleRedoListening = () => {
-    console.log("redo listening");
     navigate(`/testing/${result.id}`);
   };
 
@@ -132,9 +131,11 @@ const ResultContent = ({ result }: ResultContentProps) => {
                         <div className={`relative w-full`}>
                           <Input
                             type="text"
-                            value={_result.options?.find(
-                              (option) => option.isSelected === true
-                            )?.description}
+                            value={
+                              _result.options?.find(
+                                (option) => option.isSelected === true
+                              )?.description
+                            }
                             className={`py-7 rounded-md font-bold text-black w-full pr-10
                               ${
                                 _result.options?.find(

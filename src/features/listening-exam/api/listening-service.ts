@@ -1,7 +1,7 @@
 import { api } from "@/services/api-client";
 import { Band } from "../types/Bands";
 import { Exam, mockExams } from "../types/Exams";
-import { Result } from "../types/Result";
+import { Result, ResultRequest } from "../types/Result";
 import { mockUserExamList } from "../types/UserExam";
 
 const BASE_URL = import.meta.env.VITE_BE_API_URL;
@@ -60,7 +60,6 @@ export const listeningService = {
   getListeningExamById: async (examId: string) => {
     try {
       const response = await api.get<any>(`${BASE_URL}api/Exam/${examId}`);
-      console.log("response", response);
       return {
         id: response.id,
         title: response.name,
@@ -102,8 +101,27 @@ export const listeningService = {
   },
 
   getUserExam: (userId: string) => {
-    console.log("userId", userId);
     return mockUserExamList;
+  },
+
+  postResult: async (result: ResultRequest) => {
+    try {
+      console.log("resultBefore", result);
+      const response = await api.post<any>(`${BASE_URL}api/ListeningResult`, {
+        userId: result.userId,
+        examId: result.examId,
+        finishTime: result.finishedTime,
+        userAnswers: result.results.map((result) => ({
+          listeningQuestionId: result.questionId,
+          answerId: result.answer,
+          isMarked: result.isMarked,
+        })),
+      });
+      return response;
+    } catch (error) {
+      console.error("Failed to post result:", error);
+      throw error;
+    }
   },
 
   getResult: async (resultId: string) => {

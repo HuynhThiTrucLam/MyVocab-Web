@@ -18,7 +18,6 @@ import { Spinner } from "@/components/Spinner";
 interface SidebarContentProps {
   activeBand: Band;
   description: string;
-  testsMock: Exam[];
 }
 const mockTopic: Topic[] = [
   {
@@ -38,7 +37,7 @@ const mockTopic: Topic[] = [
   },
 ];
 
-const SidebarContent = ({ activeBand, testsMock }: SidebarContentProps) => {
+const SidebarContent = ({ activeBand }: SidebarContentProps) => {
   const [examList, setExamList] = useState<Exam[]>([]); // List all exams of data
   const [userExamList, setUserExamList] = useState<UserExamList>(); // List exams of user
   const [_, setSelectedTopic] = useState<Topic>(mockTopic[0]);
@@ -47,7 +46,6 @@ const SidebarContent = ({ activeBand, testsMock }: SidebarContentProps) => {
   const fetchExamList = async () => {
     setIsLoading(true);
     if (!activeBand) return; // Guard clause
-    console.log("activeBand", activeBand);
     const examList = await listeningService.getListeningExamListByBandId(
       activeBand.id
     );
@@ -58,9 +56,8 @@ const SidebarContent = ({ activeBand, testsMock }: SidebarContentProps) => {
   useEffect(() => {
     if (!activeBand) return;
     fetchExamList();
-    console.log("examList", examList);
     setUserExamList(mockUserExamList);
-  }, [activeBand, testsMock]);
+  }, [activeBand]);
 
   return (
     <div className={styles.listeningContent}>

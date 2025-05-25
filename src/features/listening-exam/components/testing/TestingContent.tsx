@@ -11,14 +11,7 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { Exam } from "@/features/listening-exam/types/Exams";
@@ -27,6 +20,11 @@ import { useNavigate } from "react-router-dom";
 import { Answers } from "../../types/Answer";
 import styles from "./styles.module.scss";
 import { SelectedOption } from "../../types/Question";
+import { Result, ResultRequest } from "../../types/Result";
+import { getUserIdFromToken } from "@/contexts/jwt-payload";
+import Notification from "./Notification";
+import { useAuth } from "@/contexts/auth-context";
+import { listeningService } from "../../api/listening-service";
 
 interface TestingContentProps {
   exam: Exam;
@@ -48,12 +46,16 @@ const TestingContent = ({
   setExam,
 }: TestingContentProps) => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [ListOfAnswers, setListOfAnswers] = useState<Answers[]>([]);
   const [emblaApi, setEmblaApi] = useState<CarouselApi | null>(null);
-  const [_, setIsTimeUp] = useState(false);
+  const [isTimeUp, setIsTimeUp] = useState(false);
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   const [selectedAnswers, setSelectedAnswers] = useState<SelectedOption>();
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmittingSuccess, setIsSubmittingSuccess] = useState(false);
 
   // Ensure question is in ListOfAnswers
   const ensureQuestionInList = (questionId: string) => {
@@ -97,13 +99,50 @@ const TestingContent = ({
     );
   };
 
-  const handleSeeResult = () => {
-    console.log("see result");
-  };
-
   const handleExitTesting = () => {
     setIsOpenDialog(false);
     navigate("/exams");
+  };
+
+  const handleViewResult = () => {
+    console.log("Xem kết quả");
+  };
+
+  const getFinishedTime = () => {
+    const finishedTime = exam.time - (hour * 60 + minute + second / 60);
+    return finishedTime;
+  };
+
+  const handleOpenDialog = async () => {
+    setIsOpenDialog(true);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      setIsSubmitting(true);
+
+      const finishedTime = getFinishedTime();
+      const result: ResultRequest = {
+        userId: user?.id || "",
+        examId: exam.id,
+        finishedTime: finishedTime,
+        results: ListOfAnswers,
+      };
+
+      console.log("result", result);
+      const response = await listeningService.postResult(result);
+      console.log("response", response);
+
+      if (response.status === 200) {
+        setIsSubmitting(false);
+        setIsSubmittingSuccess(true);
+        await new Promise((res) => setTimeout(res, 3000));
+      }
+    } catch (error) {
+      setIsSubmitting(false);
+      setIsSubmittingSuccess(false);
+      console.log("error", error);
+    }
   };
 
   useEffect(() => {
@@ -260,34 +299,30 @@ const TestingContent = ({
           ListOfAnswers={ListOfAnswers}
           currentIndex={currentIndex}
           setCurrentIndex={handleChecklistClick}
+          handleOpenDialog={handleOpenDialog}
         />
       </div>
 
-      <Dialog open={isOpenDialog}>
-        <DialogContent className="flex flex-col gap-5">
-          <DialogHeader>
-            <DialogTitle>Thời gian đã hết. Bài thi đã tự động nộp</DialogTitle>
-            <DialogDescription>
-              Bạn đã hết thời gian làm bài. Vui lòng chọn Xem kết quả để xem kết
-              quả.
-            </DialogDescription>
-            <DialogFooter>
-              <Button
-                className={`${styles.borderButton} w-full rounded-full text-[14px] font-bold text-[#37474F] hover:text-[#fff]`}
-                onClick={handleExitTesting}
-              >
-                Thoát
-              </Button>
-              <Button
-                className={`${styles.submitButton} bg-[#31E3A5] w-full rounded-full text-[14px] font-bold text-[#37474F] hover:text-[#fff]`}
-                onClick={handleSeeResult}
-              >
-                Xem kết quả
-              </Button>
-            </DialogFooter>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
+      {isTimeUp && (
+        <Notification
+          type="time-up"
+          isOpenDialog={isTimeUp}
+          handleExitTesting={handleExitTesting}
+          handleViewResult={handleViewResult}
+        />
+      )}
+
+      {isOpenDialog && (
+        <Notification
+          type="submit"
+          isOpenDialog={isOpenDialog}
+          isSubmitting={isSubmitting}
+          isSubmittingSuccess={isSubmittingSuccess}
+          handleExitTesting={handleExitTesting}
+          handleViewResult={handleViewResult}
+          handleSubmit={handleSubmit}
+        />
+      )}
     </div>
   );
 };
