@@ -1,7 +1,7 @@
 import { api } from '@/services/api-client';
 import { VocabularyItem } from '../types';
 
-const BASE_URL = '/dotnet/Dictionary';
+const BASE_URL = '/api/v1/Dictionary';
 
 /**
  * Service for vocabulary-related API operations

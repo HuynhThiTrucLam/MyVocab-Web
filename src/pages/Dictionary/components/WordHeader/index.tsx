@@ -43,7 +43,7 @@ export function WordHeader({
 
   const fetchListWorkspace = async () => {
     try {
-      const response: any[] = await api.get(`/dotnet/${api_version}/Workspace/${user?.id}`);
+      const response: any[] = await api.get(`/${api_version}/Workspace/${user?.id}`);
       setListWorkspace(response);
     } catch (error) {
       console.error("Failed to fetch list workspace:", error);
@@ -83,7 +83,7 @@ export function WordHeader({
           pronunciation: phonetic + "|" + audioUrl || "",
           meaning: meaning || "",
         };
-        const response = await api.post(`/dotnet/${api_version}/Dictionary`, data);
+        const response = await api.post(`/${api_version}/Dictionary`, data);
         if (response) {
           const workspaceName = listWorkspace.find(
             (workspace) => workspace.id === selectedWorkspace
