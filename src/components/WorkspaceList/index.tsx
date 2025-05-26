@@ -43,7 +43,7 @@ function useWorkspaces() {
 
     setIsLoading(true);
     try {
-      const data = await api.get(`/dotnet/${api_version}/Workspace/${user.id}`);
+      const data = await api.get(`/${api_version}/Workspace/${user.id}`);
       if (Array.isArray(data)) {
         setWorkspaces(data);
       } else {
@@ -83,7 +83,7 @@ function useWorkspaces() {
 
       setIsLoading(true);
       try {
-        const data = await api.post(`/dotnet/${api_version}/Workspace`, {
+        const data = await api.post(`/${api_version}/Workspace`, {
           userId: user.id,
           name: name.trim(),
           description,
@@ -135,7 +135,7 @@ function useWorkspaces() {
       setIsLoading(true);
       try {
         const response = await api.delete(
-          `/dotnet/${api_version}/Workspace/${workspaceId}`
+          `/${api_version}/Workspace/${workspaceId}`
         );
         if (response) {
           // Update the workspace list by filtering out the deleted workspace
