@@ -238,13 +238,15 @@ export default function FlashCard() {
         <div className={styles.controls}>
           <button
             onClick={handleMarkAsLearned}
-            className={styles.controlButton}
+            className={`${styles.controlButton} ${currentCard.isLearned ? styles.learnedButton : ''}`}
+            disabled={currentCard.isLearned}
           >
             Đã học từ này
           </button>
           <button
             onClick={handleMarkAsNotLearned}
             className={styles.controlButton}
+            disabled={!currentCard.isLearned}
           >
             Học lại từ này
           </button>
