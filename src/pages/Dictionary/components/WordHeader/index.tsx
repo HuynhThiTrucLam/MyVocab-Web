@@ -82,6 +82,7 @@ export function WordHeader({
           type: type || "",
           pronunciation: phonetic + "|" + audioUrl || "",
           meaning: meaning || "",
+          vietnameseMeaning: ""
         };
         const response = await api.post(`/${api_version}/Dictionary`, data);
         if (response) {
@@ -95,6 +96,11 @@ export function WordHeader({
       }
     } catch (error) {
       console.error("Failed to add to workspace:", error);
+      toast({
+        title: "Lỗi",
+        description: "Không thể thêm từ vựng vào danh sách",
+        variant: "destructive",
+      });
     }
   };
 

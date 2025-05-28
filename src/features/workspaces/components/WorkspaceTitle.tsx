@@ -5,6 +5,7 @@ import EditIcon from "@/assets/icons/edit.svg?react";
 import CheckIcon from "@/assets/icons/check.svg?react";
 import XIcon from "@/assets/icons/Close.svg?react";
 import TrashIcon from "@/assets/icons/trash.svg?react";
+import FlashcardIcon from "@/assets/icons/flashcard.svg?react";
 import { Spinner } from "@/components/Spinner";
 import {
   AlertDialog,
@@ -17,8 +18,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { useNavigate } from "react-router-dom";
 
 interface WorkspaceTitleProps {
+  workspaceId: string;
   title: string;
   initialTitle: string;
   isSaving: boolean;
@@ -29,6 +32,7 @@ interface WorkspaceTitleProps {
 }
 
 export default function WorkspaceTitle({
+  workspaceId,
   title,
   initialTitle,
   isSaving,
@@ -40,6 +44,7 @@ export default function WorkspaceTitle({
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const titleInputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
   const handleEditTitle = useCallback(() => {
     setIsEditingTitle(true);
@@ -136,6 +141,19 @@ export default function WorkspaceTitle({
         <>
           <div className={styles.titleText}>{title}</div>
           <div className={styles.titleActions}>
+            <FlashcardIcon
+              onClick={() => navigate(`/flashcard/${workspaceId}`)}
+              role="button"
+              tabIndex={0}
+              aria-label="Mở flashcard"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  navigate(`/flashcard/${workspaceId}`);
+                }
+              }}
+              className={styles.flashcardIcon}
+            />
             <EditIcon
               onClick={handleEditTitle}
               role="button"

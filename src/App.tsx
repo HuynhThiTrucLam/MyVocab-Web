@@ -14,6 +14,7 @@ import { Chatbox } from "./pages/Chatbox/Chatbox";
 import Exams from "./pages/Exams/Exams";
 import TestingIntro from "./features/listening-exam/components/testing/TestingIntro";
 import ResultIntro from "./features/listening-exam/components/result/ResultIntro";
+import Flashcard from "./pages/Flashcard";
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/my-vocab" element={<MyListWorkspace />} />
               <Route path="/my-vocab/:title" element={<WorkspaceDetails />} />
+              <Route path="/flashcard/:workspaceId" element={<Flashcard />} />
               <Route path="/chatbox" element={<Chatbox />} />
               <Route path="/dictionary" element={<Dictionary />} />
               <Route path="/exams" element={<Exams />} />
