@@ -15,6 +15,9 @@ import Exams from "./pages/Exams/Exams";
 import TestingIntro from "./features/listening-exam/components/testing/TestingIntro";
 import ResultIntro from "./features/listening-exam/components/result/ResultIntro";
 import Flashcard from "./pages/Flashcard";
+import TestPage from '@/pages/Test'; // Đảm bảo đường dẫn đúng
+
+
 
 export default function App() {
   return (
@@ -33,6 +36,7 @@ export default function App() {
               <Route path="/testing/:id" element={<TestingIntro />} />
               <Route path="/result/:id" element={<ResultIntro />} />
               <Route path="/translation" element={<Translation />} />
+              <Route path="/test/:workspaceId" element={<TestPage />} />
             </Route>
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
