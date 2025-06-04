@@ -3,7 +3,7 @@ import styles from "./styles.module.scss";
 import ListeningTab from "@/features/listening-exam/components/ListeningTab";
 import { useAuth } from "@/contexts/auth-context";
 import NonSupportedFeature from "../NonSupportedFeature";
-
+import { ReadingTab } from "@/features/reading";
 const Exams = () => {
   // If you want to add auth-based display back in, uncomment below
   const { user } = useAuth();
@@ -35,7 +35,7 @@ const Exams = () => {
           </TabsContent>
 
           <TabsContent value="reading">
-            <p>Reading</p>
+            <ReadingTab />
           </TabsContent>
 
           <TabsContent value="speaking">

@@ -35,7 +35,7 @@ const handleAuthError = (error: unknown): never => {
 export const auth = {
   signIn: async (email: string, password: string) => {
     try {
-      const data: any = await api.post(`/${api_version}/Account/login`, {
+      const data: any = await api.post(`/${api_version}/Account/Login`, {
         email,
         password,
       });
@@ -45,7 +45,7 @@ export const auth = {
           email: data.account.email,
           username: data.account.userName,
           phone: data.account.numberPhone,
-          token: uuidv4(),
+          token: data.token,
         },
       };
     } catch (error) {
