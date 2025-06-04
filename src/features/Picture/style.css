@@ -1,4 +1,3 @@
-/* Tổng thể */
 .picture-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -7,21 +6,16 @@
   color: #333;
   background-color: #f8f9fa;
 }
-
-/* Header */
 .header-section {
   text-align: center;
   margin-bottom: 40px;
 }
-
 .main-title {
   font-size: 32px;
   font-weight: bold;
   color: #004d40;
   margin-bottom: 30px;
 }
-
-/* Grid các level */
 .levels-grid {
   display: flex;
   flex-wrap: wrap;
@@ -134,7 +128,7 @@ body {
 /*  history Viền xanh lá */
 
 /* QUESTION */
-/* Question.css */
+
 
 .question-wrapper {
   padding: 150px;
