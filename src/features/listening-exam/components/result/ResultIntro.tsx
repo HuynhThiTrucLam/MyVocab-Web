@@ -32,7 +32,7 @@ const ResultIntro = () => {
       setResult(result);
     };
     fetchResult();
-    const otherExams = listeningService.getSimilarExams();
+    // const otherExams = listeningService.getSimilarExams();
     setOtherExams(otherExams);
   }, [id]);
 
@@ -76,8 +76,7 @@ const ResultIntro = () => {
             <CardContent className={styles.resultCardContent}>
               <div className="img">
                 {result?.overallScore ? (
-                  result?.overallScore >= 5 &&
-                  result?.overallScore <= 10 ? (
+                  result?.overallScore >= 5 && result?.overallScore <= 10 ? (
                     <img src={WellDoneIcon} alt="wellDone" />
                   ) : (
                     <img src={NotGoodIcon} alt="notGood" />
@@ -89,8 +88,7 @@ const ResultIntro = () => {
               <div
                 className={`font-bold text-[24px] ${styles.resultScore} ${
                   result?.overallScore
-                    ? result?.overallScore >= 5 &&
-                      result?.overallScore <= 10
+                    ? result?.overallScore >= 5 && result?.overallScore <= 10
                       ? "text-[#31E3A5]"
                       : "text-[#FF0000]"
                     : ""

@@ -10,10 +10,10 @@ import Home from "./pages/Home";
 import Translation from "./pages/Translation";
 import { ScrollToTopProvider } from "./providers/ScrollToTopProvider";
 import { Toaster } from "@/components/ui/toaster";
-import { Chatbox } from "./pages/Chatbox/Chatbox";
 import Exams from "./pages/Exams/Exams";
 import TestingIntro from "./features/listening-exam/components/testing/TestingIntro";
 import ResultIntro from "./features/listening-exam/components/result/ResultIntro";
+import { Chatbox } from "./pages/ChatBox/Chatbox";
 
 export default function App() {
   return (

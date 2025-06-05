@@ -1,20 +1,20 @@
-import styles from "../style.module.scss";
-import QuestionIcon from "@/assets/icons/question.svg";
 import CircleIcon from "@/assets/icons/circle.svg";
-import { Exam } from "../../types/Exams";
+import QuestionIcon from "@/assets/icons/question.svg";
 import { useNavigate } from "react-router-dom";
+import { ListeningExam } from "../../types/ListeningExam";
+import styles from "../style.module.scss";
 
 interface TestItemProps {
   mainColor: string;
   secondaryColor: string;
-  exam: Exam;
+  exam: ListeningExam;
 }
 
 const TestItem = ({ exam, mainColor, secondaryColor }: TestItemProps) => {
   const gradient = `linear-gradient(90deg, ${mainColor} 0%, ${secondaryColor} 100%)`;
   const navigate = useNavigate();
 
-  const handleStartExam = (exam: Exam) => {
+  const handleStartExam = (exam: ListeningExam) => {
     navigate(`/testing/${exam.id}`);
   };
 
@@ -33,15 +33,16 @@ const TestItem = ({ exam, mainColor, secondaryColor }: TestItemProps) => {
           <img src={CircleIcon} alt="circle" className={styles.circleIcon} />
         </div>
 
-        <h4 className="font-medium">{exam.title}</h4>
+        {/* 1line and overflow by three dots */}
+        <h4 className="font-medium line-clamp-1 truncate">{exam.title}</h4>
       </div>
       <div className={styles.testCardQuestion}>
         <img src={QuestionIcon} alt="question" />
-        <p>{exam.questions.length} câu hỏi</p>
+        <p>{exam.numberQuestion} câu hỏi</p>
       </div>
       <div className={styles.testCardTopic}>
         <p>
-          Chủ đề: <span>{exam.topic.name}</span>
+          Dạng: <span>{exam.topic.name}</span>
         </p>
       </div>
 

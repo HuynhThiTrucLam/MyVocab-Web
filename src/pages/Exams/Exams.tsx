@@ -10,6 +10,7 @@ const Exams = () => {
 
   return (
     <>
+      ∏
       {user ? (
         <Tabs defaultValue="listening" className={styles.tabContainer}>
           <TabsList
@@ -31,19 +32,24 @@ const Exams = () => {
           <div className={styles.line}></div>
 
           <TabsContent value="listening">
+            {/* Nội dung */}
+            {/* Tìm các hàm có từ fetch  */}
             <ListeningTab />
           </TabsContent>
 
           <TabsContent value="reading">
             <p>Reading</p>
+            {/* Thêm nội dung vào đây */}
           </TabsContent>
 
           <TabsContent value="speaking">
             <p>Speaking</p>
+            {/* Thêm nội dung vào đây */}
           </TabsContent>
 
           <TabsContent value="writing">
             <p>Writing</p>
+            {/* Thêm nội dung vào đây */}
           </TabsContent>
         </Tabs>
       ) : (

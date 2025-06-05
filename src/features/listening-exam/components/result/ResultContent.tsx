@@ -44,49 +44,50 @@ const ResultContent = ({ result }: ResultContentProps) => {
   return (
     <div className={styles.resultContent}>
       <div className="relative">
+        <div className="flex flex-col gap-8 px-8 py-8 border-b border-gray-200">
+          <span className="text-left text-[14px] font-bold text-black">
+            Hướng dẫn:{" "}
+            <span className="font-medium text-black">
+              {result.infor.direction}
+            </span>
+          </span>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <img src={PlayIcon} alt="play" />
+            </div>
+            <Slider
+              defaultValue={[0]}
+              max={100}
+              step={1}
+              style={{ width: "100%" }}
+            />
+            <div className={styles.chooseAnswerQuesAudioItem}>
+              <img src={AudioIcon} alt="audio" />
+            </div>
+          </div>
+          {result.infor.imageUrl ? (
+            <img
+              src={result.infor.imageUrl}
+              alt="img"
+              className="w-full h-auto"
+            />
+          ) : null}
+          <DetailResultTab
+            icon={<ScriptIcon className="text-[#000]" />}
+            title="Xem nội dung bài nghe"
+            content={result.infor.transcript}
+          />
+        </div>
         <Carousel className={styles.resultContentLeft} setApi={setEmblaApi}>
           <CarouselContent>
             {result.results.map((_result, index) => (
               <CarouselItem key={index}>
                 <div className={styles.chooseAnswerQues}>
                   <h3>Câu {index + 1}</h3>
-                  <div className="flex flex-col gap-6">
-                    <div className={styles.chooseAnswerQuesTitle}>
-                      <p>{_result.question}</p>
-                    </div>
-                    <div className={styles.chooseAnswerQuesAudio}>
-                      <div className={styles.chooseAnswerQuesAudioItem}>
-                        <img src={PlayIcon} alt="play" />
-                      </div>
-
-                      <Slider
-                        defaultValue={[0]}
-                        max={100}
-                        step={1}
-                        style={{ width: "100%" }}
-                      />
-
-                      <div className={styles.chooseAnswerQuesAudioItem}>
-                        <img src={AudioIcon} alt="audio" />
-                      </div>
-                      {_result.img ? <img src={_result.img} alt="img" /> : null}
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <DetailResultTab
-                      icon={<ScriptIcon className="text-[#000]" />}
-                      title="Xem nội dung bài nghe"
-                      content={_result.script}
-                    />
-                    <DetailResultTab
-                      icon={<RightAnswer className="text-[#000]" />}
-                      title="Giải thích đáp án"
-                      content={_result.script}
-                    />
-                  </div>
                   <div className={styles.chooseAnswerQuesAnswer}>
                     {_result.type.id === "C" ? (
                       _result.options?.map((_option) => {
+                        console.log("first", _option);
                         let optionClass =
                           "w-full border-2 flex flex-row gap-4 items-center justify-between px-6 py-3 rounded-md ";
                         if (_option.isSelected && _option.isCorrect) {
@@ -182,6 +183,13 @@ const ResultContent = ({ result }: ResultContentProps) => {
                       </div>
                     )}
                   </div>
+                  <div className="flex flex-col gap-2">
+                    <DetailResultTab
+                      icon={<RightAnswer className="text-[#000]" />}
+                      title="Giải thích đáp án"
+                      content={_result.script}
+                    />
+                  </div>
                 </div>
               </CarouselItem>
             ))}
@@ -215,7 +223,7 @@ const ResultContent = ({ result }: ResultContentProps) => {
             <p>Câu trả lời đúng</p>
           </div>
           <div className="flex flex-row gap-2">
-            <div className="w-4 h-4 bg-[#37474F] rounded-sm text-[12px]"></div>
+            <div className="w-4 h-4 bg-[#FF7C7C] rounded-sm text-[12px]"></div>
             <p>Câu trả lời sai</p>
           </div>
           <div className="flex flex-row gap-2">
