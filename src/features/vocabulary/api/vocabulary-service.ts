@@ -13,7 +13,7 @@ export const vocabularyService = {
    */
   getVocabularyItems: (workspaceId: string) => {
     return api.get<VocabularyItem[]>(
-      `${BASE_URL}api/v1/Dictionary/${workspaceId}`
+      `${BASE_URL}api/v1/Dictionary/${workspaceId}`,
     );
   },
 
@@ -36,7 +36,7 @@ export const vocabularyService = {
    */
   createVocabularyItem: (
     workspaceId: string,
-    item: Omit<VocabularyItem, "id">
+    item: Omit<VocabularyItem, "id">,
   ) => {
     return api.post<VocabularyItem>(`${BASE_URL}/${workspaceId}`, item);
   },
@@ -53,7 +53,7 @@ export const vocabularyService = {
    */
   searchVocabulary: (query: string) => {
     return api.get<VocabularyItem[]>(
-      `${BASE_URL}/search?query=${encodeURIComponent(query)}`
+      `${BASE_URL}/search?query=${encodeURIComponent(query)}`,
     );
   },
 };

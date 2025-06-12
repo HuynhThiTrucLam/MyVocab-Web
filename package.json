@@ -9,7 +9,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "debug": "vite --debug",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@google-cloud/translate": "^9.1.0",
@@ -35,6 +36,7 @@
     "embla-carousel-react": "^8.6.0",
     "firebase": "^11.3.1",
     "lucide-react": "^0.511.0",
+    "prettier": "^3.5.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-markdown": "^10.0.0",

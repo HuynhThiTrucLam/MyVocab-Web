@@ -1,4 +1,3 @@
-import { Answers } from "./Answer";
 import { QuestionListening } from "./Question";
 
 export interface UserAnswer {
@@ -86,7 +85,7 @@ export interface Result {
 
 // Mapping function to convert backend response to frontend Result type
 export const mapBackendResponseToResult = (
-  backendResponse: BackendResultResponse
+  backendResponse: BackendResultResponse,
 ): Result => {
   const result = {
     id: backendResponse.id,
@@ -119,7 +118,7 @@ export const mapBackendResponseToResult = (
           description: option.description,
           isSelected: option.id === questionResult.answerId,
           isCorrect: option.isCorrect,
-        })
+        }),
       ),
     })),
   };
@@ -128,7 +127,7 @@ export const mapBackendResponseToResult = (
 
 // Utility function to sort options by symbol A to Z
 export const sortOptionsBySymbol = <T extends { symbol: string }>(
-  options: T[]
+  options: T[],
 ): T[] => {
   return options.sort((a, b) => a.symbol.localeCompare(b.symbol));
 };

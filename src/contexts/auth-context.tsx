@@ -11,7 +11,7 @@ interface AuthContextType {
     email: string,
     password: string,
     phone: string,
-    username: string
+    username: string,
   ) => Promise<User | null>;
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
@@ -71,7 +71,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     email: string,
     password: string,
     phone: string,
-    username: string
+    username: string,
   ) => {
     try {
       const response = await auth.signUp(email, password, phone, username);
@@ -99,7 +99,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       await auth.signInWithGoogle();
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to sign in with Google"
+        err instanceof Error ? err.message : "Failed to sign in with Google",
       );
     }
   };

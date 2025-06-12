@@ -79,7 +79,7 @@ const QuestionDetail: React.FC = () => {
       try {
         if (!examId) throw new Error("Không có examId");
         const res = await fetch(
-          `${BASE_URL}api/QuestionPicture/QuestionTextImg?questionSetId=${examId}`
+          `${BASE_URL}api/QuestionPicture/QuestionTextImg?questionSetId=${examId}`,
         );
         if (!res.ok) throw new Error(await res.text());
 
@@ -96,12 +96,12 @@ const QuestionDetail: React.FC = () => {
                 q.imageOptions.map(async (opt) => ({
                   ...opt,
                   url: await fetchImageUrl(opt.imageCode),
-                }))
+                })),
               );
               return { ...q, imageOptions: updatedOptions };
             }
             return q;
-          })
+          }),
         );
 
         setQuestions(loadedQuestions);

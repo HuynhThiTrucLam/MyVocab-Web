@@ -29,7 +29,7 @@ export default function FlashCard() {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [slideDirection, setSlideDirection] = useState<null | "left" | "right">(
-    null
+    null,
   );
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const audioUrlRaw = (
@@ -43,7 +43,7 @@ export default function FlashCard() {
     try {
       const response = await api.get<VocabularyItem[]>(`/api/v1/Dictionary`);
       const filtered = response.filter(
-        (item) => item.workspaceId === workspaceId
+        (item) => item.workspaceId === workspaceId,
       );
       setVocabularyItems(filtered);
     } catch (error) {
@@ -86,7 +86,7 @@ export default function FlashCard() {
       await axios.patch(
         `${API_BASE_URL}api/v1/Dictionary/${currentCard.id}/learning-status`,
         JSON.stringify(true),
-        { headers: { "Content-Type": "application/json" } }
+        { headers: { "Content-Type": "application/json" } },
       );
       await fetchVocabularyItems();
     } catch (error) {
@@ -103,7 +103,7 @@ export default function FlashCard() {
       await axios.patch(
         `${API_BASE_URL}api/v1/Dictionary/${currentCard.id}/learning-status`,
         JSON.stringify(false),
-        { headers: { "Content-Type": "application/json" } }
+        { headers: { "Content-Type": "application/json" } },
       );
       await fetchVocabularyItems();
     } catch (error) {

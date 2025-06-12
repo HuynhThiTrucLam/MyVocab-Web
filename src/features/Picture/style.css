@@ -319,7 +319,9 @@ body {
   height: 150px;
   object-fit: cover;
   border-radius: 10px;
-  transition: transform 0.2s, border-color 0.2s;
+  transition:
+    transform 0.2s,
+    border-color 0.2s;
 }
 
 .image-option:hover {

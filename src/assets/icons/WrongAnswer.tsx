@@ -1,4 +1,3 @@
-
 interface WrongAnswerProps {
   className?: string;
 }

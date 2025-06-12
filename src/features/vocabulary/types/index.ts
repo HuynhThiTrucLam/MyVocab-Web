@@ -41,4 +41,4 @@ export interface VocabularyRowProps {
   isAudioPlaying: (url: string) => boolean;
   onDeleteItem: (id: string) => void;
   index: number;
-} 
+}

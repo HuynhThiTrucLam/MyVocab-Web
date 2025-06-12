@@ -123,7 +123,7 @@ export default function SignInPage() {
             userEmail,
             userUid,
             user.phoneNumber || DEFAULT_PHONE_NUMBER,
-            user.displayName?.split(" ").join("") || ""
+            user.displayName?.split(" ").join("") || "",
           );
           if (userResponse) {
             navigate("/");

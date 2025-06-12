@@ -1,8 +1,5 @@
 import { Answers } from "@/features/listening-exam/types/Answer";
-import {
-  QuestionListening,
-  QuestionListeningResponse,
-} from "@/features/listening-exam/types/Question";
+import { QuestionListeningResponse } from "@/features/listening-exam/types/Question";
 import { useState } from "react";
 import Checklist from "./Checklist/Checklist";
 import styles from "./style.module.scss";

@@ -54,7 +54,7 @@ export function useAudioPlayer() {
         audioRef.current = null;
       }
     },
-    [isPlaying]
+    [isPlaying],
   );
 
   /**
@@ -76,4 +76,4 @@ export function useAudioPlayer() {
     stopAudio,
     isPlayingUrl: (url: string) => isPlaying && currentAudioUrl === url,
   };
-} 
+}

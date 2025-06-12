@@ -35,7 +35,7 @@ export const workspaceService = {
   updateWorkspace: (workspaceId: string, workspace: WorkspaceInput) => {
     return api.put<Workspace>(
       `${BASE_URL}api/v1/Workspace/${workspaceId}`,
-      workspace
+      workspace,
     );
   },
 

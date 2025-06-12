@@ -20,7 +20,9 @@ const TestResultsPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [resultData, setResultData] = useState<UserTestSubmitResponse | null>(null);
+  const [resultData, setResultData] = useState<UserTestSubmitResponse | null>(
+    null,
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -30,8 +32,13 @@ const TestResultsPage: React.FC = () => {
       setError(null);
 
       // Try to get data from navigation state first (passed from TestPage on submit)
-      if (location.state && (location.state as { resultData: UserTestSubmitResponse }).resultData) {
-        setResultData((location.state as { resultData: UserTestSubmitResponse }).resultData);
+      if (
+        location.state &&
+        (location.state as { resultData: UserTestSubmitResponse }).resultData
+      ) {
+        setResultData(
+          (location.state as { resultData: UserTestSubmitResponse }).resultData,
+        );
         setIsLoading(false);
         return;
       }
@@ -44,10 +51,13 @@ const TestResultsPage: React.FC = () => {
       }
 
       try {
-        const response = await fetch(`${API_BASE_URL}/usertests/submit/${userTestId}`, {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        });
+        const response = await fetch(
+          `${API_BASE_URL}/usertests/submit/${userTestId}`,
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          },
+        );
 
         if (!response.ok) {
           if (response.status === 404) {
@@ -70,7 +80,7 @@ const TestResultsPage: React.FC = () => {
   }, [userTestId, location.state]);
 
   const handleGoHome = () => {
-    navigate('/');
+    navigate("/");
   };
 
   const handleViewDetails = () => {
@@ -82,18 +92,25 @@ const TestResultsPage: React.FC = () => {
   }
 
   if (error) {
-    return <div className={styles.container} style={{ color: 'red' }}>Lỗi: {error}</div>;
+    return (
+      <div className={styles.container} style={{ color: "red" }}>
+        Lỗi: {error}
+      </div>
+    );
   }
 
   if (!resultData) {
-    return <div className={styles.container}>Không có dữ liệu kết quả bài thi.</div>;
+    return (
+      <div className={styles.container}>Không có dữ liệu kết quả bài thi.</div>
+    );
   }
 
-  const { totalQuestions, correctAnswers, timeTaken, unansweredCount } = resultData;
+  const { totalQuestions, correctAnswers, unansweredCount } = resultData;
 
   // Calculate incorrect answers (answered but wrong)
-  const incorrectAnswers = totalQuestions - correctAnswers - (unansweredCount || 0);
-  
+  const incorrectAnswers =
+    totalQuestions - correctAnswers - (unansweredCount || 0);
+
   // Use provided unansweredCount or default to 0
   const unansweredQuestions = unansweredCount || 0;
 
@@ -101,20 +118,25 @@ const TestResultsPage: React.FC = () => {
   const status = correctAnswers >= 3 ? "Tốt" : "Chưa tốt";
 
   // Format time as MM:SS
-  const minutes = Math.floor(timeTaken / 60);
-  const seconds = Math.floor(timeTaken % 60);
-  const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  // const minutes = Math.floor(timeTaken / 60);
+  // const seconds = Math.floor(timeTaken % 60);
 
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Kết quả kiểm tra</h1>
 
       <div className={styles.illustration}>
-        <img src="" alt="Thinking Person" className={styles.illustrationImage} />
+        <img
+          src=""
+          alt="Thinking Person"
+          className={styles.illustrationImage}
+        />
       </div>
 
       <div className={styles.score}>
-        <span className={styles.scoreValue}>{correctAnswers} / {totalQuestions} câu</span>
+        <span className={styles.scoreValue}>
+          {correctAnswers} / {totalQuestions} câu
+        </span>
       </div>
 
       <div className={styles.detailsGrid}>
@@ -140,7 +162,10 @@ const TestResultsPage: React.FC = () => {
         <button onClick={handleGoHome} className={styles.exitButton}>
           Thoát
         </button>
-        <button onClick={handleViewDetails} className={styles.viewDetailsButton}>
+        <button
+          onClick={handleViewDetails}
+          className={styles.viewDetailsButton}
+        >
           Xem chi tiết bài làm
         </button>
       </div>

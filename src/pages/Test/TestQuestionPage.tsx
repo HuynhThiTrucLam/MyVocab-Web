@@ -57,7 +57,7 @@ const TestPage: React.FC = () => {
   const [answers, setAnswers] = useState<AnswerState>({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [markedQuestions, setMarkedQuestions] = useState<Set<number>>(
-    new Set()
+    new Set(),
   );
   const [userTestId, setUserTestId] = useState<number | null>(null);
   const [timeRemaining, setTimeRemaining] = useState({
@@ -72,23 +72,23 @@ const TestPage: React.FC = () => {
   // --- Derived Values ---
   const currentQuestion = useMemo(
     () => questions[currentQuestionIndex],
-    [questions, currentQuestionIndex]
+    [questions, currentQuestionIndex],
   );
   const isLastQuestion = useMemo(
     () => currentQuestionIndex === questions.length - 1,
-    [currentQuestionIndex, questions.length]
+    [currentQuestionIndex, questions.length],
   );
   const isFirstQuestion = useMemo(
     () => currentQuestionIndex === 0,
-    [currentQuestionIndex]
+    [currentQuestionIndex],
   );
   const selectedOptionId = useMemo(
     () => answers[currentQuestion?.questionId] || "",
-    [answers, currentQuestion?.questionId]
+    [answers, currentQuestion?.questionId],
   );
   const isCurrentQuestionMarked = useMemo(
     () => currentQuestion && markedQuestions.has(currentQuestion.questionId),
-    [currentQuestion, markedQuestions]
+    [currentQuestion, markedQuestions],
   );
 
   // --- API Helpers ---
@@ -105,7 +105,7 @@ const TestPage: React.FC = () => {
         throw error;
       }
     },
-    []
+    [],
   );
 
   // --- API Functions ---
@@ -121,7 +121,7 @@ const TestPage: React.FC = () => {
           userId: DEFAULT_USER_ID,
           testId: parseInt(testId),
         }),
-      }
+      },
     );
 
     const startData: UserTestStartResponse = data;
@@ -137,7 +137,7 @@ const TestPage: React.FC = () => {
   const fetchQuestions = useCallback(
     async (testId: string) => {
       const data = await fetchWithErrorHandling(
-        `${API_BASE_URL}/Tests/${testId}`
+        `${API_BASE_URL}/Tests/${testId}`,
       );
       return data.questions.map((q: any) => ({
         questionId: q.questionId,
@@ -147,14 +147,14 @@ const TestPage: React.FC = () => {
         audioUrl: q.audioUrl,
       }));
     },
-    [fetchWithErrorHandling]
+    [fetchWithErrorHandling],
   );
 
   const saveAnswer = useCallback(
     async (
       questionId: number,
       selectedAnswerId: number | null,
-      isMarked: boolean
+      isMarked: boolean,
     ) => {
       if (!userTestId) return;
 
@@ -169,14 +169,14 @@ const TestPage: React.FC = () => {
         }),
       });
     },
-    [userTestId, fetchWithErrorHandling]
+    [userTestId, fetchWithErrorHandling],
   );
 
   const fetchTestStatus = useCallback(async () => {
     if (!userTestId) return null;
 
     const data = await fetchWithErrorHandling(
-      `${API_BASE_URL}/usertests/status/${userTestId}`
+      `${API_BASE_URL}/usertests/status/${userTestId}`,
     );
     return data as UserTestStatusResponse;
   }, [userTestId, fetchWithErrorHandling]);
@@ -189,7 +189,7 @@ const TestPage: React.FC = () => {
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
 
     return data as UserTestSubmitResponse;
@@ -213,7 +213,7 @@ const TestPage: React.FC = () => {
 
       saveAnswer(questionId, selectedAnswerId, markedQuestions.has(questionId));
     },
-    [markedQuestions, saveAnswer]
+    [markedQuestions, saveAnswer],
   );
 
   const handleBlankInputChange = useCallback(
@@ -226,10 +226,10 @@ const TestPage: React.FC = () => {
       saveAnswer(
         currentQuestion.questionId,
         0,
-        markedQuestions.has(currentQuestion.questionId)
+        markedQuestions.has(currentQuestion.questionId),
       );
     },
-    [currentQuestion, markedQuestions, saveAnswer]
+    [currentQuestion, markedQuestions, saveAnswer],
   );
 
   const handleNavigation = useCallback(
@@ -245,13 +245,13 @@ const TestPage: React.FC = () => {
         return Math.max(prev - 1, 0);
       });
     },
-    [questions.length]
+    [questions.length],
   );
 
   const handleExit = useCallback(() => {
     if (
       window.confirm(
-        "Bạn có chắc chắn muốn thoát khỏi bài kiểm tra? Tiến độ của bạn có thể không được lưu nếu bạn không nộp bài."
+        "Bạn có chắc chắn muốn thoát khỏi bài kiểm tra? Tiến độ của bạn có thể không được lưu nếu bạn không nộp bài.",
       )
     ) {
       navigate("/");
@@ -315,8 +315,8 @@ const TestPage: React.FC = () => {
     const answerId = currentQuestion.questionText.includes("_____")
       ? 0
       : answers[questionId]
-      ? parseInt(answers[questionId])
-      : null;
+        ? parseInt(answers[questionId])
+        : null;
 
     saveAnswer(questionId, answerId, newMarkedState);
   }, [currentQuestion, answers, markedQuestions, saveAnswer]);
@@ -334,13 +334,12 @@ const TestPage: React.FC = () => {
       setError(null);
 
       try {
-        const startData = await startTest();
         const questionsData = await fetchQuestions(testId);
         setQuestions(questionsData);
       } catch (err: any) {
         console.error("Error initializing test:", err);
         setError(
-          `Không thể tải bài kiểm tra: ${err.message}. Vui lòng thử lại.`
+          `Không thể tải bài kiểm tra: ${err.message}. Vui lòng thử lại.`,
         );
         navigate("/");
       } finally {
@@ -371,7 +370,7 @@ const TestPage: React.FC = () => {
 
         const secondsFromApi = Math.max(
           0,
-          Math.floor(statusData.timeRemaining)
+          Math.floor(statusData.timeRemaining),
         );
         updateTimeDisplay(secondsFromApi);
 
@@ -415,7 +414,7 @@ const TestPage: React.FC = () => {
       }
       return content;
     },
-    [blankAnswerInput, handleBlankInputChange]
+    [blankAnswerInput, handleBlankInputChange],
   );
 
   const questionNavNumbers = useMemo(() => {
@@ -496,7 +495,7 @@ const TestPage: React.FC = () => {
                       onChange={() =>
                         handleOptionChange(
                           currentQuestion.questionId,
-                          option.answerId
+                          option.answerId,
                         )
                       }
                       className={styles.optionInput}
@@ -549,15 +548,15 @@ const TestPage: React.FC = () => {
                 <div className={styles.timeUnit}>
                   <div className={styles.timeValue}>
                     {formatTime(
-                      timeRemaining[unit as keyof typeof timeRemaining]
+                      timeRemaining[unit as keyof typeof timeRemaining],
                     )}
                   </div>
                   <div className={styles.timeLabel}>
                     {unit === "hours"
                       ? "Giờ"
                       : unit === "minutes"
-                      ? "Phút"
-                      : "Giây"}
+                        ? "Phút"
+                        : "Giây"}
                   </div>
                 </div>
                 {unit !== "seconds" && (

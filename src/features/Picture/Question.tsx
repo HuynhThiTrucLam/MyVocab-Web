@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import "../Picture/style.css";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../Picture/style.css";
 
 const BASE_URL = import.meta.env.VITE_BE_API_URL;
 
@@ -44,7 +44,7 @@ function Question() {
             headers: {
               "Content-Type": "application/json",
             },
-          }
+          },
         );
 
         if (userExamsResponse.ok) {
@@ -59,7 +59,7 @@ function Question() {
             headers: {
               "Content-Type": "application/json",
             },
-          }
+          },
         );
 
         if (!examsResponse.ok) throw new Error(`Lỗi: ${examsResponse.status}`);

@@ -23,7 +23,7 @@ const OtherExam = ({ otherExams }: OtherExamListProps) => {
 
   // Convert ListeningExamResponse to ListeningExam
   const convertToListeningExam = (
-    examResponse: ListeningExamResponse
+    examResponse: ListeningExamResponse,
   ): ListeningExam => {
     return {
       id: examResponse.id,
@@ -43,7 +43,7 @@ const OtherExam = ({ otherExams }: OtherExamListProps) => {
         const examDetailsPromises = otherExams.map(async (userExam) => {
           try {
             const examDetails = await listeningService.getListeningExamById(
-              userExam.examId
+              userExam.examId,
             );
             return {
               exam: convertToListeningExam(examDetails),
@@ -57,7 +57,7 @@ const OtherExam = ({ otherExams }: OtherExamListProps) => {
 
         const results = await Promise.all(examDetailsPromises);
         const validResults = results.filter(
-          (result) => result !== null
+          (result) => result !== null,
         ) as ExamWithStatus[];
         setExamsWithStatus(validResults);
       } catch (error) {
@@ -107,7 +107,7 @@ const OtherExam = ({ otherExams }: OtherExamListProps) => {
       <div className={styles.otherExamsList}>
         {examsWithStatus.map((examWithStatus, idx) => {
           const { mainColor, secondaryColor } = getExamColors(
-            examWithStatus.status
+            examWithStatus.status,
           );
           return (
             <TestItem

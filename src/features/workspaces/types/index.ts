@@ -37,4 +37,4 @@ export interface WorkspaceItemProps {
   onSelect: (id: string, title: string) => void;
   onDelete: (id: string) => Promise<boolean>;
   onEdit: (id: string, data: WorkspaceInput) => Promise<boolean>;
-} 
+}

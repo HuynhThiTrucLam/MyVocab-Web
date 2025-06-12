@@ -19,11 +19,10 @@ const ChecklistAnswer = ({
               result.options?.find((option) => option.isSelected === true)
                 ?.isCorrect === true
                 ? "bg-[#31E3A5] text-white"
-                : result.options?.find(
-                    (option) => option.isSelected === true
-                  )?.isCorrect === false
-                ? "bg-[#FF7C7C] text-white"
-                : "bg-gray-200 text-gray-500"
+                : result.options?.find((option) => option.isSelected === true)
+                      ?.isCorrect === false
+                  ? "bg-[#FF7C7C] text-white"
+                  : "bg-gray-200 text-gray-500"
             }`}
             key={result.id}
             onClick={() => {

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import "../Picture/style.css";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../Picture/style.css";
 
 type Proficiency = {
   id: string;

@@ -134,30 +134,30 @@ const ResultContent = ({ result }: ResultContentProps) => {
                             type="text"
                             value={
                               _result.options?.find(
-                                (option) => option.isSelected === true
+                                (option) => option.isSelected === true,
                               )?.description
                             }
                             className={`py-7 rounded-md font-bold text-black w-full pr-10
                               ${
                                 _result.options?.find(
-                                  (option) => option.isSelected === true
+                                  (option) => option.isSelected === true,
                                 )?.isCorrect === true
                                   ? "border-2 border-[#31E3A5] bg-[#e6fff5]"
                                   : ""
                               }
                               ${
                                 _result.options?.find(
-                                  (option) => option.isSelected === true
+                                  (option) => option.isSelected === true,
                                 )?.isCorrect === false
                                   ? "border-2 border-[#FF7C7C] bg-[#ffeaea]"
                                   : ""
                               }
                               ${
                                 _result.options?.find(
-                                  (option) => option.isSelected === true
+                                  (option) => option.isSelected === true,
                                 )?.isCorrect === null ||
                                 _result.options?.find(
-                                  (option) => option.isSelected === true
+                                  (option) => option.isSelected === true,
                                 )?.isCorrect === undefined
                                   ? "border-2 border-gray-300"
                                   : ""
@@ -166,14 +166,14 @@ const ResultContent = ({ result }: ResultContentProps) => {
                             disabled
                           />
                           {_result.options?.find(
-                            (option) => option.isSelected === true
+                            (option) => option.isSelected === true,
                           )?.isCorrect === true ? (
                             <span className="absolute top-1/2 right-6 transform translate-x-[8px] translate-y-[-12px]">
                               <RightAnswer />
                             </span>
                           ) : null}
                           {_result.options?.find(
-                            (option) => option.isSelected === true
+                            (option) => option.isSelected === true,
                           )?.isCorrect === false ? (
                             <span className="absolute top-1/2 right-6 transform translate-x-[8px] translate-y-[-12px]">
                               <WrongAnswer />

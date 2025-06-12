@@ -1,6 +1,6 @@
 import AudioIcon from "@/assets/icons/audio.svg";
-import PlayIcon from "@/assets/icons/PlayIcon.svg";
 import PauseIcon from "@/assets/icons/PauseIcon.svg";
+import PlayIcon from "@/assets/icons/PlayIcon.svg";
 import Answer from "@/components/Answer/Answer";
 import TimeAndAnwers from "@/components/TimeAndAnwser/TimeAndAnwers";
 import { Button } from "@/components/ui/button";
@@ -16,21 +16,19 @@ import {
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { useAuth } from "@/contexts/auth-context";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { listeningService } from "../../api/listening-service";
 import { Answers } from "../../types/Answer";
 import { ListeningExamResponse } from "../../types/ListeningExam";
-import { SelectedOption } from "../../types/Question";
 import {
-  ResultRequest,
-  UserAnswer,
   BackendResultResponse,
-  mapBackendResponseToResult,
+  ResultRequest,
   sortOptionsBySymbol,
+  UserAnswer,
 } from "../../types/Result";
 import Notification from "./Notification";
 import styles from "./styles.module.scss";
-import { listeningService } from "../../api/listening-service";
 
 interface TestingContentProps {
   exam: ListeningExamResponse;
@@ -59,7 +57,6 @@ const TestingContent = ({
   const [isTimeUp, setIsTimeUp] = useState(false);
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   const [isEmpty, setIsEmpty] = useState(true); // Start as true, set to false when user chooses any answer
-  const [selectedAnswers, setSelectedAnswers] = useState<SelectedOption>();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmittingSuccess, setIsSubmittingSuccess] = useState(false);
@@ -73,10 +70,6 @@ const TestingContent = ({
   const [audioLoading, setAudioLoading] = useState(false);
   const [audioError, setAudioError] = useState<string | null>(null);
   const [isSeeking, setIsSeeking] = useState(false);
-
-  // Add navigation states
-  const [canScrollPrev, setCanScrollPrev] = useState(false);
-  const [canScrollNext, setCanScrollNext] = useState(false);
 
   // Create refs for parent handlers to avoid dependency issues
   const handlePlayRef = useRef(handlePlay);
@@ -104,8 +97,8 @@ const TestingContent = ({
       prev.map((answer) =>
         answer.questionId === questionId
           ? { ...answer, isMarked: !answer.isMarked }
-          : answer
-      )
+          : answer,
+      ),
     );
   };
 
@@ -138,8 +131,8 @@ const TestingContent = ({
       prev.map((answer) =>
         answer.questionId === exam.questions[currentIndex].id
           ? { ...answer, answer: value }
-          : answer
-      )
+          : answer,
+      ),
     );
   };
 
@@ -164,7 +157,7 @@ const TestingContent = ({
   const convertTimeToMinutes = (
     hours: number,
     minutes: number,
-    seconds: number
+    seconds: number,
   ) => {
     return hours * 60 + minutes + seconds / 60;
   };
@@ -217,7 +210,7 @@ const TestingContent = ({
         (answer) =>
           answer.answer &&
           answer.answer.trim() !== "" &&
-          isValidGuid(answer.answer)
+          isValidGuid(answer.answer),
       ).map((answer) => ({
         questionId: answer.questionId,
         answerId: answer.answer!,
@@ -385,7 +378,7 @@ const TestingContent = ({
         errorMessage: audio.error?.message,
       });
       setAudioError(
-        `Failed to load audio: ${audio.error?.message || "Unknown error"}`
+        `Failed to load audio: ${audio.error?.message || "Unknown error"}`,
       );
       setAudioLoading(false);
     };
@@ -441,10 +434,6 @@ const TestingContent = ({
       setCurrentIndex(index);
       const questionId = exam.questions[index].id;
       ensureQuestionInList(questionId);
-
-      // Update navigation states
-      setCanScrollPrev(emblaApi.canScrollPrev());
-      setCanScrollNext(emblaApi.canScrollNext());
     };
 
     emblaApi.on("select", onSelect);
@@ -533,10 +522,10 @@ const TestingContent = ({
                 audioLoading
                   ? "Loading audio..."
                   : audioError
-                  ? "Audio error - check your connection"
-                  : isPlaying
-                  ? "Pause audio (Spacebar)"
-                  : "Play audio (Spacebar)"
+                    ? "Audio error - check your connection"
+                    : isPlaying
+                      ? "Pause audio (Spacebar)"
+                      : "Play audio (Spacebar)"
               }
             >
               <img
@@ -589,11 +578,11 @@ const TestingContent = ({
                   "Loading..."
                 ) : duration > 0 ? (
                   `${Math.floor(currentTime / 60)}:${Math.floor(
-                    currentTime % 60
+                    currentTime % 60,
                   )
                     .toString()
                     .padStart(2, "0")} / ${Math.floor(
-                    duration / 60
+                    duration / 60,
                   )}:${Math.floor(duration % 60)
                     .toString()
                     .padStart(2, "0")}`
@@ -631,7 +620,6 @@ const TestingContent = ({
                             description={option.description}
                             handleClick={() => {
                               setIsEmpty(false); // User has chosen an answer
-                              setSelectedAnswers(option);
                               setExam({
                                 ...exam,
                                 questions: exam.questions.map((_question) => {
@@ -643,7 +631,7 @@ const TestingContent = ({
                                         (_option) => ({
                                           ..._option,
                                           isSelected: _option.id === option.id,
-                                        })
+                                        }),
                                       ),
                                     };
                                   }
@@ -658,13 +646,13 @@ const TestingContent = ({
                                 prev.map((answer) =>
                                   answer.questionId === question.id
                                     ? { ...answer, answer: option.id }
-                                    : answer
-                                )
+                                    : answer,
+                                ),
                               );
                             }}
                             isSelected={option.isSelected}
                           />
-                        )
+                        ),
                       )
                     ) : (
                       <div className="flex flex-col gap-4">
@@ -684,7 +672,7 @@ const TestingContent = ({
                     className={`${styles.markToReview} ${
                       ListOfAnswers.find(
                         (answer) =>
-                          answer.questionId === question.id && answer.isMarked
+                          answer.questionId === question.id && answer.isMarked,
                       )
                         ? styles.marked
                         : ""

@@ -1,5 +1,3 @@
-
-
 interface RightAnswerProps {
   className?: string;
 }

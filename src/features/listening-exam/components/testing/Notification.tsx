@@ -1,4 +1,6 @@
-import React from "react";
+import successLottie from "@/assets/successfull-animate.json";
+import { Spinner } from "@/components/Spinner";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,11 +9,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import Lottie from "lottie-react";
 import styles from "./styles.module.scss";
-import { Spinner } from "@/components/Spinner";
-import successLottie from "@/assets/successfull-animate.json";
 
 interface NotificationProps {
   type: "time-up" | "submit";
@@ -98,8 +97,8 @@ const Notification = ({
                 {isSubmitting
                   ? ""
                   : isEmpty
-                  ? "Bạn chưa chọn đáp án nào"
-                  : "Bạn có chắc chắn muốn nộp bài?"}
+                    ? "Bạn chưa chọn đáp án nào"
+                    : "Bạn có chắc chắn muốn nộp bài?"}
               </DialogTitle>
               <DialogDescription>
                 {isSubmitting ? (

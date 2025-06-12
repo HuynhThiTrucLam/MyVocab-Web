@@ -16,7 +16,7 @@ export const listeningService = {
   getProficiencyList: async () => {
     try {
       const response = await api.get<Band[]>(
-        `${BASE_URL}api/Proficiency/Proficiency/skill?skill=Listening`
+        `${BASE_URL}api/Proficiency/Proficiency/skill?skill=Listening`,
       );
 
       const sortedResponse = response.sort((a: any, b: any) => {
@@ -38,7 +38,7 @@ export const listeningService = {
   getListeningExamList: async (proficiencyId: string) => {
     try {
       const response = await api.get<ListeningExam[]>(
-        `${BASE_URL}api/Exam/listenings?proficiencyId=${proficiencyId}`
+        `${BASE_URL}api/Exam/listenings?proficiencyId=${proficiencyId}`,
       );
       return response.map((item: any) => ({
         id: item.id,
@@ -62,7 +62,7 @@ export const listeningService = {
   getListeningExamById: async (examId: string) => {
     try {
       const response = await api.get<any>(
-        `${BASE_URL}api/Exam/listening/${examId}`
+        `${BASE_URL}api/Exam/listening/${examId}`,
       );
       var listeningExam: ListeningExamResponse = {
         id: response.id,
@@ -90,7 +90,7 @@ export const listeningService = {
               id: option.id,
               symbol: option.symbol,
               description: option.description,
-            })
+            }),
           ),
         })),
       };
@@ -106,7 +106,7 @@ export const listeningService = {
       //call getUserExam and then filter to ecept examId
       const userExamList = await listeningService.getUserExam(userId);
       const filteredExams = userExamList.data.filter(
-        (exam) => exam.examId !== examId
+        (exam) => exam.examId !== examId,
       );
       return filteredExams;
     } catch (error) {}
@@ -115,7 +115,7 @@ export const listeningService = {
   getUserExam: async (userId: string): Promise<UserExamList> => {
     try {
       const response = await api.get<ListeningUserExam[]>(
-        `${BASE_URL}api/UserExam/listening?userId=${userId}`
+        `${BASE_URL}api/UserExam/listening?userId=${userId}`,
       );
 
       return {
@@ -145,7 +145,7 @@ export const listeningService = {
 
       const response = await api.post<BackendResultResponse>(
         `${BASE_URL}api/UserExam/listening`,
-        requestData
+        requestData,
       );
       return response;
     } catch (error) {
@@ -160,7 +160,7 @@ export const listeningService = {
   getResult: async (resultId: string): Promise<Result> => {
     try {
       const backendResponse = await api.get<BackendResultResponse>(
-        `${BASE_URL}api/UserExam/listening/${resultId}`
+        `${BASE_URL}api/UserExam/listening/${resultId}`,
       );
       return mapBackendResponseToResult(backendResponse);
     } catch (error) {
@@ -176,7 +176,7 @@ export const listeningService = {
       if (question.options && question.options.length > 0) {
         // For multiple choice questions, count the number of options marked as correct
         correctCount += question.options.filter(
-          (opt) => opt.isCorrect === true && opt.isSelected === true
+          (opt) => opt.isCorrect === true && opt.isSelected === true,
         ).length;
       } else if (question.type && question.type.isCorrect === true) {
         // For other question types (like fill-in-the-blank), count as 1 if isCorrect is true
@@ -193,7 +193,7 @@ export const listeningService = {
     for (const question of result.results) {
       if (question.options && question.options.length > 0) {
         incorrectCount += question.options.filter(
-          (opt) => opt.isCorrect === false && opt.isSelected === true
+          (opt) => opt.isCorrect === false && opt.isSelected === true,
         ).length;
       } else if (question.type && question.type.isCorrect === false) {
         incorrectCount += 1;

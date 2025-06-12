@@ -61,7 +61,7 @@ export default function WorkspaceDetails() {
     (word: string) => {
       navigate(`/dictionary?word=${word}`);
     },
-    [navigate]
+    [navigate],
   );
 
   // Handle title update
@@ -82,7 +82,7 @@ export default function WorkspaceDetails() {
       const currentPath = location.pathname;
       const basePath = currentPath.substring(
         0,
-        currentPath.lastIndexOf("/") + 1
+        currentPath.lastIndexOf("/") + 1,
       );
       navigate(`${basePath}${encodeURIComponent(title.trim())}`, {
         state: { workspaceId },

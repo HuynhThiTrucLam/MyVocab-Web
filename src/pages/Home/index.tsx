@@ -98,7 +98,7 @@ export default function Home() {
             </CardContent>
           </Card>
         </Link>
-         <Link to="/picture">
+        <Link to="/picture">
           <Card className={styles.featureCard}>
             <CardContent className={styles.cardContent}>
               <div className={styles.iconWrapper}>

@@ -56,7 +56,7 @@ function useWorkspaces() {
       if (isAxiosError(error)) {
         console.error(
           "Error loading workspaces:",
-          error.response?.data || error.message
+          error.response?.data || error.message,
         );
         toast({
           title: "Lỗi",
@@ -124,7 +124,7 @@ function useWorkspaces() {
         setIsLoading(false);
       }
     },
-    [user?.id, toast]
+    [user?.id, toast],
   );
 
   const deleteWorkspace = useCallback(
@@ -155,7 +155,7 @@ function useWorkspaces() {
         setIsLoading(false);
       }
     },
-    [toast]
+    [toast],
   );
 
   useEffect(() => {
@@ -176,7 +176,7 @@ interface DeleteDialogProps {
   workspace: WorkspaceItem;
   onDelete: (
     workspace: WorkspaceItem,
-    e: React.MouseEvent<HTMLButtonElement>
+    e: React.MouseEvent<HTMLButtonElement>,
   ) => void;
   isLoading: boolean;
 }
@@ -203,7 +203,7 @@ function DeleteWorkspaceDialog({
                   bubbles: true,
                   cancelable: true,
                   view: window,
-                })
+                }),
               );
             }
           }}
@@ -236,7 +236,6 @@ function DeleteWorkspaceDialog({
 }
 
 export function WorkspaceList() {
-  const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { workspaces, isLoading, addWorkspace, deleteWorkspace } =
@@ -261,7 +260,7 @@ export function WorkspaceList() {
       setError("");
       setIsOpenDialog(open);
     },
-    [newWorkspaceName]
+    [newWorkspaceName],
   );
 
   const handleInputChange = useCallback(
@@ -269,7 +268,7 @@ export function WorkspaceList() {
       setNewWorkspaceName(e.target.value);
       setError("");
     },
-    []
+    [],
   );
 
   const navigateToWorkspace = useCallback(
@@ -286,7 +285,7 @@ export function WorkspaceList() {
         state: { workspaceId: workspace.id },
       });
     },
-    [navigate, toast]
+    [navigate, toast],
   );
 
   const startNewWorkspace = useCallback(() => {
@@ -312,7 +311,7 @@ export function WorkspaceList() {
   const handleDeleteWorkspace = useCallback(
     async (
       workspace: WorkspaceItem,
-      e: React.MouseEvent<HTMLButtonElement>
+      e: React.MouseEvent<HTMLButtonElement>,
     ) => {
       e.stopPropagation();
       e.preventDefault();
@@ -327,7 +326,7 @@ export function WorkspaceList() {
 
       await deleteWorkspace(workspace.id);
     },
-    [deleteWorkspace, toast]
+    [deleteWorkspace, toast],
   );
 
   // Memoize the workspace cards to prevent unnecessary re-renders
@@ -388,7 +387,7 @@ export function WorkspaceList() {
         </div>
       </div>
     ),
-    [startNewWorkspace]
+    [startNewWorkspace],
   );
 
   const newWorkspaceForm = useMemo(
@@ -484,7 +483,7 @@ export function WorkspaceList() {
       isOpenDialog,
       handleAddWorkspace,
       handleExitWorkspace,
-    ]
+    ],
   );
 
   if (isLoading && workspaces.length === 0) {

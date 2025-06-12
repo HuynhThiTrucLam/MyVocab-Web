@@ -48,15 +48,27 @@ export default function App() {
               <Route path="/exams" element={<Exams />} />
               <Route path="/testing/:id" element={<TestingIntro />} />
               <Route path="/result/:id" element={<ResultIntro />} />
-              <Route path="/resultReading/:submissionId" element={<ResultIntroReading />} />
-              <Route path="/review-submission/:submissionId" element={<SubmissionDetails />} />
+              <Route
+                path="/resultReading/:submissionId"
+                element={<ResultIntroReading />}
+              />
+              <Route
+                path="/review-submission/:submissionId"
+                element={<SubmissionDetails />}
+              />
 
               {/* <Route path="/reading-tests" element={<ReadingTestList />} /> New route for list */}
               <Route path="/translation" element={<Translation />} />
               <Route path="/reading" element={<ReadingTab />} />
-              <Route path="/reading-test/:id" element={<ReadingTestInterface />} />
+              <Route
+                path="/reading-test/:id"
+                element={<ReadingTestInterface />}
+              />
               <Route path="/test/:testId" element={<TestQuestionPage />} />
-              <Route path="/test-results/:userTestId" element={<TestResultsPage />} />
+              <Route
+                path="/test-results/:userTestId"
+                element={<TestResultsPage />}
+              />
               <Route path="/test/:workspaceId" element={<TestPage />} />
               {/*Tin  */}
               <Route path="/picture" element={<Picture />} />

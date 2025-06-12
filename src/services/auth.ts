@@ -26,7 +26,7 @@ export class AuthError extends Error {
 const handleAuthError = (error: unknown): never => {
   if (axios.isAxiosError(error)) {
     throw new AuthError(
-      error.response?.data?.message || "Authentication failed"
+      error.response?.data?.message || "Authentication failed",
     );
   }
   throw new AuthError("An unexpected error occurred");
@@ -81,7 +81,7 @@ export const auth = {
     email: string,
     password: string,
     phone: string,
-    username: string
+    username: string,
   ) => {
     try {
       const data: any = await api.post(`/${api_version}/Account`, {
@@ -125,7 +125,7 @@ export const auth = {
   refreshToken: async () => {
     try {
       const { data } = await axios.post<AuthResponse>(
-        `${import.meta.env.VITE_API_URL}/auth/refresh`
+        `${import.meta.env.VITE_API_URL}/auth/refresh`,
       );
       localStorage.setItem("token", data.token);
       return data;

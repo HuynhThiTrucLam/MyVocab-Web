@@ -65,7 +65,7 @@ const VocabularyTable = memo(function VocabularyTable({
         </TableRow>
       </TableHeader>
     ),
-    [isAllSelected, toggleAllSelection]
+    [isAllSelected, toggleAllSelection],
   );
 
   // Memoize the table body content
@@ -95,7 +95,7 @@ const VocabularyTable = memo(function VocabularyTable({
       playAudio,
       isPlayingUrl,
       deleteVocabularyItem,
-    ]
+    ],
   );
 
   if (vocabularyItems.length === 0) {
@@ -103,7 +103,11 @@ const VocabularyTable = memo(function VocabularyTable({
   }
 
   return (
-    <div className={styles.tableContainer} role="region" aria-label="Danh sách từ vựng">
+    <div
+      className={styles.tableContainer}
+      role="region"
+      aria-label="Danh sách từ vựng"
+    >
       <Table>
         {tableHeader}
         {tableContent}
@@ -112,4 +116,4 @@ const VocabularyTable = memo(function VocabularyTable({
   );
 });
 
-export default VocabularyTable; 
+export default VocabularyTable;

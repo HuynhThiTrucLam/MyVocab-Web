@@ -79,7 +79,7 @@ export function SignUpForm() {
         formData.email,
         formData.password,
         formData.phone,
-        formData.username
+        formData.username,
       );
       if (user) {
         toast({

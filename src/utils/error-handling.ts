@@ -1,10 +1,10 @@
-import { isAxiosError } from 'axios';
+import { isAxiosError } from "axios";
 
 // Type for toast function based on your existing useToast hook
 interface ToastOptions {
   title: string;
   description: string;
-  variant?: 'default' | 'destructive';
+  variant?: "default" | "destructive";
 }
 
 type ToastFunction = (options: ToastOptions) => void;
@@ -17,9 +17,9 @@ type ToastFunction = (options: ToastOptions) => void;
  * @returns The error message string
  */
 export function handleApiError(
-  error: unknown, 
-  toast: ToastFunction, 
-  customMessage?: string
+  error: unknown,
+  toast: ToastFunction,
+  customMessage?: string,
 ): string {
   let errorMsg = customMessage || "Đã xảy ra lỗi không mong muốn";
 
@@ -27,16 +27,16 @@ export function handleApiError(
     // Extract error message from response if available
     const responseMessage = error.response?.data?.message;
     errorMsg = responseMessage || errorMsg;
-    
+
     // Log detailed error information
     console.error(
-      `API Error (${error.response?.status}):`, 
+      `API Error (${error.response?.status}):`,
       error.response?.data || error.message,
-      { 
+      {
         url: error.config?.url,
         method: error.config?.method,
-        status: error.response?.status
-      }
+        status: error.response?.status,
+      },
     );
   } else if (error instanceof Error) {
     // Handle standard JavaScript errors
@@ -62,32 +62,29 @@ export function handleApiError(
  * @returns Functions to manage loading states
  */
 export function createLoadingStateManager<T extends Record<string, boolean>>(
-  initialStates: T
+  initialStates: T,
 ) {
   let states = { ...initialStates };
   let setStates: React.Dispatch<React.SetStateAction<T>> | null = null;
-  
-  const setLoadingState = (
-    key: keyof T, 
-    value: boolean
-  ) => {
+
+  const setLoadingState = (key: keyof T, value: boolean) => {
     if (setStates) {
-      setStates(prev => ({ ...prev, [key]: value }));
+      setStates((prev) => ({ ...prev, [key]: value }));
     } else {
       states = { ...states, [key]: value };
     }
   };
-  
+
   const registerSetStates = (
-    setState: React.Dispatch<React.SetStateAction<T>>
+    setState: React.Dispatch<React.SetStateAction<T>>,
   ) => {
     setStates = setState;
     setState(states); // Sync any changes made before registration
   };
-  
+
   return {
     states,
     setLoadingState,
     registerSetStates,
   };
-} 
+}

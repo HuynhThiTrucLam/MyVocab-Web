@@ -33,14 +33,14 @@ export default function Dictionary() {
         setError(null);
         try {
           const response = await axios.get<WordData[]>(
-            `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
+            `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`,
           );
           const meanings = response.data[0].meanings;
           // merge all meanings have the same partOfSpeech
           const mergedMeanings = meanings.reduce(
             (acc: Meaning[], curr: Meaning) => {
               const existing = acc.find(
-                (m) => m.partOfSpeech === curr.partOfSpeech
+                (m) => m.partOfSpeech === curr.partOfSpeech,
               );
               if (existing) {
                 existing.definitions.push(...curr.definitions);
@@ -49,7 +49,7 @@ export default function Dictionary() {
               }
               return acc;
             },
-            []
+            [],
           );
           const phonetics = response.data[0].phonetics;
           // merge all phonetics have the same text and have audio
@@ -63,7 +63,7 @@ export default function Dictionary() {
               }
               return acc;
             },
-            []
+            [],
           );
           setWordData({
             ...response.data[0],
@@ -75,7 +75,7 @@ export default function Dictionary() {
             setError(
               err.response?.status === 404
                 ? "Word not found"
-                : "An error occurred while fetching the word"
+                : "An error occurred while fetching the word",
             );
           } else {
             setError("An unexpected error occurred");
@@ -96,7 +96,7 @@ export default function Dictionary() {
         navigate(`/dictionary?word=${search}`);
       }
     },
-    [navigate]
+    [navigate],
   );
 
   const getAudioUrl = useMemo(() => {

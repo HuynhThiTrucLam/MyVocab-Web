@@ -1,5 +1,5 @@
 import { Topic } from "./Exams";
-import { QuestionListening, QuestionListeningResponse } from "./Question";
+import { QuestionListeningResponse } from "./Question";
 
 export interface ListeningExam {
   id: string;

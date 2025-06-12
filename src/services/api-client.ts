@@ -23,7 +23,7 @@ apiClient.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 // Add response interceptor for common error handling
@@ -37,7 +37,7 @@ apiClient.interceptors.response.use(
       window.location.href = "/signin";
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 // Type-safe request function
@@ -53,10 +53,10 @@ export async function apiRequest<T>(config: AxiosRequestConfig): Promise<T> {
       error:
         error instanceof AxiosError
           ? {
-            status: error.response?.status,
-            data: error.response?.data,
-            message: error.message,
-          }
+              status: error.response?.status,
+              data: error.response?.data,
+              message: error.message,
+            }
           : error,
     });
     throw error;
@@ -77,7 +77,7 @@ export const api = {
   patch: <T>(
     url: string,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig,
   ): Promise<T> => apiRequest<T>({ ...config, url, method: "PATCH", data }),
 
   delete: <T>(url: string, config?: AxiosRequestConfig): Promise<T> =>

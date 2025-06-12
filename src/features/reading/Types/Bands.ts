@@ -10,8 +10,7 @@ export const mockBand: Band[] = [
     id: "",
     name: "",
     band: "",
-    description:
-      " ",
+    description: " ",
   },
   // {
   //   id: "2",

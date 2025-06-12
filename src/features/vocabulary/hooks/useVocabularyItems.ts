@@ -12,13 +12,13 @@ export function useVocabularyItems(workspaceId?: string) {
   const [vocabularyItems, setVocabularyItems] = useState<VocabularyItem[]>([]);
   const [selectedVocabulary, setSelectedVocabulary] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Better loading state management
   const [loadingStates, setLoadingStates] = useState<VocabularyOperationState>({
     fetchingItems: false,
     deletingItem: false,
     deletingSelected: false,
-    savingItem: false
+    savingItem: false,
   });
 
   // Fetch vocabulary items
@@ -33,12 +33,12 @@ export function useVocabularyItems(workspaceId?: string) {
       return;
     }
 
-    setLoadingStates(prev => ({ ...prev, fetchingItems: true }));
+    setLoadingStates((prev) => ({ ...prev, fetchingItems: true }));
     setError(null);
 
     try {
       const data = await vocabularyService.getVocabularyItems(workspaceId);
-      
+
       if (Array.isArray(data)) {
         setVocabularyItems(data);
       } else {
@@ -52,13 +52,13 @@ export function useVocabularyItems(workspaceId?: string) {
       }
     } catch (error) {
       const errorMsg = handleApiError(
-        error, 
-        toast, 
-        "Không thể tải danh sách từ vựng. Vui lòng thử lại!"
+        error,
+        toast,
+        "Không thể tải danh sách từ vựng. Vui lòng thử lại!",
       );
       setError(errorMsg);
     } finally {
-      setLoadingStates(prev => ({ ...prev, fetchingItems: false }));
+      setLoadingStates((prev) => ({ ...prev, fetchingItems: false }));
     }
   }, [workspaceId, toast]);
 
@@ -67,17 +67,17 @@ export function useVocabularyItems(workspaceId?: string) {
     async (itemId: string) => {
       if (!workspaceId || !itemId) return false;
 
-      setLoadingStates(prev => ({ ...prev, deletingItem: true }));
+      setLoadingStates((prev) => ({ ...prev, deletingItem: true }));
 
       try {
         // Call API to delete the vocabulary item
         await vocabularyService.deleteVocabularyItem(itemId);
 
         // Update the local state with optimistic UI update
-        setVocabularyItems(prev => prev.filter(item => item.id !== itemId));
+        setVocabularyItems((prev) => prev.filter((item) => item.id !== itemId));
 
         // If the item was selected, remove it from selections
-        setSelectedVocabulary(prev => prev.filter(id => id !== itemId));
+        setSelectedVocabulary((prev) => prev.filter((id) => id !== itemId));
 
         toast({
           title: "Thành công",
@@ -89,33 +89,33 @@ export function useVocabularyItems(workspaceId?: string) {
         handleApiError(error, toast, "Đã xảy ra lỗi khi xóa từ vựng");
         return false;
       } finally {
-        setLoadingStates(prev => ({ ...prev, deletingItem: false }));
+        setLoadingStates((prev) => ({ ...prev, deletingItem: false }));
       }
     },
-    [workspaceId, toast]
+    [workspaceId, toast],
   );
 
   // Delete multiple vocabulary items
   const deleteSelectedVocabulary = useCallback(async () => {
     if (selectedVocabulary.length === 0) return false;
 
-    setLoadingStates(prev => ({ ...prev, deletingSelected: true }));
+    setLoadingStates((prev) => ({ ...prev, deletingSelected: true }));
 
     try {
       // Store IDs before deletion for optimistic updates
       const idsToDelete = [...selectedVocabulary];
-      
+
       // Create array of delete promises
-      const deletePromises = idsToDelete.map(id => 
-        vocabularyService.deleteVocabularyItem(id)
+      const deletePromises = idsToDelete.map((id) =>
+        vocabularyService.deleteVocabularyItem(id),
       );
 
       // Execute all delete operations in parallel
       await Promise.all(deletePromises);
 
       // Update local state (optimistic UI update)
-      setVocabularyItems(prev => 
-        prev.filter(item => !idsToDelete.includes(item.id))
+      setVocabularyItems((prev) =>
+        prev.filter((item) => !idsToDelete.includes(item.id)),
       );
 
       // Clear selection after successful deletion
@@ -131,25 +131,25 @@ export function useVocabularyItems(workspaceId?: string) {
       handleApiError(error, toast, "Đã xảy ra lỗi khi xóa từ vựng");
       return false;
     } finally {
-      setLoadingStates(prev => ({ ...prev, deletingSelected: false }));
+      setLoadingStates((prev) => ({ ...prev, deletingSelected: false }));
     }
   }, [selectedVocabulary, toast]);
 
   // Toggle selection for all items
   const toggleAllSelection = useCallback(() => {
-    setSelectedVocabulary(prev =>
+    setSelectedVocabulary((prev) =>
       prev.length === vocabularyItems.length
         ? []
-        : vocabularyItems.map(item => item.id)
+        : vocabularyItems.map((item) => item.id),
     );
   }, [vocabularyItems]);
 
   // Toggle selection for a single item
   const toggleItemSelection = useCallback((itemId: string) => {
-    setSelectedVocabulary(prev =>
+    setSelectedVocabulary((prev) =>
       prev.includes(itemId)
-        ? prev.filter(id => id !== itemId)
-        : [...prev, itemId]
+        ? prev.filter((id) => id !== itemId)
+        : [...prev, itemId],
     );
   }, []);
 
@@ -169,13 +169,13 @@ export function useVocabularyItems(workspaceId?: string) {
     vocabularyItems,
     selectedVocabulary,
     error,
-    
+
     // Loading states
     isLoading: loadingStates.fetchingItems,
     isDeletingItem: loadingStates.deletingItem,
     isDeletingItems: loadingStates.deletingSelected,
     isSavingItem: loadingStates.savingItem,
-    
+
     // Actions
     toggleAllSelection,
     toggleItemSelection,
@@ -183,11 +183,12 @@ export function useVocabularyItems(workspaceId?: string) {
     deleteSelectedVocabulary,
     clearSelections,
     refetch: fetchVocabularyItems,
-    
+
     // Computed properties
-    isAllSelected: vocabularyItems.length > 0 && 
-                  selectedVocabulary.length === vocabularyItems.length,
+    isAllSelected:
+      vocabularyItems.length > 0 &&
+      selectedVocabulary.length === vocabularyItems.length,
     isItemSelected: (itemId: string) => selectedVocabulary.includes(itemId),
     hasSelections: selectedVocabulary.length > 0,
   };
-} 
+}

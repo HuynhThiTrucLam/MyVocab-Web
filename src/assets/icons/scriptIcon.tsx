@@ -1,4 +1,3 @@
-
 interface ScriptIconProps {
   className?: string;
 }

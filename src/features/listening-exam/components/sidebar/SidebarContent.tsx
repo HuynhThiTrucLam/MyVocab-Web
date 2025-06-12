@@ -26,9 +26,8 @@ const SidebarContent = ({ activeBand }: SidebarContentProps) => {
 
     setIsLoading(true);
     try {
-      const examList = await listeningService.getListeningExamList(
-        proficiencyId
-      );
+      const examList =
+        await listeningService.getListeningExamList(proficiencyId);
       setExamList(examList);
     } catch (error) {
       console.error("Failed to fetch exams:", error);
@@ -60,7 +59,7 @@ const SidebarContent = ({ activeBand }: SidebarContentProps) => {
   // Helper function to get colors based on exam status
   const getExamColors = (examId: string) => {
     const userExam = userExamList?.data.find(
-      (userExam) => userExam.examId === examId
+      (userExam) => userExam.examId === examId,
     );
 
     if (!userExam) {

@@ -82,7 +82,7 @@ export default function WorkspaceTitle({
         handleCancelEditTitle();
       }
     },
-    [handleSaveTitle, handleCancelEditTitle]
+    [handleSaveTitle, handleCancelEditTitle],
   );
 
   return (

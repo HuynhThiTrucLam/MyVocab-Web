@@ -50,7 +50,7 @@ export function WordHeader({
   const fetchListWorkspace = async () => {
     try {
       const response: any[] = await api.get(
-        `/${api_version}/Workspace/${user?.id}`
+        `/${api_version}/Workspace/${user?.id}`,
       );
       setListWorkspace(response);
     } catch (error) {
@@ -95,7 +95,7 @@ export function WordHeader({
         const response = await api.post(`/${api_version}/Dictionary`, data);
         if (response) {
           const workspaceName = listWorkspace.find(
-            (workspace) => workspace.id === selectedWorkspace
+            (workspace) => workspace.id === selectedWorkspace,
           )?.name;
           toast({
             title: `Thêm từ vựng ${word} thành công vào danh sách ${workspaceName}`,

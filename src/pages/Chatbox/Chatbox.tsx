@@ -92,7 +92,9 @@ export function Chatbox() {
 
   const getDetailChatByChatId = async (chatId: string) => {
     try {
-      const response: any[] = await api.get(`/${api_version}/Chat/detail/${chatId}`);
+      const response: any[] = await api.get(
+        `/${api_version}/Chat/detail/${chatId}`,
+      );
       setDetailChat((_: any[]) => response);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -112,7 +114,10 @@ export function Chatbox() {
     setLoading(true);
 
     try {
-      const response: any = await api.post(`/${api_version}/Chat/request`, request);
+      const response: any = await api.post(
+        `/${api_version}/Chat/request`,
+        request,
+      );
 
       await fetchChatsData();
       handleSelectChat(response.chatId);

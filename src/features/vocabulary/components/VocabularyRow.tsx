@@ -37,7 +37,7 @@ const VocabularyRow = memo(function VocabularyRow({
         onPlayAudio(audioUrl);
       }
     },
-    [audioUrl, onPlayAudio]
+    [audioUrl, onPlayAudio],
   );
 
   const handleDetailClick = useCallback(
@@ -45,7 +45,7 @@ const VocabularyRow = memo(function VocabularyRow({
       e.stopPropagation();
       onNavigateToWord(item.word);
     },
-    [item.word, onNavigateToWord]
+    [item.word, onNavigateToWord],
   );
 
   const handleDeleteClick = useCallback((e: React.MouseEvent) => {
@@ -167,4 +167,4 @@ const VocabularyRow = memo(function VocabularyRow({
   );
 });
 
-export default VocabularyRow; 
+export default VocabularyRow;
