@@ -36,7 +36,7 @@
   }
 
   .dot {
-    color: #D1D5DB;
+    color: #d1d5db;
   }
 }
 
@@ -51,7 +51,8 @@
   transition: background-color 0.2s;
 
   &:hover {
-    background-color: #059669;
+    color: #000000;
+    background-color: #40e0ab;
   }
 }
 
@@ -70,7 +71,7 @@
 .progressBar {
   width: 100%;
   height: 4px;
-  background-color: #E5E7EB;
+  background-color: #e5e7eb;
   border-radius: 2px;
   overflow: hidden;
 }
@@ -133,7 +134,7 @@
 }
 
 .cardBack {
-  background: #F2F3F6;
+  background: #f2f3f6;
   color: #222;
   display: flex;
   flex-direction: column;
@@ -170,7 +171,7 @@
 
 .cardFront .instructionBar {
   width: 100%;
-  background: #F2F3F6;
+  background: #f2f3f6;
   color: #222;
   text-align: center;
   padding: 0.5rem 0;
@@ -199,7 +200,7 @@
 }
 
 .clickInstruction {
-  color: #6B7280;
+  color: #6b7280;
   font-size: 0.875rem;
 }
 
@@ -221,7 +222,7 @@
   transition: all 0.2s;
 
   &:hover {
-    background-color: #F3F4F6;
+    background-color: #f3f4f6;
   }
 
   // &.soundButton {
@@ -231,7 +232,7 @@
 
 .frontBar {
   width: 100%;
-  background: #F2F3F6;
+  background: #f2f3f6;
   color: #222;
   text-align: center;
   padding: 0.5rem 0;
@@ -247,7 +248,7 @@
   color: #222 !important;
 }
 
-.card.learned .cardBack .instructionBar{
+.card.learned .cardBack .instructionBar {
   background: #ffe066 !important;
   color: #222 !important;
 }
@@ -265,7 +266,7 @@
   font-size: 2rem;
   color: #40e0ab;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: background 0.2s;
   display: flex;
   align-items: center;
@@ -349,7 +350,7 @@
   color: #40e0ab;
   cursor: pointer;
   transition: background 0.2s, border 0.2s;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   &:hover:not(:disabled) {
     background: #e6fcf5;
     border-color: #059669;
@@ -378,16 +379,28 @@
   animation: slideLeft 0.4s forwards;
 }
 @keyframes slideLeft {
-  0% { transform: none; opacity: 1; }
-  100% { transform: translateX(-120%); opacity: 0; }
+  0% {
+    transform: none;
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
 }
 
 .slideRight {
   animation: slideRight 0.4s forwards;
 }
 @keyframes slideRight {
-  0% { transform: none; opacity: 1; }
-  100% { transform: translateX(120%); opacity: 0; }
+  0% {
+    transform: none;
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
 }
 
 .breadcrumb {
@@ -418,7 +431,6 @@
 
 .breadcrumbText:hover {
   font-size: 1.2rem;
-
 }
 
 .title {
@@ -495,13 +507,13 @@
 }
 
 .learnedButton {
-  background: #16a34a !important;
-  color: #fff !important;
-  border: 2px solid #16a34a !important;
+  background: #40e0ab !important;
+  color: #000 !important;
+  border: 2px solid #40e0ab !important;
   font-weight: 700;
-  box-shadow: 0 2px 8px rgba(22,163,74,0.08);
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.08);
 }
 .learnedButton:hover {
-  background: #15803d !important;
-  border-color: #15803d !important;
+  background: #40e0ab !important;
+  border-color: #40e0ab !important;
 }

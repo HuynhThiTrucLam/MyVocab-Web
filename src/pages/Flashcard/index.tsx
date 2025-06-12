@@ -84,7 +84,7 @@ export default function FlashCard() {
   const handleMarkAsLearned = async () => {
     try {
       await axios.patch(
-        `${API_BASE_URL}/api/v1/Dictionary/${currentCard.id}/learning-status`,
+        `${API_BASE_URL}api/v1/Dictionary/${currentCard.id}/learning-status`,
         JSON.stringify(true),
         { headers: { "Content-Type": "application/json" } }
       );
@@ -101,7 +101,7 @@ export default function FlashCard() {
   const handleMarkAsNotLearned = async () => {
     try {
       await axios.patch(
-        `${API_BASE_URL}/api/v1/Dictionary/${currentCard.id}/learning-status`,
+        `${API_BASE_URL}api/v1/Dictionary/${currentCard.id}/learning-status`,
         JSON.stringify(false),
         { headers: { "Content-Type": "application/json" } }
       );
