@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import '../Picture/style.css';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import "../Picture/style.css";
+import { useNavigate } from "react-router-dom";
 
 type Proficiency = {
   id: string;
@@ -9,20 +9,20 @@ type Proficiency = {
   description: string;
 };
 
+const BASE_URL = import.meta.env.VITE_BE_API_URL;
+
 function Picture() {
   const [proficiencies, setProficiencies] = useState<Proficiency[] | null>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const baseUrl = 'https://localhost:7063/api/Proficiency/';
-
   useEffect(() => {
     const fetchProficiencies = async () => {
       try {
-        const response = await fetch(`${baseUrl}Proficiency`, {
-          method: 'GET',
+        const response = await fetch(`${BASE_URL}api/Proficiency/Proficiency`, {
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         });
 
@@ -33,8 +33,8 @@ function Picture() {
         const data: Proficiency[] = await response.json();
         setProficiencies(data);
       } catch (error) {
-        console.error('Error fetching proficiencies:', error);
-        setError('Failed to load proficiencies');
+        console.error("Error fetching proficiencies:", error);
+        setError("Failed to load proficiencies");
         setProficiencies(null);
       } finally {
         setLoading(false);
@@ -47,9 +47,9 @@ function Picture() {
   const navigate = useNavigate();
 
   const handleProficiencyClick = (proficiency: Proficiency) => {
-    sessionStorage.setItem('proficiencyId', proficiency.id);
-    sessionStorage.setItem('proficiencyName', proficiency.name);
-    navigate('/topic');
+    sessionStorage.setItem("proficiencyId", proficiency.id);
+    sessionStorage.setItem("proficiencyName", proficiency.name);
+    navigate("/topic");
   };
 
   return (
@@ -71,8 +71,6 @@ function Picture() {
                 <div className="proficiency-info">
                   <p>Band: {proficiency.band}</p>
                   <h3>{proficiency.name}</h3>
-                
-                 
                 </div>
               </button>
             ))
@@ -84,7 +82,8 @@ function Picture() {
 
       <section className="message-section">
         <h2 className="welcome-message">
-          Welcome to our English class! Let&apos;s learn with pictures and have fun!
+          Welcome to our English class! Let&apos;s learn with pictures and have
+          fun!
         </h2>
       </section>
     </div>
