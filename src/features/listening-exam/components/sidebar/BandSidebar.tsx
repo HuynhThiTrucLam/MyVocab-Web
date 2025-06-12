@@ -21,7 +21,7 @@ const BandSidebar = ({ bands, activeBand, onSelect }: BandSidebarProps) => {
               : "hover:bg-[#e0f7f1]"
           }`}
         >
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 text-sm">
             <EXAMS className={styles.bandIcon} />
             {band.name}
           </div>

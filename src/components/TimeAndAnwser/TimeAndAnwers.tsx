@@ -1,5 +1,8 @@
 import { Answers } from "@/features/listening-exam/types/Answer";
-import { QuestionListening } from "@/features/listening-exam/types/Question";
+import {
+  QuestionListening,
+  QuestionListeningResponse,
+} from "@/features/listening-exam/types/Question";
 import { useState } from "react";
 import Checklist from "./Checklist/Checklist";
 import styles from "./style.module.scss";
@@ -11,7 +14,7 @@ interface TimeAndAnwersProps {
   second: number;
   handlePlay: () => void;
   handleStop: () => void;
-  listOfQuestions: QuestionListening[];
+  listOfQuestions: QuestionListeningResponse[];
   ListOfAnswers: Answers[];
   currentIndex: number;
   setCurrentIndex: (index: number) => void;
@@ -47,6 +50,7 @@ const TimeAndAnwers = ({
         <h3 className="text-left">Thời gian còn lại</h3>
         <Timer hour={hour} minute={minute} second={second} />
       </div>
+
       <div className="w-full flex flex-col gap-4">
         <h3 className="text-left mt-6">Danh sách câu hỏi</h3>
         <Checklist

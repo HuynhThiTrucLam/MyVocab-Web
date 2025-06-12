@@ -10,7 +10,6 @@ import Home from "./pages/Home";
 import Translation from "./pages/Translation";
 import { ScrollToTopProvider } from "./providers/ScrollToTopProvider";
 import { Toaster } from "@/components/ui/toaster";
-import { Chatbox } from "./pages/Chatbox/Chatbox";
 import Exams from "./pages/Exams/Exams";
 import TestingIntro from "./features/listening-exam/components/testing/TestingIntro";
 import ResultIntro from "./features/listening-exam/components/result/ResultIntro";
@@ -19,6 +18,11 @@ import ReadingTestInterface from "./features/reading/pages/ReadingTestInterface"
 import ResultIntroReading from "./features/reading/pages/ResultIntroReading";
 import SubmissionDetails from "./features/reading/pages/SubmissionDetails";
 // import ReadingTestList from "./features/reading/ReadingTestList";
+import { Chatbox } from "./pages/ChatBox/Chatbox";
+
+import TestQuestionPage from "./pages/Test/TestQuestionPage"; // trang danh sách các bài test
+import TestResultsPage from "./pages/TestResult/TestResultsPage"; // trang danh sách các bài test
+
 export default function App() {
   return (
     <AuthProvider>
@@ -41,6 +45,8 @@ export default function App() {
               <Route path="/translation" element={<Translation />} />
               <Route path="/reading" element={<ReadingTab />} />
               <Route path="/reading-test/:id" element={<ReadingTestInterface />} />
+              <Route path="/test/:testId" element={<TestQuestionPage />} />
+              <Route path="/test-results/:userTestId" element={<TestResultsPage />} />
             </Route>
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />

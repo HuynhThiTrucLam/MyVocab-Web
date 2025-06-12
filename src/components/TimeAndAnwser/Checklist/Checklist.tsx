@@ -1,9 +1,9 @@
 import { Answers } from "@/features/listening-exam/types/Answer";
-import { QuestionListening } from "@/features/listening-exam/types/Question";
+import { QuestionListeningResponse } from "@/features/listening-exam/types/Question";
 import styles from "./styles.module.scss";
 
 interface ChecklistProps {
-  listOfQuestions: QuestionListening[];
+  listOfQuestions: QuestionListeningResponse[];
   ListOfAnswers: Answers[];
   currentIndex: number;
   setCurrentIndex: (index: number) => void;
