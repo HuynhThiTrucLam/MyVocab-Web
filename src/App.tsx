@@ -24,6 +24,9 @@ import QuestionDetail from "./features/Picture/QuestionDetail";
 
 
 
+import TestQuestionPage from "./pages/Test/TestQuestionPage"; // trang danh sách các bài test
+import TestResultsPage from "./pages/TestResult/TestResultsPage"; // trang danh sách các bài test
+
 export default function App() {
   return (
     <AuthProvider>
@@ -47,6 +50,8 @@ export default function App() {
             <Route path="/question-detail" element={<QuestionDetail />} />
 
             
+                <Route path="/test/:testId" element={<TestQuestionPage />} />
+                <Route path="/test-results/:userTestId" element={<TestResultsPage />} />
             </Route>
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
