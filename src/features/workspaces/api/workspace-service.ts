@@ -19,14 +19,14 @@ export const workspaceService = {
    * Get all workspaces for the current user
    */
   getWorkspacesByUserId: (userId: string) => {
-    return api.get<Workspace[]>(`${BASE_URL}/api/v1/Workspace/${userId}`);
+    return api.get<Workspace[]>(`${BASE_URL}api/v1/Workspace/${userId}`);
   },
 
   /**
    * Get a specific workspace by ID
    */
   getWorkspace: (workspaceId: string) => {
-    return api.get<Workspace>(`${BASE_URL}/api/v1/Workspace/${workspaceId}`);
+    return api.get<Workspace>(`${BASE_URL}api/v1/Workspace/${workspaceId}`);
   },
 
   /**
@@ -34,7 +34,7 @@ export const workspaceService = {
    */
   updateWorkspace: (workspaceId: string, workspace: WorkspaceInput) => {
     return api.put<Workspace>(
-      `${BASE_URL}/api/v1/Workspace/${workspaceId}`,
+      `${BASE_URL}api/v1/Workspace/${workspaceId}`,
       workspace
     );
   },

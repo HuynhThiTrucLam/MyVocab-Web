@@ -1,11 +1,7 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-import BookImage from "@/assets/icons/books.svg?react";
-import PlusCircleIcon from "@/assets/icons/pluscircle.svg?react";
-import { useAuth } from "@/contexts/auth-context";
 import CloseIcon from "@/assets/icons/Close.svg?react";
+import BookImage from "@/assets/icons/books.svg?react";
 import TickIcon from "@/assets/icons/check.svg?react";
-import styles from "./styles.module.scss";
+import PlusCircleIcon from "@/assets/icons/pluscircle.svg?react";
 import {
   Dialog,
   DialogClose,
@@ -16,14 +12,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { useAuth } from "@/contexts/auth-context";
+import { useToast } from "@/hooks/use-toast";
 import { api } from "@/services/api";
 import { isAxiosError } from "axios";
-import { useToast } from "@/hooks/use-toast";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Spinner } from "../Spinner";
-import { api_version } from "@/services/api-client";
-import { workspaceService } from "@/features/workspaces/api/workspace-service";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import styles from "./styles.module.scss";
 
 interface WorkspaceItem {
   id?: string;
