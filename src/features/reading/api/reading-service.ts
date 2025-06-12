@@ -1,5 +1,5 @@
 import { api } from "@/services/api-client";
-import { Band } from "../../listening-exam/types/Bands";
+import { Band } from "../Types/Bands";
 
 export interface Topic {
     id: string;

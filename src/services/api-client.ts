@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
 // Create a baseURL using environment variables with a fallback
-const baseURL = "https://localhost:7063";
+const baseURL = import.meta.env.VITE_BE_API_URL || "/api";
 export const api_version = "api/v1";
 
 // Create the axios instance with default configuration
