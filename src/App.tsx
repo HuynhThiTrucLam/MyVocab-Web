@@ -13,7 +13,16 @@ import { Toaster } from "@/components/ui/toaster";
 import Exams from "./pages/Exams/Exams";
 import TestingIntro from "./features/listening-exam/components/testing/TestingIntro";
 import ResultIntro from "./features/listening-exam/components/result/ResultIntro";
-import { Chatbox } from "./pages/ChatBox/Chatbox";
+// import { Chatbox } from "./pages/ChatBox/Chatbox";
+
+
+
+import Picture from "./features/Picture/Picture";
+import Topic from "./features/Picture/Topic";
+import Question from "./features/Picture/Question";
+import QuestionDetail from "./features/Picture/QuestionDetail";
+
+
 
 import TestQuestionPage from "./pages/Test/TestQuestionPage"; // trang danh sách các bài test
 import TestResultsPage from "./pages/TestResult/TestResultsPage"; // trang danh sách các bài test
@@ -28,12 +37,19 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/my-vocab" element={<MyListWorkspace />} />
               <Route path="/my-vocab/:title" element={<WorkspaceDetails />} />
-              <Route path="/chatbox" element={<Chatbox />} />
+              {/* <Route path="/chatbox" element={<Chatbox />} /> */}
               <Route path="/dictionary" element={<Dictionary />} />
               <Route path="/exams" element={<Exams />} />
               <Route path="/testing/:id" element={<TestingIntro />} />
               <Route path="/result/:id" element={<ResultIntro />} />
               <Route path="/translation" element={<Translation />} />
+            {/*Tin  */}
+              <Route path="/picture" element={<Picture />} />
+             <Route path="/topic" element={<Topic />} />
+             <Route path="/question" element={<Question />} />
+            <Route path="/question-detail" element={<QuestionDetail />} />
+
+            
                 <Route path="/test/:testId" element={<TestQuestionPage />} />
                 <Route path="/test-results/:userTestId" element={<TestResultsPage />} />
             </Route>
