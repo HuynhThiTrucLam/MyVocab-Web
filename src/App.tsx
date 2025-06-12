@@ -13,7 +13,11 @@ import { Toaster } from "@/components/ui/toaster";
 import Exams from "./pages/Exams/Exams";
 import TestingIntro from "./features/listening-exam/components/testing/TestingIntro";
 import ResultIntro from "./features/listening-exam/components/result/ResultIntro";
-// import { Chatbox } from "./pages/ChatBox/Chatbox";
+import Flashcard from "./pages/Flashcard";
+import TestPage from '@/pages/Test'; // Đảm bảo đường dẫn đúng
+
+
+import { Chatbox } from "./pages/ChatBox/Chatbox";
 
 
 
@@ -37,21 +41,22 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/my-vocab" element={<MyListWorkspace />} />
               <Route path="/my-vocab/:title" element={<WorkspaceDetails />} />
+              <Route path="/flashcard/:workspaceId" element={<Flashcard />} />
+              <Route path="/chatbox" element={<Chatbox />} />
               {/* <Route path="/chatbox" element={<Chatbox />} /> */}
               <Route path="/dictionary" element={<Dictionary />} />
               <Route path="/exams" element={<Exams />} />
               <Route path="/testing/:id" element={<TestingIntro />} />
               <Route path="/result/:id" element={<ResultIntro />} />
               <Route path="/translation" element={<Translation />} />
+              <Route path="/test/:workspaceId" element={<TestPage />} />
             {/*Tin  */}
               <Route path="/picture" element={<Picture />} />
-             <Route path="/topic" element={<Topic />} />
-             <Route path="/question" element={<Question />} />
-            <Route path="/question-detail" element={<QuestionDetail />} />
-
-            
-                <Route path="/test/:testId" element={<TestQuestionPage />} />
-                <Route path="/test-results/:userTestId" element={<TestResultsPage />} />
+              <Route path="/topic" element={<Topic />} />
+              <Route path="/question" element={<Question />} />
+              <Route path="/question-detail" element={<QuestionDetail />} />
+              <Route path="/test/:testId" element={<TestQuestionPage />} />
+              <Route path="/test-results/:userTestId" element={<TestResultsPage />} />
             </Route>
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
