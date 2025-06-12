@@ -13,10 +13,15 @@ import { Toaster } from "@/components/ui/toaster";
 import Exams from "./pages/Exams/Exams";
 import TestingIntro from "./features/listening-exam/components/testing/TestingIntro";
 import ResultIntro from "./features/listening-exam/components/result/ResultIntro";
+import ReadingTab from "./features/reading/ReadingTab";
+import ReadingTestInterface from "./features/reading/pages/ReadingTestInterface";
+import ResultIntroReading from "./features/reading/pages/ResultIntroReading";
+import SubmissionDetails from "./features/reading/pages/SubmissionDetails";
+// import ReadingTestList from "./features/reading/ReadingTestList";
 import Flashcard from "./pages/Flashcard";
 import TestPage from "@/pages/Test"; // Đảm bảo đường dẫn đúng
 
-import { Chatbox } from "./pages/ChatBox/Chatbox";
+import { Chatbox } from "./pages/Chatbox/Chatbox";
 
 import Picture from "./features/Picture/Picture";
 import Topic from "./features/Picture/Topic";
@@ -43,7 +48,15 @@ export default function App() {
               <Route path="/exams" element={<Exams />} />
               <Route path="/testing/:id" element={<TestingIntro />} />
               <Route path="/result/:id" element={<ResultIntro />} />
+              <Route path="/resultReading/:submissionId" element={<ResultIntroReading />} />
+              <Route path="/review-submission/:submissionId" element={<SubmissionDetails />} />
+
+              {/* <Route path="/reading-tests" element={<ReadingTestList />} /> New route for list */}
               <Route path="/translation" element={<Translation />} />
+              <Route path="/reading" element={<ReadingTab />} />
+              <Route path="/reading-test/:id" element={<ReadingTestInterface />} />
+              <Route path="/test/:testId" element={<TestQuestionPage />} />
+              <Route path="/test-results/:userTestId" element={<TestResultsPage />} />
               <Route path="/test/:workspaceId" element={<TestPage />} />
               {/*Tin  */}
               <Route path="/picture" element={<Picture />} />

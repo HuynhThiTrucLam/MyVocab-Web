@@ -53,10 +53,10 @@ export async function apiRequest<T>(config: AxiosRequestConfig): Promise<T> {
       error:
         error instanceof AxiosError
           ? {
-              status: error.response?.status,
-              data: error.response?.data,
-              message: error.message,
-            }
+            status: error.response?.status,
+            data: error.response?.data,
+            message: error.message,
+          }
           : error,
     });
     throw error;
