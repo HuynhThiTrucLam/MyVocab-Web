@@ -2,7 +2,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px 20px;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Nunito", sans-serif;
   color: #333;
   background-color: #f8f9fa;
 }
@@ -43,7 +43,8 @@
 }
 
 /* Loading và error */
-.loading, .error {
+.loading,
+.error {
   font-size: 16px;
   color: #888;
 }
@@ -64,7 +65,7 @@
 /* Topic.css */
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Nunito", Tahoma, Geneva, Verdana, sans-serif;
   background: linear-gradient(to right, #f9fafc, #e8f0fe);
   margin: 0;
   padding: 0;
@@ -96,9 +97,9 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 20px;
-} 
+}
 
- .topic-card {
+.topic-card {
   background-color: #fff;
   border-radius: 12px;
   padding: 20px;
@@ -109,7 +110,6 @@ body {
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
-
 
 .topic-card:hover {
   background-color: #007bff;
@@ -128,7 +128,6 @@ body {
 /*  history Viền xanh lá */
 
 /* QUESTION */
-
 
 .question-wrapper {
   padding: 150px;
@@ -161,7 +160,7 @@ body {
 .set-box {
   background-color: white;
   font-size: 17px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Nunito", Tahoma, Geneva, Verdana, sans-serif;
   padding: 30px;
   border-radius: 12px;
   text-align: center;
@@ -196,7 +195,7 @@ body {
 /* Add these styles to your existing CSS file */
 
 .completed-exam {
-  border: 3px solid #4CAF50;
+  border: 3px solid #4caf50;
   position: relative;
 }
 
@@ -204,7 +203,7 @@ body {
   position: absolute;
   top: 5px;
   right: 5px;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   padding: 2px 8px;
   border-radius: 12px;
@@ -246,15 +245,27 @@ body {
 }
 
 @keyframes correctFlash {
-  0% { background-color: rgb(80, 177, 111); }
-  50% { background-color: #51cf6e; } /* xanh lá nhạt */
-  100% { background-color: rgb(113, 205, 150); }
+  0% {
+    background-color: rgb(80, 177, 111);
+  }
+  50% {
+    background-color: #51cf6e;
+  } /* xanh lá nhạt */
+  100% {
+    background-color: rgb(113, 205, 150);
+  }
 }
 
 @keyframes incorrectFlash {
-  0% { background-color: rgb(145, 89, 89); }
-  50% { background-color: #b27d81; } /* đỏ nhạt */
-  100% { background-color: rgb(115, 74, 74); }
+  0% {
+    background-color: rgb(145, 89, 89);
+  }
+  50% {
+    background-color: #b27d81;
+  } /* đỏ nhạt */
+  100% {
+    background-color: rgb(115, 74, 74);
+  }
 }
 
 /* Tiêu đề h2 */
@@ -339,8 +350,8 @@ body {
 button.btn {
   min-width: 150px;
 }
-.complete{
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+.complete {
+  font-family: "Nunito", Tahoma, Geneva, Verdana, sans-serif;
   font-size: 20px;
   text-align: center;
 }

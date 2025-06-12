@@ -14,19 +14,14 @@ import Exams from "./pages/Exams/Exams";
 import TestingIntro from "./features/listening-exam/components/testing/TestingIntro";
 import ResultIntro from "./features/listening-exam/components/result/ResultIntro";
 import Flashcard from "./pages/Flashcard";
-import TestPage from '@/pages/Test'; // Đảm bảo đường dẫn đúng
-
+import TestPage from "@/pages/Test"; // Đảm bảo đường dẫn đúng
 
 import { Chatbox } from "./pages/ChatBox/Chatbox";
-
-
 
 import Picture from "./features/Picture/Picture";
 import Topic from "./features/Picture/Topic";
 import Question from "./features/Picture/Question";
 import QuestionDetail from "./features/Picture/QuestionDetail";
-
-
 
 import TestQuestionPage from "./pages/Test/TestQuestionPage"; // trang danh sách các bài test
 import TestResultsPage from "./pages/TestResult/TestResultsPage"; // trang danh sách các bài test
@@ -50,13 +45,16 @@ export default function App() {
               <Route path="/result/:id" element={<ResultIntro />} />
               <Route path="/translation" element={<Translation />} />
               <Route path="/test/:workspaceId" element={<TestPage />} />
-            {/*Tin  */}
+              {/*Tin  */}
               <Route path="/picture" element={<Picture />} />
               <Route path="/topic" element={<Topic />} />
               <Route path="/question" element={<Question />} />
               <Route path="/question-detail" element={<QuestionDetail />} />
               <Route path="/test/:testId" element={<TestQuestionPage />} />
-              <Route path="/test-results/:userTestId" element={<TestResultsPage />} />
+              <Route
+                path="/test-results/:userTestId"
+                element={<TestResultsPage />}
+              />
             </Route>
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
