@@ -25,23 +25,25 @@ const ProficiencyPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-screen bg-gray-50">
-      <div className="w-full md:w-1/4 lg:w-1/5 bg-white shadow-md">
-        <BandSidebar
-          onSelectProficiency={(proficiency) => {
-            setActiveProficiency(proficiency);
-            setActiveTopic(null);
-          }}
-          // onSelectTopic=setActiveTopic(topic)
-          onSelectTopic={handleTopicSelect}
-        />
-      </div>
-
-      <div className="flex-1 overflow-auto p-4 md:p-6">
-        <SidebarContext
-          activeProficiency={activeProficiency}
-          activeTopic={activeTopic} // ✅ Đảm bảo giá trị này không null
-        />
+    <div className="flex flex-col">
+      <h1 className="text-[20px] font-bold my-6">Tổng hợp đề thi thử TOEIC</h1>
+      <div className="flex flex-col md:flex-row h-screen bg-gray-50">
+        <div className="w-full md:w-1/4 lg:w-1/5 bg-white shadow-md">
+          <BandSidebar
+            onSelectProficiency={(proficiency) => {
+              setActiveProficiency(proficiency);
+              setActiveTopic(null);
+            }}
+            // onSelectTopic=setActiveTopic(topic)
+            onSelectTopic={handleTopicSelect}
+          />
+        </div>
+        <div className="flex-1 overflow-auto p-4 md:p-6">
+          <SidebarContext
+            activeProficiency={activeProficiency}
+            activeTopic={activeTopic} // ✅ Đảm bảo giá trị này không null
+          />
+        </div>
       </div>
     </div>
   );
