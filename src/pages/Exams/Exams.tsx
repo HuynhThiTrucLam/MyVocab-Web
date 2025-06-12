@@ -4,6 +4,10 @@ import ListeningTab from "@/features/listening-exam/components/ListeningTab";
 import { useAuth } from "@/contexts/auth-context";
 import NonSupportedFeature from "../NonSupportedFeature";
 
+import TestExamTab from "@/features/listening-exam/components/Test/TestExamTab"; // đường dẫn thực tế của bạn
+
+import Test from "@/features/Test_demo/compoment/Test"; // đường dẫn thực tế của bạn
+
 const Exams = () => {
   // If you want to add auth-based display back in, uncomment below
   const { user } = useAuth();
@@ -27,6 +31,9 @@ const Exams = () => {
             <TabsTrigger value="writing" className={styles.tabTrigger}>
               Writing
             </TabsTrigger>
+            <TabsTrigger value="Test_Exam" className={styles.tabTrigger}>
+              Test Exam
+            </TabsTrigger>
           </TabsList>
           <div className={styles.line}></div>
 
@@ -44,6 +51,10 @@ const Exams = () => {
 
           <TabsContent value="writing">
             <p>Writing</p>
+          </TabsContent>
+          <TabsContent value="Test_Exam">
+            <p>Test_Exam</p>
+            <Test />
           </TabsContent>
         </Tabs>
       ) : (
