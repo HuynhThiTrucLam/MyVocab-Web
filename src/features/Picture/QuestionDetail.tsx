@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import '../Picture/style.css';
+import React, { useEffect, useState } from "react";
+import "../Picture/style.css";
+import { useAuth } from "@/contexts/auth-context";
 
 interface ImageOption {
   imageCode: string;
@@ -19,15 +20,14 @@ interface Question {
 }
 
 const QuestionDetail: React.FC = () => {
-  const baseUrl = 'https://localhost:7063/api/';
-  const examId = sessionStorage.getItem('examId');
-  const examName = sessionStorage.getItem('examName');
-  const staticUserId = '25F81F20-0955-4904-8179-08DD9FFB01D3'; // Static user ID 
-  
+  const BASE_URL = import.meta.env.VITE_BE_API_URL;
+  const examId = sessionStorage.getItem("examId");
+  const examName = sessionStorage.getItem("examName");
+  const { user } = useAuth();
   const [questions, setQuestions] = useState<Question[]>([]);
   const [index, setIndex] = useState(0);
-  const [feedback, setFeedback] = useState('');
-  const [userAnswer, setUserAnswer] = useState('');
+  const [feedback, setFeedback] = useState("");
+  const [userAnswer, setUserAnswer] = useState("");
   const [selectedImg, setSelectedImg] = useState<number | null>(null);
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const [nextDisabled, setNextDisabled] = useState(true);
@@ -40,44 +40,47 @@ const QuestionDetail: React.FC = () => {
     const url = `https://api.pexels.com/v1/photos/${imageId}`;
     const res = await fetch(url, {
       headers: {
-        Authorization: 'I54Xi9H1qxwBx6zi59ESdXwDrqvEiHG9lbSfMHMlayxpuPtm9Z87HZt6',
+        Authorization:
+          "I54Xi9H1qxwBx6zi59ESdXwDrqvEiHG9lbSfMHMlayxpuPtm9Z87HZt6",
       },
     });
 
-    if (!res.ok) return 'https://via.placeholder.com/100?text=Error';
+    if (!res.ok) return "https://via.placeholder.com/100?text=Error";
 
     const data = await res.json();
-    return data?.src?.medium || 'https://via.placeholder.com/100?text=No+Image';
+    return data?.src?.medium || "https://via.placeholder.com/100?text=No+Image";
   };
 
   const markExamAsCompleted = async () => {
     try {
-      const response = await fetch(`${baseUrl}QuestionPicture`, {
-        method: 'POST',
+      const response = await fetch(`${BASE_URL}api/QuestionPicture`, {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userId: staticUserId,
-          examId: examId
-        })
+          userId: user?.id,
+          examId: examId,
+        }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to mark exam as completed');
+        throw new Error("Failed to mark exam as completed");
       }
 
-      console.log('Exam marked as completed successfully');
+      console.log("Exam marked as completed successfully");
     } catch (error) {
-      console.error('Error marking exam as completed:', error);
+      console.error("Error marking exam as completed:", error);
     }
   };
 
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        if (!examId) throw new Error('Không có examId');
-        const res = await fetch(`${baseUrl}QuestionPicture/QuestionTextImg?questionSetId=${examId}`);
+        if (!examId) throw new Error("Không có examId");
+        const res = await fetch(
+          `${BASE_URL}api/QuestionPicture/QuestionTextImg?questionSetId=${examId}`
+        );
         if (!res.ok) throw new Error(await res.text());
 
         const rawData: Question[] = await res.json();
@@ -115,7 +118,7 @@ const QuestionDetail: React.FC = () => {
   const handleImageSelect = (i: number) => {
     setSelectedImg(i);
     setSubmitDisabled(false);
-    setFeedback('');
+    setFeedback("");
     setIsCorrectAnswer(null);
     setShouldAnimate(false);
   };
@@ -125,7 +128,8 @@ const QuestionDetail: React.FC = () => {
     let correct = false;
 
     if (q.questionType === "1") {
-      correct = userAnswer.trim().toLowerCase() === q.correctAnswer?.toLowerCase();
+      correct =
+        userAnswer.trim().toLowerCase() === q.correctAnswer?.toLowerCase();
     } else if (q.questionType === "2" && selectedImg !== null) {
       correct = q.imageOptions?.[selectedImg]?.isCorrect === 1;
     }
@@ -134,10 +138,10 @@ const QuestionDetail: React.FC = () => {
     setShouldAnimate(true);
 
     if (correct) {
-      setFeedback('🎉 Chính xác! Tuyệt vời!');
+      setFeedback("🎉 Chính xác! Tuyệt vời!");
       setNextDisabled(false);
     } else {
-      setFeedback('❌ Sai rồi, hãy thử lại.');
+      setFeedback("❌ Sai rồi, hãy thử lại.");
     }
 
     setSubmitDisabled(true);
@@ -151,8 +155,8 @@ const QuestionDetail: React.FC = () => {
     }
 
     setIndex((prev) => prev + 1);
-    setFeedback('');
-    setUserAnswer('');
+    setFeedback("");
+    setUserAnswer("");
     setSelectedImg(null);
     setSubmitDisabled(true);
     setNextDisabled(true);
@@ -162,15 +166,15 @@ const QuestionDetail: React.FC = () => {
 
   const renderQuestion = () => {
     const q = questions[index];
-    
+
     if (completed) {
       return (
         <div className="completion-message">
-          <p  className='complete'>Chúc mừng bạn đã hoàn thành bộ câu hỏi!</p>
-          <p  className='complete'>Kết quả của bạn đã được lưu lại.</p>
-          <button 
+          <p className="complete">Chúc mừng bạn đã hoàn thành bộ câu hỏi!</p>
+          <p className="complete">Kết quả của bạn đã được lưu lại.</p>
+          <button
             className="btn btn-primary"
-            onClick={() => window.location.href = '/'}
+            onClick={() => (window.location.href = "/")}
           >
             Quay về trang chủ
           </button>
@@ -178,7 +182,10 @@ const QuestionDetail: React.FC = () => {
       );
     }
 
-    if (!q) return <p className='complete'>Chúc mừng bạn đã hoàn thành bộ câu hỏi.</p>;
+    if (!q)
+      return (
+        <p className="complete">Chúc mừng bạn đã hoàn thành bộ câu hỏi.</p>
+      );
 
     return (
       <>
@@ -186,7 +193,10 @@ const QuestionDetail: React.FC = () => {
         {q.questionType === "1" && (
           <>
             <img
-              src={q.correctImgUrl || 'https://via.placeholder.com/100?text=No+Image'}
+              src={
+                q.correctImgUrl ||
+                "https://via.placeholder.com/100?text=No+Image"
+              }
               alt="question"
               className="question-img"
             />
@@ -199,13 +209,13 @@ const QuestionDetail: React.FC = () => {
                 setUserAnswer(e.target.value);
                 setSubmitDisabled(!e.target.value.trim());
                 if (feedback) {
-                  setFeedback('');
+                  setFeedback("");
                   setIsCorrectAnswer(null);
                   setShouldAnimate(false);
                 }
               }}
               onKeyPress={(e) => {
-                if (e.key === 'Enter' && !submitDisabled) {
+                if (e.key === "Enter" && !submitDisabled) {
                   handleSubmit();
                 }
               }}
@@ -217,8 +227,12 @@ const QuestionDetail: React.FC = () => {
             {q.imageOptions?.map((opt, i) => (
               <div key={i} className="image-option-container">
                 <img
-                  src={opt.url || 'https://via.placeholder.com/100?text=No+Image'}
-                  className={`image-option ${selectedImg === i ? 'selected' : ''}`}
+                  src={
+                    opt.url || "https://via.placeholder.com/100?text=No+Image"
+                  }
+                  className={`image-option ${
+                    selectedImg === i ? "selected" : ""
+                  }`}
                   alt={opt.questionImagesText}
                   onClick={() => handleImageSelect(i)}
                 />
@@ -231,39 +245,41 @@ const QuestionDetail: React.FC = () => {
   };
 
   return (
-    <div className={`wrapper ${
-      shouldAnimate 
-        ? isCorrectAnswer 
-          ? 'animate-correct' 
-          : 'animate-incorrect'
-        : ''
-    }`}>
+    <div
+      className={`wrapper ${
+        shouldAnimate
+          ? isCorrectAnswer
+            ? "animate-correct"
+            : "animate-incorrect"
+          : ""
+      }`}
+    >
       <h2>
-        DANH SÁCH CÂU HỎI <span>{examName || 'Không có bộ đề'}</span>
+        DANH SÁCH CÂU HỎI <span>{examName || "Không có bộ đề"}</span>
       </h2>
       {loading ? <p>Đang tải câu hỏi...</p> : renderQuestion()}
       {feedback && !completed && (
-        <div className={`feedback ${
-          isCorrectAnswer ? 'correct' : 'incorrect'
-        }`}>
+        <div
+          className={`feedback ${isCorrectAnswer ? "correct" : "incorrect"}`}
+        >
           {feedback}
         </div>
       )}
       {!completed && (
         <div className="button-group mt-3">
-          <button 
-            className="btn btn-primary" 
-            disabled={submitDisabled} 
+          <button
+            className="btn btn-primary"
+            disabled={submitDisabled}
             onClick={handleSubmit}
           >
             Gửi đáp án
           </button>
-          <button 
-            className="btn btn-secondary ms-2" 
-            disabled={nextDisabled} 
+          <button
+            className="btn btn-secondary ms-2"
+            disabled={nextDisabled}
             onClick={handleNext}
           >
-            {index === questions.length - 1 ? 'Hoàn thành' : 'Câu tiếp theo'}
+            {index === questions.length - 1 ? "Hoàn thành" : "Câu tiếp theo"}
           </button>
         </div>
       )}

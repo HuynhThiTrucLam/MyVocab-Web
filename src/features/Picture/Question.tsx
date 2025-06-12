@@ -39,7 +39,7 @@ function Question() {
 
         // Fetch user's completed exams first
         const userExamsResponse = await fetch(
-          `${BASE_URL}QuestionPicture/UserExam`,
+          `${BASE_URL}api/QuestionPicture/UserExam`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -54,7 +54,7 @@ function Question() {
 
         // Then fetch all exams for the topic
         const examsResponse = await fetch(
-          `${BASE_URL}Exam?topicId=${topicID}`,
+          `${BASE_URL}api/Exam?topicId=${topicID}`,
           {
             headers: {
               "Content-Type": "application/json",
