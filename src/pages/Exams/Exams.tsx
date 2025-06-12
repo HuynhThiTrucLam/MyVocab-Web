@@ -10,7 +10,6 @@ const Exams = () => {
 
   return (
     <>
-      ∏
       {user ? (
         <Tabs defaultValue="listening" className={styles.tabContainer}>
           <TabsList
@@ -32,8 +31,6 @@ const Exams = () => {
           <div className={styles.line}></div>
 
           <TabsContent value="listening">
-            {/* Nội dung */}
-            {/* Tìm các hàm có từ fetch  */}
             <ListeningTab />
           </TabsContent>
 
