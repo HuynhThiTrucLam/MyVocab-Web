@@ -4,8 +4,6 @@ import ListeningTab from "@/features/listening-exam/components/ListeningTab";
 import { useAuth } from "@/contexts/auth-context";
 import NonSupportedFeature from "../NonSupportedFeature";
 
-import TestExamTab from "@/features/listening-exam/components/Test/TestExamTab"; // đường dẫn thực tế của bạn
-
 import Test from "@/features/Test_demo/compoment/Test"; // đường dẫn thực tế của bạn
 
 const Exams = () => {
@@ -56,7 +54,6 @@ const Exams = () => {
             {/* Thêm nội dung vào đây */}
           </TabsContent>
           <TabsContent value="Test_Exam">
-            <p>Test_Exam</p>
             <Test />
           </TabsContent>
         </Tabs>

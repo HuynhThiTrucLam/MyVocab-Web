@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Proficiency } from "../../types/Proficiency";
 import { Topic } from "../../types/Topic";
 import { Spinner } from "@/components/Spinner";
+import { api } from "@/services/api-client";
+import { Band } from "@/features/listening-exam/types/Bands";
+
+const BASE_URL = import.meta.env.VITE_BE_API_URL;
 
 interface BandSidebarProps {
   onSelectProficiency: (proficiency: Proficiency | null) => void;
@@ -19,74 +23,68 @@ const BandSidebar: React.FC<BandSidebarProps> = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch all proficiencies on component mount
-  useEffect(() => {
-    const fetchProficiencies = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await fetch(
-          "http://localhost:5299/api/Proficiency/Proficiency"
-        );
+  const fetchProficiencies = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await api.get<Band[]>(
+        `${BASE_URL}api/Proficiency/Proficiency/skill?skill=Cognitive`
+      );
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+      console.log(response);
 
-        const data: Proficiency[] = await response.json();
-        setProficiencies(data);
+      const data: Proficiency[] = response;
+      setProficiencies(data);
 
-        // Set first proficiency as active by default
-        if (data.length > 0) {
-          const firstProficiency = data[0];
-          setActiveProficiency(firstProficiency);
-          onSelectProficiency(firstProficiency);
-        }
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Failed to fetch proficiencies"
-        );
-        console.error("Error fetching proficiencies:", err);
-      } finally {
-        setLoading(false);
+      // Set first proficiency as active by default
+      if (data.length > 0) {
+        const firstProficiency = data[0];
+        setActiveProficiency(firstProficiency);
+        onSelectProficiency(firstProficiency);
       }
-    };
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch proficiencies"
+      );
+      console.error("Error fetching proficiencies:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchProficiencies();
-  }, []);
+  const fetchTopics = async () => {
+    if (!activeProficiency) {
+      setTopics([]);
+      return;
+    }
+
+    try {
+      setTopics([]); // Clear topics before fetching new ones
+      setLoading(true);
+      setError(null);
+      // const response = await fetch(
+      //   `http://localhost:5299/api/Topic?ProficiencyId=${activeProficiency.id}`
+      // );
+
+      const response = await api.get<Topic[]>(
+        `${BASE_URL}api/Topic?ProficiencyId=${activeProficiency.id}`
+      );
+
+      const data: Topic[] = await response;
+      setTopics(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to fetch topics");
+      console.error("Error fetching topics:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Fetch topics when activeProficiency changes
   useEffect(() => {
-    const fetchTopics = async () => {
-      if (!activeProficiency) {
-        setTopics([]);
-        return;
-      }
-
-      try {
-        setTopics([]); // Clear topics before fetching new ones
-        setLoading(true);
-        setError(null);
-        const response = await fetch(
-          `http://localhost:5299/api/Topic?ProficiencyId=${activeProficiency.id}`
-        );
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data: Topic[] = await response.json();
-        setTopics(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to fetch topics");
-        console.error("Error fetching topics:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
+    fetchProficiencies();
     fetchTopics();
-  }, [activeProficiency]);
+  }, []);
 
   const handleSelectProficiency = (proficiency: Proficiency) => {
     setActiveProficiency(proficiency);
