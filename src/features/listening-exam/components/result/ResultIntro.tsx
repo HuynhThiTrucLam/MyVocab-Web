@@ -1,4 +1,6 @@
 import HomeIcon from "@/assets/icons/home.svg";
+import NotGoodIcon from "@/assets/icons/notGood.svg";
+import WellDoneIcon from "@/assets/icons/wellDone.svg";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,33 +9,40 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAuth } from "@/contexts/auth-context";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { listeningService } from "../../api/listening-service";
-import { Exam } from "../../types/Exams";
 import { Result } from "../../types/Result";
+import { ListeningUserExam } from "../../types/UserExam";
 import OtherExam from "../testing/OtherExam";
-import NotGoodIcon from "@/assets/icons/notGood.svg";
-import WellDoneIcon from "@/assets/icons/wellDone.svg";
-import styles from "./styles.module.scss";
-import { Button } from "@/components/ui/button";
 import ResultContent from "./ResultContent";
+import styles from "./styles.module.scss";
 const ResultIntro = () => {
   const { id } = useParams();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [result, setResult] = useState<Result | null>(null);
-  const [otherExams, setOtherExams] = useState<Exam[]>([]);
+  const [otherExams, setOtherExams] = useState<ListeningUserExam[]>([]);
   const [openDetailResult, setOpenDetailResult] = useState(false);
 
+  const fetchResult = async () => {
+    const result = await listeningService.getResult(id!);
+    setResult(result);
+  };
+
+  const fetchOtherExams = async () => {
+    const otherExams = await listeningService.getSimilarExams(id!, user?.id!);
+    setOtherExams(otherExams || []);
+  };
+
   useEffect(() => {
-    const fetchResult = async () => {
-      const result = await listeningService.getResult(id!);
-      setResult(result);
-    };
-    fetchResult();
-    // const otherExams = listeningService.getSimilarExams();
-    setOtherExams(otherExams);
+    if (id) {
+      fetchResult();
+      fetchOtherExams();
+    }
   }, [id]);
 
   const handleNavigateToExams = () => {

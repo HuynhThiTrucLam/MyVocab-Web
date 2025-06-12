@@ -11,7 +11,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { listeningService } from "@/features/listening-exam/api/listening-service";
-import { Exam } from "@/features/listening-exam/types/Exams";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import OtherExam from "./OtherExam";
@@ -19,12 +18,15 @@ import styles from "./styles.module.scss";
 import TestingContent from "./TestingContent";
 import { ListeningExamResponse } from "../../types/ListeningExam";
 import { Spinner } from "@/components/Spinner";
+import { ListeningUserExam } from "../../types/UserExam";
+import { useAuth } from "@/contexts/auth-context";
 
 const TestingIntro = () => {
+  const { user } = useAuth();
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [exam, setExam] = useState<ListeningExamResponse | null>(null);
-  const [otherExams, setOtherExams] = useState<Exam[]>([]);
+  const [otherExams, setOtherExams] = useState<ListeningUserExam[]>([]);
   const [openTesting, setOpenTesting] = useState(false);
   const [hour, setHour] = useState(0);
   const [minute, setMinute] = useState(0);
@@ -41,13 +43,20 @@ const TestingIntro = () => {
     setExam(exam);
   };
 
+  const fetchOtherExams = async () => {
+    if (!user) return;
+    const otherExams = await listeningService.getSimilarExams(id!, user?.id!);
+    setOtherExams(otherExams || []);
+  };
+
   useEffect(() => {
     setIsLoading(true);
-    fetchExam();
-    // const otherExams = listeningService.getListeningExamList();
-    setOtherExams(otherExams);
+    if (id) {
+      fetchExam();
+      fetchOtherExams();
+    }
     setIsLoading(false);
-  }, [id]);
+  }, [id, user]);
 
   useEffect(() => {
     if (exam) {

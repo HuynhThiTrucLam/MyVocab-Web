@@ -18,6 +18,34 @@ const TestItem = ({ exam, mainColor, secondaryColor }: TestItemProps) => {
     navigate(`/testing/${exam.id}`);
   };
 
+  // Helper function to get status text and text color based on main color
+  const getStatusInfo = (mainColor: string) => {
+    switch (mainColor) {
+      case "#914BFB":
+        return {
+          text: "Đã hoàn thành",
+          textColor: "#fff",
+        };
+      case "#FFBF47":
+        return {
+          text: "Đang làm",
+          textColor: "#000",
+        };
+      case "#31e3a5":
+        return {
+          text: "Đề mới",
+          textColor: "#fff",
+        };
+      default:
+        return {
+          text: "Đề mới",
+          textColor: "#fff",
+        };
+    }
+  };
+
+  const { text: statusText, textColor } = getStatusInfo(mainColor);
+
   return (
     <div className={styles.testCard}>
       <div className={styles.testCardHeader}>
@@ -52,7 +80,7 @@ const TestItem = ({ exam, mainColor, secondaryColor }: TestItemProps) => {
           background: gradient,
           borderRadius: "8px",
           padding: "0.5rem 1rem",
-          color: "#222", // or white if your mainColor is dark
+          color: textColor,
           fontWeight: "bold",
           display: "inline-block",
         }}
@@ -60,19 +88,10 @@ const TestItem = ({ exam, mainColor, secondaryColor }: TestItemProps) => {
         <p
           className="text-[12px]"
           style={{
-            color:
-              mainColor === "#31e3a5" || mainColor === "#914BFB"
-                ? "#fff"
-                : "#000",
+            color: textColor,
           }}
         >
-          <span>
-            {mainColor === "#31e3a5"
-              ? "Đề mới"
-              : mainColor === "#914BFB"
-              ? "Đã hoàn thành"
-              : "Chưa hoàn thành"}
-          </span>
+          <span>{statusText}</span>
         </p>
       </div>
       <button

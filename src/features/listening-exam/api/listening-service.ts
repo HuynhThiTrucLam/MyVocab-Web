@@ -8,7 +8,7 @@ import {
   mapBackendResponseToResult,
   sortOptionsBySymbol,
 } from "../types/Result";
-import { mockUserExamList } from "../types/UserExam";
+import { UserExamList, ListeningUserExam } from "../types/UserExam";
 
 const BASE_URL = import.meta.env.VITE_BE_API_URL;
 
@@ -101,12 +101,34 @@ export const listeningService = {
     }
   },
 
-  // getSimilarExams: () => {
-  //   return mockExams.slice(0, 4);
-  // },
+  getSimilarExams: async (examId: string, userId: string) => {
+    try {
+      //call getUserExam and then filter to ecept examId
+      const userExamList = await listeningService.getUserExam(userId);
+      const filteredExams = userExamList.data.filter(
+        (exam) => exam.examId !== examId
+      );
+      return filteredExams;
+    } catch (error) {}
+  },
 
-  getUserExam: (userId: string) => {
-    return mockUserExamList;
+  getUserExam: async (userId: string): Promise<UserExamList> => {
+    try {
+      const response = await api.get<ListeningUserExam[]>(
+        `${BASE_URL}api/UserExam/listening?userId=${userId}`
+      );
+
+      return {
+        user_id: userId,
+        data: response,
+      };
+    } catch (error) {
+      console.error("Failed to fetch user exams:", error);
+      return {
+        user_id: userId,
+        data: [],
+      };
+    }
   },
 
   postResult: async (result: ResultRequest, status: string) => {
