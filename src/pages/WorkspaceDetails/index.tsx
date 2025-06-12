@@ -144,6 +144,7 @@ export default function WorkspaceDetails() {
       <div className={styles.headerContainer}>
         {/* Use our refactored WorkspaceTitle component */}
         <WorkspaceTitle
+          workspaceId={workspaceId}
           title={title}
           initialTitle={initialTitle || ""}
           isSaving={isSavingTitle}

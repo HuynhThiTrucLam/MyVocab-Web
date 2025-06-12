@@ -1,11 +1,7 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-import BookImage from "@/assets/icons/books.svg?react";
-import PlusCircleIcon from "@/assets/icons/pluscircle.svg?react";
-import { useAuth } from "@/contexts/auth-context";
 import CloseIcon from "@/assets/icons/Close.svg?react";
+import BookImage from "@/assets/icons/books.svg?react";
 import TickIcon from "@/assets/icons/check.svg?react";
-import styles from "./styles.module.scss";
+import PlusCircleIcon from "@/assets/icons/pluscircle.svg?react";
 import {
   Dialog,
   DialogClose,
@@ -16,13 +12,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { useAuth } from "@/contexts/auth-context";
+import { useToast } from "@/hooks/use-toast";
 import { api } from "@/services/api";
 import { isAxiosError } from "axios";
-import { useToast } from "@/hooks/use-toast";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Spinner } from "../Spinner";
-import { api_version } from "@/services/api-client";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import styles from "./styles.module.scss";
 
 interface WorkspaceItem {
   id?: string;
@@ -43,7 +42,7 @@ function useWorkspaces() {
 
     setIsLoading(true);
     try {
-      const data = await api.get(`/${api_version}/Workspace/${user.id}`);
+      const data = await api.get(`/Workspace/${user.id}`);
       if (Array.isArray(data)) {
         setWorkspaces(data);
       } else {
@@ -83,7 +82,7 @@ function useWorkspaces() {
 
       setIsLoading(true);
       try {
-        const data = await api.post(`/${api_version}/Workspace`, {
+        const data = await api.post(`/Workspace`, {
           userId: user.id,
           name: name.trim(),
           description,
@@ -134,9 +133,7 @@ function useWorkspaces() {
 
       setIsLoading(true);
       try {
-        const response = await api.delete(
-          `/${api_version}/Workspace/${workspaceId}`
-        );
+        const response = await api.delete(`/Workspace/${workspaceId}`);
         if (response) {
           // Update the workspace list by filtering out the deleted workspace
           setWorkspaces((prev) => prev.filter((w) => w.id !== workspaceId));
@@ -239,6 +236,7 @@ function DeleteWorkspaceDialog({
 }
 
 export function WorkspaceList() {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { workspaces, isLoading, addWorkspace, deleteWorkspace } =
@@ -296,13 +294,18 @@ export function WorkspaceList() {
   }, []);
 
   const handleAddWorkspace = useCallback(async () => {
-    const result = await addWorkspace(newWorkspaceName);
-    if (result.success) {
-      setNewWorkspaceName("");
-      setOpenNewWorkspace(false);
-      setIsOpenDialog(false);
-    } else if (result.message) {
-      setError(result.message);
+    try {
+      const result = await addWorkspace(newWorkspaceName);
+      if (result) {
+        setNewWorkspaceName("");
+        setOpenNewWorkspace(false);
+        setIsOpenDialog(false);
+      } else {
+        setError("Không thể tạo danh sách. Vui lòng thử lại!");
+      }
+    } catch (error) {
+      console.error("Error adding workspace:", error);
+      setError("Không thể tạo danh sách. Vui lòng thử lại!");
     }
   }, [newWorkspaceName, addWorkspace]);
 

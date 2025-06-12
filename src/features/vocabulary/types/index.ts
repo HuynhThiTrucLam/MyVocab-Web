@@ -7,6 +7,7 @@ export interface VocabularyItem {
   type: string;
   pronunciation: string;
   meaning: string;
+  vietnameseMeaning: string;
   example: string;
 }
 
