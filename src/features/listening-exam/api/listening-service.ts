@@ -1,18 +1,32 @@
 import { api } from "@/services/api-client";
 import { Band } from "../types/Bands";
-import { Exam, mockExams } from "../types/Exams";
-import { Result } from "../types/Result";
-import { mockUserExamList } from "../types/UserExam";
+import { ListeningExam, ListeningExamResponse } from "../types/ListeningExam";
+import {
+  Result,
+  ResultRequest,
+  BackendResultResponse,
+  mapBackendResponseToResult,
+  sortOptionsBySymbol,
+} from "../types/Result";
+import { UserExamList, ListeningUserExam } from "../types/UserExam";
 
 const BASE_URL = import.meta.env.VITE_BE_API_URL;
 
 export const listeningService = {
   getProficiencyList: async () => {
     try {
-      const response = await api.get<Band[]>(`${BASE_URL}api/Proficiency`);
-      return response.map((item: any) => ({
+      const response = await api.get<Band[]>(
+        `${BASE_URL}api/Proficiency/Proficiency/skill?skill=Listening`
+      );
+
+      const sortedResponse = response.sort((a: any, b: any) => {
+        return a.name.localeCompare(b.name);
+      });
+
+      return sortedResponse.map((item: any) => ({
         id: item.id,
         name: item.name,
+        band: item.band,
         description: item.description,
       }));
     } catch (error) {
@@ -21,35 +35,23 @@ export const listeningService = {
     }
   },
 
-  getListeningExamListByBandId: async (bandId: string) => {
+  getListeningExamList: async (proficiencyId: string) => {
     try {
-      const response = await api.get<Exam[]>(
-        `${BASE_URL}api/Exam/${bandId}/exams`
+      const response = await api.get<ListeningExam[]>(
+        `${BASE_URL}api/Exam/listenings?proficiencyId=${proficiencyId}`
       );
       return response.map((item: any) => ({
         id: item.id,
         topic: {
-          id: item.topic,
-          name: item.topic,
-          description: item.topic,
+          id: item.topic.idTopic,
+          name: item.topic.proficiency.name,
+          description: item.topic.skill,
         },
         title: item.name,
-        description: item.topic,
-        skill: item.skill,
+        description: item.infor.direction,
+        skill: item.topic.skill,
         time: item.time,
-        created_at: item.createdAt,
-        updated_at: item.updatedAt,
-        questions: item.questions.map((question: any) => ({
-          id: question.id,
-          question: question.question,
-          audio: question.audioUrl,
-          script: question.script,
-          img: question.imageUrl,
-          type: {
-            id: question.type.id,
-            name: question.type.name,
-          },
-        })),
+        numberQuestion: item.numberOfQuestions,
       }));
     } catch (error) {
       console.error("Failed to fetch listening exam list by band id:", error);
@@ -59,59 +61,108 @@ export const listeningService = {
 
   getListeningExamById: async (examId: string) => {
     try {
-      const response = await api.get<any>(`${BASE_URL}api/Exam/${examId}`);
-      console.log("response", response);
-      return {
+      const response = await api.get<any>(
+        `${BASE_URL}api/Exam/listening/${examId}`
+      );
+      var listeningExam: ListeningExamResponse = {
         id: response.id,
         title: response.name,
-        description: response.proficiency.band, // or response.description if available
+        description: response.topic.name, // or response.description if available
         topic: {
-          id: response.topic,
-          name: response.topic,
-          description: response.topic,
+          id: response.topic.idTopic,
+          name: response.topic.proficiency.name,
+          description: response.topic.skill,
         },
-        skill: response.skill,
+        skill: response.topic.skill,
         time: response.time,
-        created_at: response.createdAt,
-        updated_at: response.updatedAt,
+        transcript: response.infor.transcript,
+        audioUrl: response.infor.audioUrl,
+        imageUrl: response.infor.imageUrl,
+        direction: response.infor.direction,
         questions: response.questions?.map((question: any) => ({
           id: question.id,
-          question: question.question,
-          audio: question.audioUrl,
-          script: question.script,
-          img: question.imageUrl,
-          type: {
-            id: question.type.id,
-            name: question.type.name,
-          },
-          options: question.options?.map((option: any) => ({
-            id: option.id,
-            symbol: option.symbol,
-            description: option.description,
-          })),
+          content: question.content,
+          typeQuestion: question.typeQuestion,
+          imageUrl: question.infor.imageUrl,
+          descriptionResult: question.infor.descriptionResult,
+          options: sortOptionsBySymbol(question.options || []).map(
+            (option: any) => ({
+              id: option.id,
+              symbol: option.symbol,
+              description: option.description,
+            })
+          ),
         })),
       };
+      return listeningExam;
     } catch (error) {
       console.error("Failed to fetch listening exam:", error);
       throw error;
     }
   },
 
-  getSimilarExams: () => {
-    return mockExams.slice(0, 4);
-  },
-
-  getUserExam: (userId: string) => {
-    console.log("userId", userId);
-    return mockUserExamList;
-  },
-
-  getResult: async (resultId: string) => {
+  getSimilarExams: async (examId: string, userId: string) => {
     try {
-      const response: Result = await api.get<any>(
-        `${BASE_URL}api/ListeningResult/${resultId}`
+      //call getUserExam and then filter to ecept examId
+      const userExamList = await listeningService.getUserExam(userId);
+      const filteredExams = userExamList.data.filter(
+        (exam) => exam.examId !== examId
+      );
+      return filteredExams;
+    } catch (error) {}
+  },
+
+  getUserExam: async (userId: string): Promise<UserExamList> => {
+    try {
+      const response = await api.get<ListeningUserExam[]>(
+        `${BASE_URL}api/UserExam/listening?userId=${userId}`
+      );
+
+      return {
+        user_id: userId,
+        data: response,
+      };
+    } catch (error) {
+      console.error("Failed to fetch user exams:", error);
+      return {
+        user_id: userId,
+        data: [],
+      };
+    }
+  },
+
+  postResult: async (result: ResultRequest, status: string) => {
+    try {
+      const requestData = {
+        finishedTime: result.finishedTime,
+        status: status,
+        examId: result.examId,
+        userId: result.userId.toString(),
+        userAnswers: result.userAnswers,
+      };
+
+      console.log("Request data:", JSON.stringify(requestData, null, 2));
+
+      const response = await api.post<BackendResultResponse>(
+        `${BASE_URL}api/UserExam/listening`,
+        requestData
       );
       return response;
+    } catch (error) {
+      console.error("Failed to post result:", error);
+      if (error instanceof Error && "response" in error) {
+        console.error("Error response data:", (error as any).response?.data);
+      }
+      throw error;
+    }
+  },
+
+  getResult: async (resultId: string): Promise<Result> => {
+    try {
+      const backendResponse = await api.get<BackendResultResponse>(
+        `${BASE_URL}api/UserExam/listening/${resultId}`
+      );
+      return mapBackendResponseToResult(backendResponse);
     } catch (error) {
       console.error("Failed to fetch result:", error);
       throw error;

@@ -28,8 +28,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Check if user is already authenticated
     const user = auth.getToken();
     if (user) {
-      // Implement token validation and user data fetching
-      // This is just a placeholder
       setUser(JSON.parse(user));
     }
   }, []);

@@ -98,6 +98,20 @@ export default function Home() {
             </CardContent>
           </Card>
         </Link>
+         <Link to="/picture">
+          <Card className={styles.featureCard}>
+            <CardContent className={styles.cardContent}>
+              <div className={styles.iconWrapper}>
+                <TRANSLATION />
+              </div>
+              <h2 className={styles.cardTitle}>Picture</h2>
+              <p className={styles.cardDescription}>
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry.
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
       </div>
     </div>
   );

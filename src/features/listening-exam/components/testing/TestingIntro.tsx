@@ -11,17 +11,22 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { listeningService } from "@/features/listening-exam/api/listening-service";
-import { Exam } from "@/features/listening-exam/types/Exams";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import OtherExam from "./OtherExam";
 import styles from "./styles.module.scss";
 import TestingContent from "./TestingContent";
+import { ListeningExamResponse } from "../../types/ListeningExam";
+import { Spinner } from "@/components/Spinner";
+import { ListeningUserExam } from "../../types/UserExam";
+import { useAuth } from "@/contexts/auth-context";
 
 const TestingIntro = () => {
+  const { user } = useAuth();
   const { id } = useParams();
-  const [exam, setExam] = useState<Exam | null>(null);
-  const [otherExams, setOtherExams] = useState<Exam[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [exam, setExam] = useState<ListeningExamResponse | null>(null);
+  const [otherExams, setOtherExams] = useState<ListeningUserExam[]>([]);
   const [openTesting, setOpenTesting] = useState(false);
   const [hour, setHour] = useState(0);
   const [minute, setMinute] = useState(0);
@@ -35,15 +40,23 @@ const TestingIntro = () => {
 
   const fetchExam = async () => {
     const exam = await listeningService.getListeningExamById(id!);
-    console.log("exam", exam);
     setExam(exam);
   };
 
+  const fetchOtherExams = async () => {
+    if (!user) return;
+    const otherExams = await listeningService.getSimilarExams(id!, user?.id!);
+    setOtherExams(otherExams || []);
+  };
+
   useEffect(() => {
-    fetchExam();
-    const otherExams = listeningService.getSimilarExams();
-    setOtherExams(otherExams);
-  }, [id]);
+    setIsLoading(true);
+    if (id) {
+      fetchExam();
+      fetchOtherExams();
+    }
+    setIsLoading(false);
+  }, [id, user]);
 
   useEffect(() => {
     if (exam) {
@@ -113,6 +126,7 @@ const TestingIntro = () => {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
+
       <Card className={styles.examCard}>
         {openTesting ? (
           <TestingContent
@@ -124,6 +138,8 @@ const TestingIntro = () => {
             handleStop={handleStop}
             setExam={setExam}
           />
+        ) : isLoading ? (
+          <Spinner />
         ) : (
           <>
             <CardHeader>
@@ -138,7 +154,7 @@ const TestingIntro = () => {
               <div className={styles.examInfoContainer}>
                 <div className={styles.examInfo}>
                   <p>
-                    Mức độ: <span>{exam?.description}</span>
+                    Mức độ: <span>{exam?.topic.name}</span>
                   </p>
                   <p>
                     Thời gian làm bài: <span>{exam?.time.toString()} phút</span>
@@ -150,7 +166,7 @@ const TestingIntro = () => {
                   </p>
 
                   <p>
-                    Chủ đề: <span>{exam?.topic.name}</span>
+                    Kỹ năng: <span>{exam?.skill || "Listening"}</span>
                   </p>
                 </div>
               </div>

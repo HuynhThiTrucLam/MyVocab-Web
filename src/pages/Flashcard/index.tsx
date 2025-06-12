@@ -5,10 +5,10 @@ import { api } from "@/services/api-client";
 import { useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
-import ListIcon from '@/assets/icons/flashcard.svg';
-import ArrowLeftIcon from '@/assets/icons/arrow-left.svg';
+import ListIcon from "@/assets/icons/flashcard.svg";
+import ArrowLeftIcon from "@/assets/icons/arrow-left.svg";
 
-
+const API_BASE_URL = import.meta.env.VITE_BE_API_URL;
 interface VocabularyItem {
   id: string;
   word: string;
@@ -28,16 +28,23 @@ export default function FlashCard() {
   const [vocabularyItems, setVocabularyItems] = useState<VocabularyItem[]>([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
-  const [slideDirection, setSlideDirection] = useState<null | 'left' | 'right'>(null);
+  const [slideDirection, setSlideDirection] = useState<null | "left" | "right">(
+    null
+  );
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const audioUrlRaw = (vocabularyItems[currentCardIndex]?.pronunciation || '').split('|')[1];
-  const audioUrl = audioUrlRaw && audioUrlRaw !== 'undefined' ? audioUrlRaw : '';
+  const audioUrlRaw = (
+    vocabularyItems[currentCardIndex]?.pronunciation || ""
+  ).split("|")[1];
+  const audioUrl =
+    audioUrlRaw && audioUrlRaw !== "undefined" ? audioUrlRaw : "";
   const [pendingCardIndex, setPendingCardIndex] = useState<number | null>(null);
 
   const fetchVocabularyItems = async () => {
     try {
       const response = await api.get<VocabularyItem[]>(`/api/v1/Dictionary`);
-      const filtered = response.filter(item => item.workspaceId === workspaceId);
+      const filtered = response.filter(
+        (item) => item.workspaceId === workspaceId
+      );
       setVocabularyItems(filtered);
     } catch (error) {
       console.error("Failed to fetch vocabulary items:", error);
@@ -64,10 +71,7 @@ export default function FlashCard() {
     return (
       <div className={styles.container}>
         <h1 className={styles.header}>No vocabulary items found</h1>
-        <button 
-          className={styles.testButton}
-          onClick={() => navigate(-1)}
-        >
+        <button className={styles.testButton} onClick={() => navigate(-1)}>
           Go Back
         </button>
       </div>
@@ -80,9 +84,9 @@ export default function FlashCard() {
   const handleMarkAsLearned = async () => {
     try {
       await axios.patch(
-        `https://localhost:7063/api/v1/Dictionary/${currentCard.id}/learning-status`,
+        `${API_BASE_URL}/api/v1/Dictionary/${currentCard.id}/learning-status`,
         JSON.stringify(true),
-        { headers: { 'Content-Type': 'application/json' } }
+        { headers: { "Content-Type": "application/json" } }
       );
       await fetchVocabularyItems();
     } catch (error) {
@@ -97,9 +101,9 @@ export default function FlashCard() {
   const handleMarkAsNotLearned = async () => {
     try {
       await axios.patch(
-        `https://localhost:7063/api/v1/Dictionary/${currentCard.id}/learning-status`,
+        `${API_BASE_URL}/api/v1/Dictionary/${currentCard.id}/learning-status`,
         JSON.stringify(false),
-        { headers: { 'Content-Type': 'application/json' } }
+        { headers: { "Content-Type": "application/json" } }
       );
       await fetchVocabularyItems();
     } catch (error) {
@@ -113,7 +117,7 @@ export default function FlashCard() {
 
   const handlePrev = () => {
     if (currentCardIndex > 0 && !slideDirection) {
-      setSlideDirection('right');
+      setSlideDirection("right");
       setTimeout(() => {
         setCurrentCardIndex(currentCardIndex - 1);
         setSlideDirection(null);
@@ -121,10 +125,10 @@ export default function FlashCard() {
       }, 400); // 400ms matches CSS transition
     }
   };
-  
+
   const handleNext = () => {
     if (currentCardIndex < totalCards - 1 && !slideDirection) {
-      setSlideDirection('left');
+      setSlideDirection("left");
       setTimeout(() => {
         setCurrentCardIndex(currentCardIndex + 1);
         setSlideDirection(null);
@@ -144,22 +148,32 @@ export default function FlashCard() {
     }
   };
 
-  const learnedCount = vocabularyItems.filter(item => item.isLearned).length;
+  const learnedCount = vocabularyItems.filter((item) => item.isLearned).length;
   const notLearnedCount = vocabularyItems.length - learnedCount;
 
   return (
     <>
       <div className={styles.mapping}>
-        <span className={styles.mappingItem} onClick={() => navigate('/')}> 
+        <span className={styles.mappingItem} onClick={() => navigate("/")}>
           <span className={styles.homeIcon}>🏠</span> Trang chủ
         </span>
         <span className={styles.mappingDivider}>/</span>
-        <span className={styles.mappingItem} onClick={() => navigate('/my-vocab')}>Từ vựng của tôi</span>
+        <span
+          className={styles.mappingItem}
+          onClick={() => navigate("/my-vocab")}
+        >
+          Từ vựng của tôi
+        </span>
         <span className={styles.mappingDivider}>/</span>
         <span className={styles.mappingCurrent}>Danh sách từ vựng</span>
       </div>
       <div className={styles.pageTitle}>
-        <img src={ArrowLeftIcon} alt="arrow left" className={styles.breadcrumbArrow} onClick={() => navigate('/my-vocab')} />
+        <img
+          src={ArrowLeftIcon}
+          alt="arrow left"
+          className={styles.breadcrumbArrow}
+          onClick={() => navigate("/my-vocab")}
+        />
         <span>Học từ vựng cùng Flashcards</span>
       </div>
       <div className={styles.container}>
@@ -167,7 +181,11 @@ export default function FlashCard() {
         <div className={styles.header}>
           <div className={styles.headerLeft}>
             <div className={styles.title}>
-              <img src={ListIcon} alt="list icon" className={styles.titleIcon} />
+              <img
+                src={ListIcon}
+                alt="list icon"
+                className={styles.titleIcon}
+              />
               Danh sách từ vựng của tôi
             </div>
             <div className={styles.stats}>
@@ -178,16 +196,25 @@ export default function FlashCard() {
               <span>{notLearnedCount} Chưa học</span>
             </div>
           </div>
-          <button className={styles.testButton} onClick={() => navigate(`/test/${workspaceId}`)}>Kiểm tra ngay</button>
+          <button
+            className={styles.testButton}
+            onClick={() => navigate(`/test/${workspaceId}`)}
+          >
+            Kiểm tra ngay
+          </button>
         </div>
 
         {/* Progress bar */}
         <div className={styles.progressContainer}>
-          <div className={styles.progressText}>{currentCardIndex + 1}/{totalCards} từ</div>
+          <div className={styles.progressText}>
+            {currentCardIndex + 1}/{totalCards} từ
+          </div>
           <div className={styles.progressBar}>
-            <div 
-              className={styles.progressFill} 
-              style={{ width: `${((currentCardIndex + 1) / totalCards) * 100}%` }}
+            <div
+              className={styles.progressFill}
+              style={{
+                width: `${((currentCardIndex + 1) / totalCards) * 100}%`,
+              }}
             />
           </div>
         </div>
@@ -195,7 +222,7 @@ export default function FlashCard() {
         {/* Card */}
         <div className={styles.cardContainer}>
           <button
-            className={styles.rectButton + ' ' + styles.left}
+            className={styles.rectButton + " " + styles.left}
             onClick={handlePrev}
             disabled={currentCardIndex === 0 || !!slideDirection}
           >
@@ -203,32 +230,44 @@ export default function FlashCard() {
           </button>
           <div
             className={
-              `${styles.card} ${isFlipped ? styles.flipped : ''} ` +
-              (currentCard.isLearned ? styles.learned : '') +
-              (slideDirection === 'left' ? ' ' + styles.slideLeft : '') +
-              (slideDirection === 'right' ? ' ' + styles.slideRight : '')
+              `${styles.card} ${isFlipped ? styles.flipped : ""} ` +
+              (currentCard.isLearned ? styles.learned : "") +
+              (slideDirection === "left" ? " " + styles.slideLeft : "") +
+              (slideDirection === "right" ? " " + styles.slideRight : "")
             }
             onClick={() => !slideDirection && setIsFlipped(!isFlipped)}
           >
             <div className={styles.cardFront}>
               <h2>{currentCard?.word}</h2>
-              <p className={styles.pronunciation}>{(currentCard?.pronunciation || '').split('|')[0]}</p>
+              <p className={styles.pronunciation}>
+                {(currentCard?.pronunciation || "").split("|")[0]}
+              </p>
               <div className={styles.instructionBar}>
-                Click chuột để lật thẻ này <span role="img" aria-label="hand">👆</span>
+                Click chuột để lật thẻ này{" "}
+                <span role="img" aria-label="hand">
+                  👆
+                </span>
               </div>
             </div>
             <div className={styles.cardBack}>
               <div className={styles.meaningBlock}>
-                <div className={styles.vietnamese}>{currentCard?.vietnameseMeaning}</div>
-                <div className={styles.pronunciation}>{(currentCard?.pronunciation || '').split('|')[0]}</div>
+                <div className={styles.vietnamese}>
+                  {currentCard?.vietnameseMeaning}
+                </div>
+                <div className={styles.pronunciation}>
+                  {(currentCard?.pronunciation || "").split("|")[0]}
+                </div>
               </div>
               <div className={styles.instructionBar}>
-                Click chuột để lật thẻ này <span role="img" aria-label="hand">👆</span>
+                Click chuột để lật thẻ này{" "}
+                <span role="img" aria-label="hand">
+                  👆
+                </span>
               </div>
             </div>
           </div>
           <button
-            className={styles.rectButton + ' ' + styles.right}
+            className={styles.rectButton + " " + styles.right}
             onClick={handleNext}
             disabled={currentCardIndex === totalCards - 1 || !!slideDirection}
           >
@@ -238,7 +277,9 @@ export default function FlashCard() {
         <div className={styles.controls}>
           <button
             onClick={handleMarkAsLearned}
-            className={`${styles.controlButton} ${currentCard.isLearned ? styles.learnedButton : ''}`}
+            className={`${styles.controlButton} ${
+              currentCard.isLearned ? styles.learnedButton : ""
+            }`}
             disabled={currentCard.isLearned}
           >
             Đã học từ này
@@ -261,4 +302,4 @@ export default function FlashCard() {
       </div>
     </>
   );
-} 
+}

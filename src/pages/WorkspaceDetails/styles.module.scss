@@ -1,6 +1,5 @@
 .container {
-  padding: 2rem;
-  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -83,7 +82,7 @@
   width: 1.5rem;
   height: 1.5rem;
   margin-left: 0.5rem;
-  
+
   // Override the spinner container styles
   :global(.spinnerContainer) {
     margin: 0;
@@ -94,7 +93,7 @@
 .editTitleIcon {
   opacity: 0.7;
   transition: opacity 0.2s;
-  
+
   &:hover {
     opacity: 1;
   }
@@ -104,7 +103,7 @@
   opacity: 0.7;
   transition: opacity 0.2s;
   color: #ef4444;
-  
+
   &:hover {
     opacity: 1;
   }
@@ -112,11 +111,11 @@
 
 .deleteButton {
   background-color: #ef4444 !important;
-  
+
   &:hover {
     background-color: #dc2626 !important;
   }
-  
+
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -127,7 +126,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  
+
   :global(.spinnerContainer) {
     margin: 0;
     scale: 0.5;
@@ -148,7 +147,7 @@
   cursor: pointer;
   width: 1.25rem; // w-5
   height: 1.25rem; // h-5
-  
+
   &.disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -227,7 +226,7 @@
   color: #ef4444;
   opacity: 0.7;
   transition: opacity 0.2s;
-  
+
   &:hover {
     opacity: 1;
   }

@@ -23,6 +23,7 @@ import { isAxiosError } from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { Spinner } from "../Spinner";
 import { api_version } from "@/services/api-client";
+import { workspaceService } from "@/features/workspaces/api/workspace-service";
 
 interface WorkspaceItem {
   id?: string;
@@ -134,9 +135,7 @@ function useWorkspaces() {
 
       setIsLoading(true);
       try {
-        const response = await api.delete(
-          `/${api_version}/Workspace/${workspaceId}`
-        );
+        const response = await api.delete(`/Workspace/${workspaceId}`);
         if (response) {
           // Update the workspace list by filtering out the deleted workspace
           setWorkspaces((prev) => prev.filter((w) => w.id !== workspaceId));
@@ -239,6 +238,7 @@ function DeleteWorkspaceDialog({
 }
 
 export function WorkspaceList() {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { workspaces, isLoading, addWorkspace, deleteWorkspace } =
@@ -296,13 +296,18 @@ export function WorkspaceList() {
   }, []);
 
   const handleAddWorkspace = useCallback(async () => {
-    const result = await addWorkspace(newWorkspaceName);
-    if (result.success) {
-      setNewWorkspaceName("");
-      setOpenNewWorkspace(false);
-      setIsOpenDialog(false);
-    } else if (result.message) {
-      setError(result.message);
+    try {
+      const result = await addWorkspace(newWorkspaceName);
+      if (result) {
+        setNewWorkspaceName("");
+        setOpenNewWorkspace(false);
+        setIsOpenDialog(false);
+      } else {
+        setError("Không thể tạo danh sách. Vui lòng thử lại!");
+      }
+    } catch (error) {
+      console.error("Error adding workspace:", error);
+      setError("Không thể tạo danh sách. Vui lòng thử lại!");
     }
   }, [newWorkspaceName, addWorkspace]);
 

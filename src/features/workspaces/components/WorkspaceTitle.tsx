@@ -190,8 +190,8 @@ export default function WorkspaceTitle({
                 <AlertDialogHeader>
                   <AlertDialogTitle>Xác nhận xóa</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Bạn có chắc chắn muốn xóa danh sách từ vựng "{title}"
-                    không? Hành động này không thể hoàn tác.
+                    Bạn có chắc chắn muốn xóa danh sách từ vựng "{title}" không?
+                    Hành động này không thể hoàn tác.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
@@ -220,4 +220,4 @@ export default function WorkspaceTitle({
       )}
     </h1>
   );
-} 
+}

@@ -12,7 +12,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Combobox } from "@/components/ui/combobox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useState, useEffect } from "react";
 import { api, api_version } from "@/services/api-client";
 import { useAuth } from "@/contexts/auth-context";
@@ -43,7 +49,9 @@ export function WordHeader({
 
   const fetchListWorkspace = async () => {
     try {
-      const response: any[] = await api.get(`/${api_version}/Workspace/${user?.id}`);
+      const response: any[] = await api.get(
+        `/${api_version}/Workspace/${user?.id}`
+      );
       setListWorkspace(response);
     } catch (error) {
       console.error("Failed to fetch list workspace:", error);
@@ -82,7 +90,7 @@ export function WordHeader({
           type: type || "",
           pronunciation: phonetic + "|" + audioUrl || "",
           meaning: meaning || "",
-          vietnameseMeaning: ""
+          vietnameseMeaning: "",
         };
         const response = await api.post(`/${api_version}/Dictionary`, data);
         if (response) {
@@ -120,18 +128,23 @@ export function WordHeader({
               <AlertDialogTitle>
                 Vui lòng chọn danh sách từ vựng
               </AlertDialogTitle>
-              <Combobox
-                options={listWorkspace.map((workspace) => ({
-                  value: workspace.id,
-                  label: workspace.name,
-                }))}
-                onSelect={(value) => {
+              <Select
+                value={selectedWorkspace || ""}
+                onValueChange={(value) => {
                   setSelectedWorkspace(value);
                 }}
-                label="Danh sách"
-                placeholder="Tìm kiếm danh sách"
-                data={selectedWorkspace}
-              />
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Chọn danh sách" />
+                </SelectTrigger>
+                <SelectContent>
+                  {listWorkspace.map((workspace) => (
+                    <SelectItem key={workspace.id} value={workspace.id}>
+                      {workspace.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Hủy</AlertDialogCancel>

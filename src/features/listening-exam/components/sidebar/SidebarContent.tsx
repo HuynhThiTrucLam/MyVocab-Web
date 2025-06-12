@@ -1,66 +1,95 @@
+import { Spinner } from "@/components/Spinner";
 import { Card } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useEffect, useState } from "react";
 import { listeningService } from "../../api/listening-service";
 import { Band } from "../../types/Bands";
-import { Exam, Topic } from "../../types/Exams";
-import { mockUserExamList, UserExamList } from "../../types/UserExam";
+import { ListeningExam } from "../../types/ListeningExam";
+import { UserExamList } from "../../types/UserExam";
 import styles from "../style.module.scss";
 import TestItem from "../testItem/TestItem";
-import { Spinner } from "@/components/Spinner";
+import { useAuth } from "@/contexts/auth-context";
 
 interface SidebarContentProps {
   activeBand: Band;
   description: string;
-  testsMock: Exam[];
 }
-const mockTopic: Topic[] = [
-  {
-    id: "0",
-    name: "All",
-    description: "Tất cả",
-  },
-  {
-    id: "1",
-    name: "Picture Description",
-    description: "Mô tả tranh",
-  },
-  {
-    id: "2",
-    name: "Question-Response",
-    description: "(Hỏi - Đáp đơn giản)",
-  },
-];
 
-const SidebarContent = ({ activeBand, testsMock }: SidebarContentProps) => {
-  const [examList, setExamList] = useState<Exam[]>([]); // List all exams of data
-  const [userExamList, setUserExamList] = useState<UserExamList>(); // List exams of user
-  const [_, setSelectedTopic] = useState<Topic>(mockTopic[0]);
+const SidebarContent = ({ activeBand }: SidebarContentProps) => {
+  const { user } = useAuth();
+  const [examList, setExamList] = useState<ListeningExam[]>([]);
+  const [userExamList, setUserExamList] = useState<UserExamList>();
   const [isLoading, setIsLoading] = useState(false);
-  //pass param activeBand.id
-  const fetchExamList = async () => {
+
+  // Fetch exam list when selected topic changes
+  const fetchExamList = async (proficiencyId: string) => {
+    if (!proficiencyId) return;
+
     setIsLoading(true);
-    if (!activeBand) return; // Guard clause
-    console.log("activeBand", activeBand);
-    const examList = await listeningService.getListeningExamListByBandId(
-      activeBand.id
-    );
-    setExamList(examList);
-    setIsLoading(false);
+    try {
+      const examList = await listeningService.getListeningExamList(
+        proficiencyId
+      );
+      setExamList(examList);
+    } catch (error) {
+      console.error("Failed to fetch exams:", error);
+      setExamList([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Fetch user exam list
+  const fetchUserExamList = async (userId: string) => {
+    try {
+      const userExamList = await listeningService.getUserExam(userId);
+      setUserExamList(userExamList);
+    } catch (error) {
+      console.error("Failed to fetch user exam list:", error);
+      setUserExamList({ user_id: userId, data: [] });
+    }
   };
 
   useEffect(() => {
     if (!activeBand) return;
-    fetchExamList();
-    console.log("examList", examList);
-    setUserExamList(mockUserExamList);
-  }, [activeBand, testsMock]);
+    fetchExamList(activeBand.id);
+    if (user?.id) {
+      fetchUserExamList(user.id);
+    }
+  }, [activeBand, user?.id]);
+
+  // Helper function to get colors based on exam status
+  const getExamColors = (examId: string) => {
+    const userExam = userExamList?.data.find(
+      (userExam) => userExam.examId === examId
+    );
+
+    if (!userExam) {
+      // Exam is in examList but not in userExam
+      return {
+        mainColor: "#31e3a5",
+        secondaryColor: "#1B7D5B",
+      };
+    }
+
+    switch (userExam.status) {
+      case "done":
+        return {
+          mainColor: "#914BFB",
+          secondaryColor: "#0E8CAA",
+        };
+      case "doing":
+        return {
+          mainColor: "#FFBF47",
+          secondaryColor: "#F2FF90",
+        };
+      default:
+        // Fallback for any other status
+        return {
+          mainColor: "#31e3a5",
+          secondaryColor: "#1B7D5B",
+        };
+    }
+  };
 
   return (
     <div className={styles.listeningContent}>
@@ -72,66 +101,23 @@ const SidebarContent = ({ activeBand, testsMock }: SidebarContentProps) => {
       <div className={styles.listeningContentBody}>
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-extrabold">Luyện đề ngay</h3>
-          <Select>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Dạng bài" />
-            </SelectTrigger>
-            <SelectContent>
-              {mockTopic.map((topic) => (
-                <SelectItem
-                  key={topic.id}
-                  value={topic.id}
-                  onClick={() => {
-                    setSelectedTopic(topic);
-                  }}
-                >
-                  {topic.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
         </div>
 
         {isLoading ? (
           <Spinner />
         ) : examList.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-            {examList.map((exam, idx) => (
-              <TestItem
-                key={idx}
-                exam={exam}
-                mainColor={
-                  userExamList?.data.some(
-                    (userExam) =>
-                      userExam.exam.id === exam.id &&
-                      userExam.status === "completed"
-                  )
-                    ? "#914BFB"
-                    : userExamList?.data.some(
-                        (userExam) =>
-                          userExam.exam.id === exam.id &&
-                          userExam.status === "new"
-                      )
-                    ? "#FFBF47"
-                    : "#31e3a5"
-                }
-                secondaryColor={
-                  userExamList?.data.some(
-                    (userExam) =>
-                      userExam.exam.id === exam.id &&
-                      userExam.status === "completed"
-                  )
-                    ? "#0E8CAA"
-                    : userExamList?.data.some(
-                        (userExam) =>
-                          userExam.exam.id === exam.id &&
-                          userExam.status === "new"
-                      )
-                    ? "#F2FF90"
-                    : "#1B7D5B"
-                }
-              />
-            ))}
+            {examList.map((exam, idx) => {
+              const { mainColor, secondaryColor } = getExamColors(exam.id);
+              return (
+                <TestItem
+                  key={idx}
+                  exam={exam}
+                  mainColor={mainColor}
+                  secondaryColor={secondaryColor}
+                />
+              );
+            })}
           </div>
         ) : (
           <Card className="flex gap-2 flex-col justify-center items-center h-[50vh]">
