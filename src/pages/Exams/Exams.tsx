@@ -22,9 +22,6 @@ const Exams = () => {
             <TabsTrigger value="reading" className={styles.tabTrigger}>
               Reading
             </TabsTrigger>
-            <TabsTrigger value="writing" className={styles.tabTrigger}>
-              Writing
-            </TabsTrigger>
           </TabsList>
           <div className={styles.line}></div>
 
@@ -34,11 +31,6 @@ const Exams = () => {
 
           <TabsContent value="reading">
             <ReadingTab />
-            {/* Thêm nội dung vào đây */}
-          </TabsContent >
-
-          <TabsContent value="writing">
-            <p>Writing</p>
             {/* Thêm nội dung vào đây */}
           </TabsContent>
         </Tabs>
