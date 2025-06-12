@@ -21,7 +21,7 @@ import SubmissionDetails from "./features/reading/pages/SubmissionDetails";
 import Flashcard from "./pages/Flashcard";
 import TestPage from "@/pages/Test"; // Đảm bảo đường dẫn đúng
 
-import { Chatbox } from "./pages/ChatBox/Chatbox";
+import { Chatbox } from "./pages/Chatbox/Chatbox";
 
 import Picture from "./features/Picture/Picture";
 import Topic from "./features/Picture/Topic";

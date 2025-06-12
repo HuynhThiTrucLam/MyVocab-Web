@@ -87,7 +87,8 @@ const BASE_URL = import.meta.env.VITE_BE_API_URL;
 export const readingService = {
     getProficiencyList: async () => {
         try {
-            const response = await api.get<Band[]>(`https://localhost:7063/api/Proficiency/Proficiency-raeding`);
+            const response = await api.get<Band[]>(`${BASE_URL}api/Proficiency/Proficiency-raeding`);
+
             return response.map((item: any) => ({
                 id: item.id,
                 name: item.name,
@@ -102,7 +103,7 @@ export const readingService = {
     },
     getTopicsByProficiencyId: async (proficiencyId: string) => {
         try {
-            const response = await api.get<Topic[]>(`https://localhost:7063/api/Pdf/topics?proficiencyId=${proficiencyId}`);
+            const response = await api.get<Topic[]>(`${BASE_URL}api/Pdf/topics?proficiencyId=${proficiencyId}`);
             return response;
         } catch (error) {
             console.error("Failed to fetch topics by proficiencyId (reading):", error);
@@ -111,7 +112,7 @@ export const readingService = {
     },
     getExamsByTopicId: async (topicId: string) => {
         try {
-            const response = await api.get<Exam[]>(`https://localhost:7063/api/Pdf/exams?topicId=${topicId}`);
+            const response = await api.get<Exam[]>(`${BASE_URL}api/Pdf/exams?topicId=${topicId}`);
             return response;
         } catch (error) {
             console.error("Failed to fetch exams by topicId (reading):", error);
@@ -120,7 +121,7 @@ export const readingService = {
     },
     getTestInfo: async (testId: string) => {
         try {
-            const response = await api.get<TestInfo>(`https://localhost:7063/api/user/UserAnswer/reading/info/${testId}`);
+            const response = await api.get<TestInfo>(`${BASE_URL}api/user/UserAnswer/reading/info/${testId}`);
             return response;
         } catch (error) {
             console.error("Failed to fetch test info:", error);
@@ -129,7 +130,7 @@ export const readingService = {
     },
     getPdfMetadata: async (testId: string) => {
         try {
-            const response = await api.get<PdfDocument>(`https://localhost:7063/api/Pdf/${testId}`);
+            const response = await api.get<PdfDocument>(`${BASE_URL}api/Pdf/${testId}`);
             return response;
         } catch (error) {
             console.error("Failed to fetch PDF metadata:", error);
@@ -138,7 +139,7 @@ export const readingService = {
     },
     getPdfContent: async (testId: string | number) => {
         try {
-            const response = await fetch(`https://localhost:7063/api/Pdf/view/${testId}`, {
+            const response = await fetch(`${BASE_URL}api/Pdf/view/${testId}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/pdf',
@@ -158,7 +159,7 @@ export const readingService = {
     submitAnswers: async (testId: string, payload: SubmitAnswerRequest) => {
         try {
             const response = await api.post<SubmitAnswerResponse>(
-                `https://localhost:7063/api/user/UserAnswer/submit/${testId}`,
+                `${BASE_URL}api/user/UserAnswer/submit/${testId}`,
                 payload
             );
             return response;
@@ -169,7 +170,7 @@ export const readingService = {
     },
     getExamResult: async (submissionId: string) => {
         try {
-            const response = await api.get<ExamResult>(`https://localhost:7063/api/user/UserAnswer/result/${submissionId}`);
+            const response = await api.get<ExamResult>(`${BASE_URL}api/user/UserAnswer/result/${submissionId}`);
             const details = response.details;
             const notAnswered = details.filter((detail: ExamDetail) => !detail.userAnswer).length;
             const wrongAnswers = details.filter((detail: ExamDetail) => detail.userAnswer && !detail.isCorrect).length;
@@ -185,7 +186,7 @@ export const readingService = {
     },
     getSubmissionReview: async (submissionId: number) => {
         try {
-            const response = await api.get<AnswerCheckResponse>(`https://localhost:7063/api/user/UserAnswer/review/${submissionId}`);
+            const response = await api.get<AnswerCheckResponse>(`${BASE_URL}api/user/UserAnswer/review/${submissionId}`);
             return response;
         } catch (error) {
             console.error("Failed to fetch submission review:", error);

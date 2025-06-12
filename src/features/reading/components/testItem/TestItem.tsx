@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styles from "../style.module.scss";
+import { readingService } from '../../api/reading-service';
 import QuestionIcon from "@/assets/icons/question.svg";
 import CircleIcon from "@/assets/icons/circle.svg";
 import { useNavigate } from "react-router-dom";
 import Exams from '@/pages/Exams/Exams';
+
 
 // Embedded interfaces
 interface PdfDocument {
@@ -43,6 +45,8 @@ interface TestItemProps {
 }
 
 const TestItem = ({ exam, mainColor, secondaryColor }: TestItemProps) => {
+
+    const BASE_URL = import.meta.env.VITE_BE_API_URL;
     const gradient = `linear-gradient(90deg, ${mainColor} 0%, ${secondaryColor} 100%)`;
     const navigate = useNavigate();
     const [pdfDocuments, setPdfDocuments] = useState<PdfDocument[]>([]);
@@ -60,7 +64,7 @@ const TestItem = ({ exam, mainColor, secondaryColor }: TestItemProps) => {
 
             try {
                 console.log('Fetching PDFs for Exam ID:', exam.id);
-                const pdfResponse = await fetch(`http://localhost:7063/api/Pdf/exam/${exam.id}`, {
+                const pdfResponse = await fetch(`${BASE_URL}api/Pdf/exam/${exam.id}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
@@ -83,7 +87,7 @@ const TestItem = ({ exam, mainColor, secondaryColor }: TestItemProps) => {
 
                 console.log('Fetching Test Info for Pdf ID:', pdfData[0].id);
                 const testInfoResponse = await fetch(
-                    `http://localhost:7063/api/user/UserAnswer/reading/info/${pdfData[0].id}`,
+                    `${BASE_URL}api/user/UserAnswer/reading/info/${pdfData[0].id}`,
                     {
                         method: 'GET',
                         headers: {

@@ -26,6 +26,8 @@ const SidebarContent = ({ activeBand, selectedTopic }: SidebarContentProps) => {
     const [examsToDisplay, setExamsToDisplay] = useState<Exam[]>([]); // Exams for selected topic or all exams for active band
     const [examsByTopic, setExamsByTopic] = useState<{ [topicId: string]: Exam[] }>({}); // Store all exams for active band, grouped by topic
     const [examDetails, setExamDetails] = useState<{ [key: string]: ReadingInfo }>({}); // Store reading info for all relevant exams
+    const BASE_URL = import.meta.env.VITE_BE_API_URL;
+
     const [topics, setTopics] = useState<Topic[]>([]); // Store topics for active band
     const navigate = useNavigate();
 
@@ -93,7 +95,7 @@ const SidebarContent = ({ activeBand, selectedTopic }: SidebarContentProps) => {
 
     const fetchReadingInfo = async (pdfId: number) => {
         try {
-            const response = await fetch(`https://localhost:7063/api/user/UserAnswer/reading/info/${pdfId}`);
+            const response = await fetch(`${BASE_URL}api/user/UserAnswer/reading/info/${pdfId}`);
             if (!response.ok) {
                 throw new Error(`Lỗi khi tải thông tin đề thi: ${response.status} ${response.statusText}`);
             }
