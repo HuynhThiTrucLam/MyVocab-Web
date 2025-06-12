@@ -83,3 +83,44 @@ export const api = {
   delete: <T>(url: string, config?: AxiosRequestConfig): Promise<T> =>
     apiRequest<T>({ ...config, url, method: "DELETE" }),
 };
+const apiClientTranslation = axios.create({
+  baseURL: `${import.meta.env.VITE_FASTAPI_URL}/api/v1`,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+// Type-safe request function
+export async function apiRequestTranslation<T>(
+  config: AxiosRequestConfig,
+): Promise<T> {
+  try {
+    const response: AxiosResponse<T> = await apiClientTranslation(config);
+    return response.data;
+  } catch (error) {
+    // Log the error with useful context
+    console.error("API Request Failed:", {
+      url: config.url,
+      method: config.method,
+      error:
+        error instanceof AxiosError
+          ? {
+              status: error.response?.status,
+              data: error.response?.data,
+              message: error.message,
+            }
+          : error,
+    });
+    throw error;
+  }
+}
+// api for translation
+export const apiTranslation = {
+  get: <T>(url: string, config?: AxiosRequestConfig): Promise<T> =>
+    apiRequestTranslation<T>({ ...config, url, method: "GET" }),
+  post: <T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> =>
+    apiRequestTranslation<T>({ ...config, url, method: "POST", data }),
+  put: <T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> =>
+    apiRequestTranslation<T>({ ...config, url, method: "PUT", data }),
+  delete: <T>(url: string, config?: AxiosRequestConfig): Promise<T> =>
+    apiRequestTranslation<T>({ ...config, url, method: "DELETE" }),
+};

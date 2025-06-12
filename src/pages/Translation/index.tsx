@@ -2,7 +2,7 @@ import ArrowLeft from "@/assets/icons/arrow-left.svg?react";
 import { Combobox } from "@/components/ui/combobox";
 import { Textarea } from "@/components/ui/textarea";
 import { useDebounce } from "@/hooks/use-debounce";
-import { api, api_version } from "@/services/api-client";
+import { apiTranslation } from "@/services/api-client";
 import { DEFAULT_SOURCE_LANGUAGE, DEFAULT_TARGET_LANGUAGE } from "@/store";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -65,7 +65,7 @@ export default function Home() {
 
   const retrieveListSupportLanguage = async () => {
     console.info("GET:: fetching languages");
-    const response = await api.get(`/fastapi/${api_version}/languages`);
+    const response = await apiTranslation.get(`/languages`);
     setListSupportLanguage(response as LanguageSupport[]);
     return response;
   };
@@ -76,14 +76,11 @@ export default function Home() {
     try {
       setIsTranslating(true);
       console.info("POST:: translating");
-      const response: any = await api.post(
-        `/fastapi/${api_version}/translate`,
-        {
-          source_lang: sourceLanguage,
-          target_lang: targetLanguage,
-          text: debouncedSourceText,
-        },
-      );
+      const response: any = await apiTranslation.post(`/translate`, {
+        source_lang: sourceLanguage,
+        target_lang: targetLanguage,
+        text: debouncedSourceText,
+      });
       setTargetText(response.translated_text);
 
       // Store translation in history
