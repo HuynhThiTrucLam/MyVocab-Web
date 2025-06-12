@@ -16,6 +16,8 @@ import successLottie from "@/assets/successfull-animate.json";
 interface NotificationProps {
   type: "time-up" | "submit";
   isOpenDialog: boolean;
+  isEmpty?: boolean; // Không có đáp án nào được chọn
+  setIsOpenDialog?: (isOpenDialog: boolean) => void;
   handleExitTesting: () => void;
   handleViewResult: () => void;
   handleSubmit?: () => void;
@@ -26,6 +28,8 @@ interface NotificationProps {
 const Notification = ({
   type,
   isOpenDialog,
+  isEmpty,
+  setIsOpenDialog,
   handleExitTesting,
   handleViewResult,
   handleSubmit,
@@ -66,7 +70,6 @@ const Notification = ({
       </Dialog>
     );
   }
-
   // Submit dialog content
   return (
     <Dialog open={isOpenDialog}>
@@ -92,7 +95,11 @@ const Notification = ({
           ) : (
             <>
               <DialogTitle>
-                {isSubmitting ? "" : "Bạn có chắc chắn muốn nộp bài?"}
+                {isSubmitting
+                  ? ""
+                  : isEmpty
+                  ? "Bạn chưa chọn đáp án nào"
+                  : "Bạn có chắc chắn muốn nộp bài?"}
               </DialogTitle>
               <DialogDescription>
                 {isSubmitting ? (
@@ -103,6 +110,9 @@ const Notification = ({
                     {/* You can replace this with your Spinner component */}
                     <Spinner />
                   </div>
+                ) : // "Đừng quên kiểm tra lại các đáp án của mình trước khi nộp bài để đạt kết quả tốt nhất!"
+                isEmpty ? (
+                  "Bạn chưa chọn đáp án nào, vui lòng chọn đáp án và nộp bài, đừng quên kiểm tra lại các đáp án của mình trước khi nộp bài để đạt kết quả tốt nhất!"
                 ) : (
                   "Đừng quên kiểm tra lại các đáp án của mình trước khi nộp bài để đạt kết quả tốt nhất!"
                 )}
@@ -117,6 +127,15 @@ const Notification = ({
             >
               Thoát
             </Button>
+            {!isSubmittingSuccess && (
+              <Button
+                className={`${styles.borderButton} w-full rounded-full text-[14px] font-bold text-[#37474F] hover:text-[#fff]`}
+                onClick={() => setIsOpenDialog?.(false)}
+                disabled={isSubmitting}
+              >
+                Tiếp tục làm bài
+              </Button>
+            )}
             {isSubmittingSuccess ? (
               <Button
                 className={`${styles.borderButton} w-full bg-[#31E3A5] rounded-full text-[14px] font-bold text-[#37474F] hover:text-[#fff]`}
@@ -125,13 +144,15 @@ const Notification = ({
                 Xem bài làm
               </Button>
             ) : (
-              <Button
-                className={`${styles.submitButton} w-full rounded-full text-[14px] font-bold text-[#37474F] hover:text-[#fff]`}
-                onClick={handleSubmit}
-                disabled={isSubmitting}
-              >
-                Chắc chắn
-              </Button>
+              !isEmpty && (
+                <Button
+                  className={`${styles.submitButton} w-full rounded-full text-[14px] font-bold text-[#37474F] hover:text-[#fff]`}
+                  onClick={handleSubmit}
+                  disabled={isSubmitting}
+                >
+                  Nộp bài
+                </Button>
+              )
             )}
           </DialogFooter>
         </DialogHeader>

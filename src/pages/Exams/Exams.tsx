@@ -43,14 +43,17 @@ const Exams = () => {
 
           <TabsContent value="reading">
             <p>Reading</p>
+            {/* Thêm nội dung vào đây */}
           </TabsContent>
 
           <TabsContent value="speaking">
             <p>Speaking</p>
+            {/* Thêm nội dung vào đây */}
           </TabsContent>
 
           <TabsContent value="writing">
             <p>Writing</p>
+            {/* Thêm nội dung vào đây */}
           </TabsContent>
           <TabsContent value="Test_Exam">
             <p>Test_Exam</p>

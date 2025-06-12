@@ -31,7 +31,7 @@ const ListeningTab = () => {
       ) : (
         <div className="py-3">
           <h1 className="text-[20px] font-bold mb-6">
-            Tổng hợp đề Listening theo các band điểm
+            Tổng hợp đề thi thử kỹ năng Listening
           </h1>
           <Card className={styles.listeningTab}>
             <Card className={styles.bandSidebar}>
